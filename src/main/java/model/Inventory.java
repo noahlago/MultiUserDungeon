@@ -25,8 +25,20 @@ public class Inventory implements Container<Container<Item>>{
             this.bags[numBags] = newBag;
             numBags++;
         }else{
-            
+            Container<Item> smallestBag = newBag;
+            int smallestIndex = -1;
+            for(int i = 0; i < numBags; i++){
+                if(this.bags[i].getSize() < smallestBag.getSize()){
+                    smallestBag = bags[i];
+                    smallestIndex = i;
+                }
+            }
+            if(smallestIndex != -1){
+                this.bags[smallestIndex] = newBag;
+            }
         }
+
+        //UPDATE INVENTORY SIZE
     }
 
     @Override
@@ -43,7 +55,17 @@ public class Inventory implements Container<Container<Item>>{
 
     @Override
     public Item[] items() {
-        throw new UnsupportedOperationException("Unimplemented method 'items'");
+        Item[] allItems = new Item[this.size];
+        int index = 0;
+        for(Container<Item> bag : this.bags){
+            for(Item item : bag.items()){
+                if(item != null){
+                    allItems[index] = item;
+                    index++;
+                }
+            }
+        }
+        return allItems;
     }
 
     public Container<Item>[] children(){
