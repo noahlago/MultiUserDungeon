@@ -35,7 +35,7 @@ public class Bag implements Container<Item>{
             this.totalItems++;
             return true;
         }else{
-            throw new IndexOutOfBoundsException("This bag is full. ");
+            throw new IndexOutOfBoundsException("This container is full. ");
         }
     }
 
