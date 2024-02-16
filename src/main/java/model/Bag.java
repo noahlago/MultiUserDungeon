@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class Bag implements Container<Item>{
     /**Represents the number of items this bag can hold.  */
     private int size;
-    /**Item array to store the Items currently held by this bag */
+    /**Item array to store the Items currently held by this bag.  */
     private ArrayList<Item> items;
-    /**A count of the number of Items currently held by this bag */
+    /**A count of the number of Items currently held by this bag.  */
     private int totalItems;
 
     public Bag(int size){
@@ -25,7 +25,7 @@ public class Bag implements Container<Item>{
     
     /**
      * Allows a new Item to be added to the bag, as long as the bag is not full, and increments count of Items in this bag.
-     * @param newItem - The new Item to be added to this bag
+     * @param newItem - The new Item to be added to this bag. 
      * @exception throws IndexOutOfBoundsException if the bag is already full and an attempt is made to add a new Item to the bag. 
      */
     @Override
@@ -40,9 +40,8 @@ public class Bag implements Container<Item>{
     }
 
     /**
-     * Allows for an Item to be removed from the bag, using that Item's index in this bag, and decrements count of items in this Bag.
-     * @param index - The index of the Item to be removed. 
-     * @exception throws IndexOutOfBoundsException if this method is given an invalid index. 
+     * Allows for a specific Item to be removed from the bag and decrements count of items in this Bag.
+     * @param item - The Item to be removed. 
      */
     @Override
     public boolean remove(Item item) { //Potentially switch to unique item code given to each item?
