@@ -2,7 +2,7 @@ package model;
 
 public abstract class Character {
     private int health;
-    private int attack;
+    private double attack;
     private int goldAmount;
     private String description;
     private String name;
@@ -10,7 +10,7 @@ public abstract class Character {
 
 
 
-    public Character(int health, int attack, String name,int goldAmount){
+    public Character(int health, double attack, String name,int goldAmount){
         this.health = health;
         this.attack = attack;
         this.name = name;
@@ -21,7 +21,7 @@ public abstract class Character {
         health = health - amount;
     }
 
-    public int getAttack() {
+    public double getAttack() {
         return attack;
     }
     public String getDescription() {
