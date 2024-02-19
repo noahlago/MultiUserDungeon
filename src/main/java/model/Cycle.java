@@ -6,7 +6,7 @@ public interface Cycle {
      */
 
     // switches from day to night / vice versa
-    public void switchState();
+    public void switchState(Cycle cycle);
 
     // modifies diurnal enemy stats based on current state
     public void modifyDiurnalEnemies();
