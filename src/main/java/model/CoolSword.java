@@ -1,11 +1,10 @@
 package model;
 
-public class CoolSword extends CharacterOption {
-    public CoolSword(CharacterOption characterOption){
-        super(characterOption);
+public class CoolSword extends Item {
+    public CoolSword(String name, String description){
+        super(name, description);
+        super.attackDamage += 10;
     }
     
-    public double getAttack(){
-        return (super.getAttack() * 1.5);
-    }
+   
 }

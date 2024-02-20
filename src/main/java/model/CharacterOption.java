@@ -1,12 +1,12 @@
 package model;
 
-public abstract class CharacterOption extends Npc{
-    protected Npc npc;
+public abstract class CharacterOption extends Character{
+    protected Character character;
     protected String name;
     protected String description;
     protected int goldWorth;
-    public CharacterOption(Npc npc, String name, String description, int goldWorth){
-        super(npc.health, npc.attack, npc.name, npc.goldAmount);
+    public CharacterOption(Character character, String name, String description, int goldWorth){
+        super(character.health, character.attack, character.name, character.goldAmount);
         this.npc = npc;
         this.name = name;
         this.description = description;

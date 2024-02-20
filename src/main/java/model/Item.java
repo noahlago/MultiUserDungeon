@@ -1,16 +1,17 @@
 package model;
 
-public abstract class Item extends CharacterOption {
-    private String type;
-    private String name;
-    private double attackDamage;
-    private double healthPoints;
+public abstract class Item  {
+    protected String type;
+    protected String name;
+    protected double attackDamage;
+    protected double healthPoints;
+    protected double defensePercent;
 
-    public Item(String type, String name, double attackDamage, double healthPoints, String desString) {
-        this.type = type;
+    public Item(String name, String description) {
         this.name = name;
         this.attackDamage = 0.0;
         this.healthPoints = 0.0;
+        defensePercent = 0.0;
     }
 
     public double getAttack() {
@@ -29,8 +30,8 @@ public abstract class Item extends CharacterOption {
         return healthPoints;
     }
 
-    public void takeDamage(double damage) {
-        healthPoints = healthPoints - damage;
+    public double getDefensePercent() {
+        return defensePercent;
     }
 
 }
