@@ -11,37 +11,37 @@ public class Interact implements Visitor{
 
     @Override
     public void visitCharacterTile(CharacterTile cTile) {
-        // TODO Auto-generated method stub
+        // TODO Interaction between playable character and character on tile
         throw new UnsupportedOperationException("Unimplemented method 'visitCharacterTile'");
     }
 
     @Override
     public void visitChestTile(ChestTile cTile) {
-        // TODO Auto-generated method stub
+        // TODO Interaction between character and chest with items
         throw new UnsupportedOperationException("Unimplemented method 'visitChestTile'");
     }
 
     @Override
     public void visitTrapTile(TrapTile tTile) {
-        // TODO Auto-generated method stub
+        // TODO Interactoin between character and Trap 
         throw new UnsupportedOperationException("Unimplemented method 'visitTrapTile'");
     }
 
     @Override
     public void visitEmptyTile(EmptyTile eTile) {
-        // TODO Auto-generated method stub
+        // TODO Playable character should move to the empty tile
         throw new UnsupportedOperationException("Unimplemented method 'visitEmptyTile'");
     }
 
     @Override
     public void visitExitTile(ExitTile eTile) {
-        // TODO Auto-generated method stub
+        // TODO Character should leave the room 
         throw new UnsupportedOperationException("Unimplemented method 'visitExitTile'");
     }
 
     @Override
     public void visitObstacleTile(ObstacleTile oTile) {
-        // TODO Auto-generated method stub
+        // TODO Obstacle cannot be moved by character
         throw new UnsupportedOperationException("Unimplemented method 'visitObstacleTile'");
     }
     

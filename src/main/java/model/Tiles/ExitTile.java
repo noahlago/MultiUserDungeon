@@ -14,4 +14,9 @@ public class ExitTile implements Tile{
         visitor.visitExitTile(this);
         
     }
+
+    @Override
+    public String toString() {
+        return "[ E ]";
+    }
 }

@@ -2,10 +2,12 @@ package model.Tiles;
 
 import model.Visitor;
 
+@SuppressWarnings("unused")
 public class ObstacleTile implements Tile{
+    private String name;
 
-    public ObstacleTile(){
-
+    public ObstacleTile(String name){
+        this.name = name;
     }
 
     @Override
@@ -13,5 +15,10 @@ public class ObstacleTile implements Tile{
         //Double dispatch, object calls visitors proper method
         visitor.visitObstacleTile(this);
 
+    }
+
+    @Override
+    public String toString() {
+        return "[ O ]";
     }
 }

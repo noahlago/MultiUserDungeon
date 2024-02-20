@@ -13,4 +13,9 @@ public class EmptyTile implements Tile{
         //Double dispatch, object calls visitors proper method
         visitor.visitEmptyTile(this);
     }
+
+    @Override
+    public String toString() {
+        return "[   ]";
+    }
 }
