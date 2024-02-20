@@ -42,27 +42,27 @@ public class Map {
             }
         }
 
-        tiles1[3][5] = new ChestTile();
-        tiles1[7][2] = new CharacterTile();
+        tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
+        //tiles1[7][2] = new CharacterTile();
         tiles1[9][9] = new ExitTile();
         Tile exit1 = tiles1[9][9];
 
         Room room1 = new Room(10, 10, "Room one yippee", tiles1, true, false, exit1);
 
-        Tile[][] tiles2 = new Tile[9][9];
+        Tile[][] tiles2 = new Tile[8][8];
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
                 tiles2[row][col] = new EmptyTile();
             }
         }
 
-        tiles2[3][4] = new TrapTile();
-        tiles2[8][2] = new ObstacleTile();
-        tiles2[1][5] = new ChestTile();
-        tiles2[8][8] = new ExitTile();
-        Tile exit2 = tiles2[8][8];
+        tiles2[3][4] = new TrapTile("Spike Trap", "Deadly Spikes, ouch!");
+        tiles2[7][2] = new ObstacleTile("Big #@!%$ Boulder");
+        tiles2[1][5] = new ChestTile(new Chest(new Item[0]));
+        tiles2[7][7] = new ExitTile();
+        Tile exit2 = tiles2[7][7];
 
-        Room room2 = new Room(9, 9, "Room two yippee", tiles2, false, true, exit2);
+        Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2);
 
         createdRooms.add(room1);
         createdRooms.add(room2);

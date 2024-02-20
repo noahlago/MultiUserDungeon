@@ -89,16 +89,15 @@ public class Room {
     }
 
     public String toString(){
-        String x = "Room of " + width + "x" + height + " tiles\n" + description +"\n";
+        String grid = "Room of " + width + "x" + height + " tiles\n" + description +"\n\n";
         
         for(Tile[] row: tiles){
             for(Tile col: row){
-                // x += col.toString();
-                System.out.println(col);
+                grid += col.toString();
             }
-            x+= "\n";
+            grid+= "\n";
         }
 
-        return x;
+        return grid;
     }
 }

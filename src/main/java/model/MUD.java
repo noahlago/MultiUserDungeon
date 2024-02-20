@@ -26,6 +26,7 @@ public class MUD {
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
+        currentRoom = this.map.getRooms().get(0);
     }
 
     /**
@@ -56,6 +57,14 @@ public class MUD {
         return numTurns;
     }
 
+    private void printMap(){
+        System.out.println(this.map);
+    }
+
+    private void printCurrentRoom(){
+        System.out.println(this.currentRoom);
+    }
+
     /*
      * to do:
      * 
@@ -70,13 +79,11 @@ public class MUD {
      * lose game if pc health <= 0
      */
 
-    public void moveToTile(){
-        System.out.println(this.map.getRooms());
-    }
+   
 
 
     public static void main(String[] args) {
-        new MUD(new Map(), "mike").moveToTile();
-
+        MUD game = new MUD(new Map(), "mike");
+        game.printCurrentRoom();
     }
 }
