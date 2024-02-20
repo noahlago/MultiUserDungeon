@@ -2,10 +2,16 @@ package model.Tiles;
 
 import model.Visitor;
 
+@SuppressWarnings("unused")
 public class TrapTile implements Tile{
+    private String name;
+    private String description;
+    private boolean armed;
 
-    public TrapTile(){
-
+    public TrapTile(String name, String description){
+        this.name = name;
+        this.description = description;
+        this.armed = true;
     }
 
     @Override

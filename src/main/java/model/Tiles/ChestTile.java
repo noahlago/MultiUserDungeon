@@ -1,11 +1,14 @@
 package model.Tiles;
 
+import model.Chest;
 import model.Visitor;
 
+@SuppressWarnings("unused")
 public class ChestTile implements Tile{
+    private Chest chest;
 
-    public ChestTile(){
-
+    public ChestTile(Chest chest){
+        this.chest = chest;
     }
 
     @Override
