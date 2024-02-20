@@ -27,7 +27,7 @@ public class GameFileDAO implements GameDAO{
      * Instantiates this class when the Multi-User Dungeon is run.
      * @param objectMapper used to read to and write from the saves.json file. 
      */
-    public GameFileDAO(ObjectMapper objectMapper){
+    public GameFileDAO(){
         this.filename = "saves.json";
         this.savedGames = new HashMap<>();
         this.objectMapper = new ObjectMapper();
@@ -120,11 +120,11 @@ public class GameFileDAO implements GameDAO{
      * @throws IOException if the file is not found.
      */
     @Override
-    public boolean deleteSaveGame(MUD saveGame) throws IOException {
-        if(!this.savedGames.containsKey(saveGame.getName())){
+    public boolean deleteSaveGame(String saveGame) throws IOException {
+        if(!this.savedGames.containsKey(saveGame)){
             return false;
         }else{
-            this.savedGames.remove(saveGame.getName());
+            this.savedGames.remove(saveGame);
             save();
             return true;
         }

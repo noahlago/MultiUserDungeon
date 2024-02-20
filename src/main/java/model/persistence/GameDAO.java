@@ -12,5 +12,5 @@ public interface GameDAO {
 
     public boolean newSaveGame(MUD saveGame) throws IOException;
 
-    public boolean deleteSaveGame(MUD saveGame) throws IOException;
+    public boolean deleteSaveGame(String saveGame) throws IOException;
 }
