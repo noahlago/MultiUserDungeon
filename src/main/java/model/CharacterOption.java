@@ -1,31 +1,36 @@
 package model;
 
-public abstract class CharacterOption {
-    private model.Character character;
-
-    public String getDescription() {
-        return character.getDescription();
+public abstract class CharacterOption extends Character{
+    protected Character character;
+    protected String name;
+    protected String description;
+    protected int goldWorth;
+    public CharacterOption(Character character, String name, String description, int goldWorth){
+        super(character.health, character.attack, character.name, character.goldAmount);
+        this.npc = npc;
+        this.name = name;
+        this.description = description;
+        this.goldWorth = goldWorth;
+        
+    }
+    public CharacterOption(String name, String description, int goldWorth){
+        this.name = name;
+        this.description = description;
+        this.goldWorth = goldWorth;
+        
     }
 
-    public int getHealth() {
-        return character.getHealth();
+    @Override
+    public double getHealth(){
+        return super.getHealth();
     }
 
-    public String getName() {
-        return character.getName();
+    @Override
+    public double getAttack(){
+        return super.getAttack();
     }
-
-    public double getAttack() {
-        return character.getAttack();
-    }
-
-    public void attack(model.Character enemy) {
-        // attack logic
-        int damage = (int)character.getAttack();
-        enemy.takeDamage(damage);
-    }
-
-    public void takeDamage(int damage) {
-        character.takeDamage(damage);
+    @Override
+    public void takeDamage(double damage){
+        super.takeDamage(damage);
     }
 }

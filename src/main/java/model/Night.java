@@ -9,22 +9,23 @@ public class Night implements Cycle{
 
     @Override
     // enemy parameter
-    public void modifyDiurnalEnemies() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modifyDiurnalEnemies'");
-
-        // Diurnal creature stats are reduced by 10% (rounded down)
-        // enemy.setStats(0.1)
-    }
+    public void modifyDiurnalEnemies(Npc[] npcs) {
+        for(Npc npc : npcs){
+            if(npc.getIsNocturnal() == false){
+                npc.editStats(0.8);
+            } 
+        }
+    }   
+    
 
     @Override
     // enemy parameter
-    public void modifyNocturnalEnemies() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modifyNocturnalEnemies'");
-
-        // Nocturnal creature stats are increased by 20% (rounded up)
-        // enemy.setStats(1.2)
+    public void modifyNocturnalEnemies(Npc[] npcs) {
+        for(Npc npc : npcs){
+            if(npc.getIsNocturnal() == true){
+                npc.editStats(1.2);
+            } 
+        }
     }
     
 }
