@@ -32,6 +32,8 @@ public class PTUI {
     public void printLegend(){
         System.out.println("Map Legend:");
         System.out.println("'i': player character (you)");
+        System.out.println("'!': enemy character");
+        System.out.println("'C': chest");
         System.out.println("'O': obstacle");
         System.out.println("'E': exit tile");
         System.out.println("'T': trap");
