@@ -13,6 +13,7 @@ public class MUD {
     private Map map;
     private String name;
     private Character player;
+    private Room currentRoom;
     private int numTurns;
 
     /**
@@ -68,4 +69,14 @@ public class MUD {
      * win game if tile is exit and room is goal
      * lose game if pc health <= 0
      */
+
+    public void moveToTile(){
+        System.out.println(this.map.getRooms());
+    }
+
+
+    public static void main(String[] args) {
+        new MUD(new Map(), "mike").moveToTile();
+
+    }
 }

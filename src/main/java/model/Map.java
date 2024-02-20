@@ -36,22 +36,22 @@ public class Map {
         List<Room> createdRooms = new ArrayList<>();
 
         Tile[][] tiles1 = new Tile[10][10];
-        for(int row = 0; row <= 10; row++){
-            for(int col = 0; col <= 10; col++){
+        for(int row = 0; row < 10; row++){
+            for(int col = 0; col < 10; col++){
                 tiles1[row][col] = new EmptyTile();
             }
         }
 
         tiles1[3][5] = new ChestTile();
         tiles1[7][2] = new CharacterTile();
-        tiles1[10][10] = new ExitTile();
-        Tile exit1 = tiles1[10][10];
+        tiles1[9][9] = new ExitTile();
+        Tile exit1 = tiles1[9][9];
 
         Room room1 = new Room(10, 10, "Room one yippee", tiles1, true, false, exit1);
 
-        Tile[][] tiles2 = new Tile[8][8];
-        for(int row = 0; row <= 10; row++){
-            for(int col = 0; col <= 10; col++){
+        Tile[][] tiles2 = new Tile[9][9];
+        for(int row = 0; row < 8; row++){
+            for(int col = 0; col < 8; col++){
                 tiles2[row][col] = new EmptyTile();
             }
         }
@@ -62,7 +62,7 @@ public class Map {
         tiles2[8][8] = new ExitTile();
         Tile exit2 = tiles2[8][8];
 
-        Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2);
+        Room room2 = new Room(9, 9, "Room two yippee", tiles2, false, true, exit2);
 
         createdRooms.add(room1);
         createdRooms.add(room2);
