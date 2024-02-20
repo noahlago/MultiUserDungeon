@@ -9,11 +9,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.MUD;
 
+/**
+ * This class allows for save files of attempts at the Multi-User Dungeon to be saved to a .json file. 
+ * The games are stored in a HashMap, for easier access while the program is running, which is updated whenever a change is made. 
+ * The file containing the saved games is also updated upon any changes. 
+ * @author Noah Lago (ndl3389@rit.edu)
+ */
 public class GameFileDAO implements GameDAO{
+    /**The file where game info is stored. */
     private HashMap<String,MUD> savedGames;
+    /**Dynamically updated HashMap of all saved games frome the file.  */
     private String filename; 
+    /**Writes to and reads from the given filename. */
     private ObjectMapper objectMapper;
 
+    /**
+     * Instantiates this class when the Multi-User Dungeon is run.
+     * @param objectMapper used to read to and write from the saves.json file. 
+     */
     public GameFileDAO(ObjectMapper objectMapper){
         this.filename = "saves.json";
         this.savedGames = new HashMap<>();

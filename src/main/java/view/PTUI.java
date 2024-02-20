@@ -25,6 +25,7 @@ public class PTUI {
     public void printHelp(){
         System.out.println("Help:");
         System.out.println("'m': print map");
+        System.out.println("'l': print map legend");
         System.out.println("'c': print control menu");
         System.out.println("'e': exit to main menu");
         System.out.println("'q': quit game completely");
@@ -68,6 +69,9 @@ public class PTUI {
                     break;
                 case 'm':
                     System.out.println(game.toString());
+                    break;
+                case 'l':
+                    printLegend();
                     break;
                 case 'e':
                     return false;
