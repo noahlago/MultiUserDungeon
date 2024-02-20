@@ -1,32 +1,24 @@
 package model;
 
-public class Npc extends Character {
-    boolean isNocturnal = false;
-    public Npc(int health, double attack, String name,int goldAmount){
+public abstract class Npc extends Character {
+    protected boolean isNocturnal = false;
+    protected double baseHealth;
+
+    public Npc(double health, double attack, String name,int goldAmount){
         super(health,attack,name,goldAmount);
+        baseHealth = health;
     }
 
     @Override
-    public double getAttack(int turnNumber){
-        if(turnNumber - (turnNumber % 10) < 10){
-            //is day
-            if(isNocturnal == false){
-                return (attack * 1.2);
-            }else{
-                return (attack / 1.2);
-            }
-        }else if((turnNumber - (turnNumber % 10) / 10 ) == 0){
-            if(isNocturnal == false){
-                return (attack * 1.2);
-            }else{
-                return (attack / 1.2);
-            }
-            }else{
-                if(isNocturnal == true){
-                    return (attack * 1.2);
-                }else{
-                    return (attack / 1.2);
-                }
-            }
+    public double getAttack(){
+       reutrn 0.0
+     }
+     @Override
+     public void editStats(double factor){
+        attack = attack * factor;
+        health = baseHealth * factor;
+     }
+     public boolean getIsNocturnal(){
+        return isNocturnal;
      }
 }

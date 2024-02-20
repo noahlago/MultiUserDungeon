@@ -9,8 +9,8 @@ public interface Cycle {
     public void switchState(Cycle cycle);
 
     // modifies diurnal enemy stats based on current state
-    public void modifyDiurnalEnemies();
+    public void modifyDiurnalEnemies(Npc[] npcs);
     
     // modifies nocturnal enemy stats based on current state
-    public void modifyNocturnalEnemies();
+    public void modifyNocturnalEnemies(Npc[] npcs);
 }

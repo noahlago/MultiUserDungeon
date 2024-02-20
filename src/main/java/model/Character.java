@@ -1,7 +1,7 @@
 package model;
 
 public abstract class Character {
-    protected int health;
+    protected double health;
     protected double attack;
     protected int goldAmount;
     protected String description;
@@ -10,28 +10,31 @@ public abstract class Character {
 
 
 
-    public Character(int health, double attack, String name,int goldAmount){
+    public Character(double health, double attack, String name,int goldAmount){
         this.health = health;
         this.attack = attack;
         this.name = name;
         this.goldAmount = goldAmount;
     }
 
-    public void takeDamage(int amount){
+    public void takeDamage(double amount){
         health = health - amount;
     }
 
-    public double getAttack(int turnNumber) {
+    public double getAttack() {
         return attack;
     }
     public String getDescription() {
         return description;
     }
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
     public String getName() {
         return name;
+    }
+    public void editStats(double factor){
+        //Only needs implementation if NPC
     }
     
 

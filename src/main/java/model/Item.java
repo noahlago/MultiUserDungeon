@@ -1,10 +1,6 @@
 package model;
 
-/**
- * Shell class to avoid errors during initial implementation of Inventory Subsystem
- * To be deleted.
- */
-public abstract class Item {
+public abstract class Item extends CharacterOption {
     private String type;
     private String name;
     private double attackDamage;
