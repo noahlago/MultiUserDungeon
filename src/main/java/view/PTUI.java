@@ -3,6 +3,7 @@ package view;
 import java.util.Scanner;
 
 import model.MUD;
+import model.Map;
 
 public class PTUI {
     private MUD game;
@@ -84,7 +85,7 @@ public class PTUI {
         System.out.println("Enter # of the saved game you want to load, or '0' for a new game.");
         PTUI currentGame = new PTUI(null);
         if(scanner.nextInt() == 0){
-            currentGame = new PTUI(new MUD());
+            currentGame = new PTUI(new MUD(new Map(), "placeholder name"));
         }else{
             //load saved MUD game from file
         }
