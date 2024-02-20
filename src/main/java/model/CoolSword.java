@@ -5,6 +5,4 @@ public class CoolSword extends Item {
         super(name, description);
         super.attackDamage += 10;
     }
-    
-   
 }

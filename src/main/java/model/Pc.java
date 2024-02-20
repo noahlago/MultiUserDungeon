@@ -24,4 +24,48 @@ public class Pc extends Character {
             return (attack + weaponSlot.getAttack());
         }
     }
+
+    public boolean useItem(Item item){
+        if(item.getHealthPoints() > 0){
+            inventory.remove(item);
+            gainHealth(item.getHealthPoints());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean equipArmor(Item newArmor){
+        if(inventory.remove(newArmor) == true && newArmor.getDefensePercent() != 0){
+            this.armorSlot = newArmor;
+            return true;
+        }
+        return false;
+    }
+    public boolean equipWeapon(Item newWeapon){
+        if(newWeapon.getAttack() != 0 && inventory.remove(newWeapon) == true){
+            this.weaponSlot = newWeapon;
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean RemoveArmor(){
+        if(armorSlot != null){
+        this.inventory.add(armorSlot);
+        this.armorSlot = null;
+        return true;
+        }
+        return false;
+    }
+    public boolean RemoveWeapon(){
+        if(weaponSlot != null){
+        this.inventory.add(weaponSlot);
+        this.weaponSlot = null;
+        }
+    }
+    
+    public void destroyItem(Item item){
+
+        this.inventory.remove(item);
+    }
 }
