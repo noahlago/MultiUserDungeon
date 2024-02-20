@@ -11,7 +11,7 @@ public class Pc extends Character {
         //lessen damage based off of armor
     }
     @Override
-    public int getAttack(){
+    public double getAttack(int turnNumber){
         //raise attack based off of items
     }
 }

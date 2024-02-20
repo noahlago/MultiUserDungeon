@@ -1,11 +1,11 @@
 package model;
 
 public abstract class Character {
-    private int health;
-    private double attack;
-    private int goldAmount;
-    private String description;
-    private String name;
+    protected int health;
+    protected double attack;
+    protected int goldAmount;
+    protected String description;
+    protected String name;
     
 
 
@@ -21,7 +21,7 @@ public abstract class Character {
         health = health - amount;
     }
 
-    public double getAttack() {
+    public double getAttack(int turnNumber) {
         return attack;
     }
     public String getDescription() {
