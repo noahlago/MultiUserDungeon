@@ -1,5 +1,14 @@
 package model;
 
+
+/**
+ * Main implementation of MUD game
+ * Defines a map, pc's name, and methods for the game to run
+ * 
+ * Implementation not finished yet
+ * 
+ * @author Zoe Rizzo (zjr1377@rit.edu)
+ */
 public class MUD {
     private Map map;
     private String name;

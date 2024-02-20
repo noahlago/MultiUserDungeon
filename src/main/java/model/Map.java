@@ -11,6 +11,11 @@ import model.Tiles.ObstacleTile;
 import model.Tiles.Tile;
 import model.Tiles.TrapTile;
 
+/**
+ * This class represents a map, which is a collection of 2 or more rooms
+ * Each map includes at least one start room and one goal room
+ * @author Zoe Rizzo (zjr1377@rit.edu)
+ */
 public class Map {
 
     private List<Room> rooms; // list of rooms in the map

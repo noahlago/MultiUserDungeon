@@ -2,6 +2,11 @@ package model;
 
 import model.Tiles.Tile;
 
+/**
+ * This class represents a room, which is made up of a certain number of tiles (in width and height)
+ * Each room has one exit tile, and other tiles can either be empty, traps, obstacles, characters, or chests
+ * @author Zoe Rizzo (zjr1377@rit.edu)
+ */
 public class Room {
     private int width; // width of room
     private int height; // height of room
