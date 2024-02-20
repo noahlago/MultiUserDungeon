@@ -19,12 +19,14 @@ import model.Tiles.TrapTile;
 public class Map {
 
     private List<Room> rooms; // list of rooms in the map
+    private Character player;
 
     /**
      * Map of rooms the player will go through
      * Currently hardcoded
      */
-    public Map(){
+    public Map(Character player){
+        this.player = player;
         this.rooms = createRooms();
     }
     
@@ -42,6 +44,7 @@ public class Map {
             }
         }
 
+        tiles1[0][0] = new CharacterTile(player);
         tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
         //tiles1[7][2] = new CharacterTile();
         tiles1[9][9] = new ExitTile();

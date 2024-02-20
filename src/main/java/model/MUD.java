@@ -21,8 +21,8 @@ public class MUD {
      * @param map -- map to use
      * @param name -- name of user
      */
-    public MUD(Map map, String name){
-        this.map = map;
+    public MUD(String name){
+        this.map = new Map(player);
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
@@ -83,7 +83,7 @@ public class MUD {
 
 
     public static void main(String[] args) {
-        MUD game = new MUD(new Map(), "mike");
+        MUD game = new MUD("mike");
         game.printCurrentRoom();
     }
 }

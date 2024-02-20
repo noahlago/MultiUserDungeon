@@ -1,5 +1,6 @@
 package model.Tiles;
 
+import model.Character;
 import model.Npc;
 import model.Visitor;
 
