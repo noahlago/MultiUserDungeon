@@ -18,6 +18,10 @@ public class TrapTile implements Tile{
     public void accept(Visitor visitor) {
         //Double dispatch, object calls visitors proper method
         visitor.visitTrapTile(this);
-        
+    }
+
+    @Override
+    public String toString() {
+        return "[ T ]";
     }
 }

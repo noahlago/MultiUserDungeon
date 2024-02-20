@@ -16,4 +16,9 @@ public class ObstacleTile implements Tile{
         visitor.visitObstacleTile(this);
 
     }
+
+    @Override
+    public String toString() {
+        return "[ O ]";
+    }
 }

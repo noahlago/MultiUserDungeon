@@ -16,4 +16,9 @@ public class ChestTile implements Tile{
         //Double dispatch, object calls visitors proper method
         visitor.visitChestTile(this);
     }
+
+    @Override
+    public String toString() {
+        return "[ C ]";
+    }
 }
