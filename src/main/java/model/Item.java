@@ -1,11 +1,13 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public abstract class Item  {
-    protected String type;
-    protected String name;
-    protected double attackDamage;
-    protected double healthPoints;
-    protected double defensePercent;
+    @JsonProperty("type") protected String type;
+    @JsonProperty("name") protected String name;
+    @JsonProperty("attackDamage") protected double attackDamage;
+    @JsonProperty("healthPoints") protected double healthPoints;
+    @JsonProperty("defensePercent") protected double defensePercent;
 
     public Item(String name, String description) {
         this.name = name;
@@ -14,7 +16,7 @@ public abstract class Item  {
         defensePercent = 0.0;
     }
 
-    public double getAttack() {
+    public double getAttackDamage() {
         return attackDamage;
     }
 

@@ -9,13 +9,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Zoe Rizzo (zjr1377@rit.edu)
  */
 public class Room {
-     @JsonProperty("width")private int width; // width of room
-     @JsonProperty("height")private int height; // height of room
-     @JsonProperty("description")private String description; // description of room
-    private Tile[][] tiles; // tiles within the room
-    private boolean isStart; // if room is start of map
-    private boolean isGoal; // if room is end of map
-    private Tile exit; // exit tile
+    @JsonProperty("width")private int width; // width of room
+    @JsonProperty("height")private int height; // height of room
+    @JsonProperty("description")private String description; // description of room
+    @JsonProperty("tiles")private Tile[][] tiles; // tiles within the room
+    @JsonProperty("isStart")private boolean isStart; // if room is start of map
+    @JsonProperty("isGoal")private boolean isGoal; // if room is end of map
+    @JsonProperty("exit")private Tile exit; // exit tile
 
     /**
      * Room -- defines an instance of a room
@@ -28,6 +28,7 @@ public class Room {
      * @param isGoal
      * @param exit
      */
+    @SuppressWarnings("exports")
     public Room(int width, int height, String description, Tile[][] tiles, boolean isStart, boolean isGoal, Tile exit){
         this.width = width;
         this.height = height;
@@ -55,6 +56,7 @@ public class Room {
     /**
      * @return list of tiles in room
      */
+    @SuppressWarnings("exports")
     public Tile[][] getTiles(){
         return tiles;
     }
@@ -64,6 +66,7 @@ public class Room {
      * @param y -- y coordinate
      * @return tile within given coordinate
      */
+    @SuppressWarnings("exports")
     public Tile getTile(int x, int y){
         return tiles[x][y];
     }
@@ -88,6 +91,7 @@ public class Room {
     /**
      * @return exit tile
      */
+    @SuppressWarnings("exports")
     public Tile getExit(){
         return exit;
     }

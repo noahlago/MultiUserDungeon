@@ -95,7 +95,11 @@ public class PTUI {
             System.out.println("Enter 's' to load a previous game file, 'd' to delete a saved game, or 'n' for a new game. Or enter 'x' to exit the main menu.");
             PTUI currentGame = new PTUI(null);
 
-            char command = scanner.nextLine().charAt(0);
+            String input = scanner.nextLine();
+            char command = 'a';
+            if(input.length() > 0){
+                command = input.charAt(0);
+            }
             String gameName;
 
             switch(command){
