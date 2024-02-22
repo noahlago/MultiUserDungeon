@@ -94,5 +94,9 @@ public class Chest implements Container<Item>{
     public int getTotalItems(){
         return this.totalItems;
     }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
     
 }

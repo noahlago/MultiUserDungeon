@@ -1,10 +1,15 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Day implements Cycle{
+    @JsonProperty("name")
+    private String name = "Day";
 
     @Override
-    public void switchState(Cycle cycle) {
+    public void switchState( @JsonProperty("cycle")Cycle cycle) {
         cycle = new Night();
+        
     }
 
     @Override
@@ -31,4 +36,8 @@ public class Day implements Cycle{
         return "Day";
     }
     
+    public String getName(){
+        return this.name;
+    }
+
 }
