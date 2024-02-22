@@ -12,6 +12,7 @@ import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.Tile;
 import model.Tiles.TrapTile;
+import model.Character;
 
 /**
  * This class represents a map, which is a collection of 2 or more rooms
@@ -55,7 +56,7 @@ public class Map {
         tiles1[9][9] = new ExitTile();
         Tile exit1 = tiles1[9][9];
 
-        Room room1 = new Room(10, 10, "Room one: The begging of the journey", tiles1, true, false, exit1);
+        Room room1 = new Room(10, 10, "Room one: The beggining of the journey", tiles1, true, false, exit1);
 
         Tile[][] tiles2 = new Tile[8][8];
         for(int row = 0; row < 8; row++){

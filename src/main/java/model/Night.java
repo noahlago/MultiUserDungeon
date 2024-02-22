@@ -27,5 +27,9 @@ public class Night implements Cycle{
             } 
         }
     }
+
+    public String toString(){
+        return "Night";
+    }
     
 }

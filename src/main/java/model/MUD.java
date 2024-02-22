@@ -16,6 +16,7 @@ public class MUD {
     @JsonProperty("player") private Character player;
     @JsonProperty("currentRoom") private Room currentRoom;
     @JsonProperty("numTurns") private int numTurns;
+    @JsonProperty("cycle") private Cycle cycle;
 
     /**
      * Instance of a MUD game
@@ -28,6 +29,7 @@ public class MUD {
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
         currentRoom = this.map.getRooms().get(0);
+        this.cycle = new Day();
     }
 
     /**
@@ -70,17 +72,60 @@ public class MUD {
         return numTurns;
     }
 
+    /**
+     * Prints description of map
+     */
     public void printMap(){
         System.out.println(this.map);
     }
     
+    /**
+     * Prints description of current room
+     */
     private void printCurrentRoom(){
         System.out.println(this.currentRoom);
     }
 
+    /**
+     * Increases number of turns
+     */
     public void uptickTurns(){
         numTurns+=1;
     }
+
+    /**
+     * method used in PTUI to check if player's health is <= 0
+     * @return player's current health
+     */
+    public double getHealth(){
+        return player.getHealth();
+    }
+
+    /**
+     * Used to modify enemy stats when switching cycle state
+     * @return list of NPCs in the current room
+     */
+    public Npc[] getNpcs(){
+        return getCurrentRoom().getNpcs();
+    }
+
+    /**
+     * Checks the turn count and switches state of the cycle if interval of 10
+     * Prints out current state
+     */
+    public void checkCycle(){
+        if(numTurns % 10 == 0){
+            cycle.switchState(cycle);
+            cycle.modifyDiurnalEnemies(getNpcs());
+            cycle.modifyNocturnalEnemies(getNpcs());
+
+            System.out.println("It switched to " + cycle.toString());
+        }
+        else{
+            System.out.println("It is currently " + cycle.toString());
+        }
+    }
+
     @Override
     public String toString(){
         return this.currentRoom.toString();

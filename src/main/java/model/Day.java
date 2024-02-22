@@ -26,5 +26,9 @@ public class Day implements Cycle{
             } 
         }
     }
+
+    public String toString(){
+        return "Day";
+    }
     
 }

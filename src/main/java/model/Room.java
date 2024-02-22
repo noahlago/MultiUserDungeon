@@ -16,6 +16,7 @@ public class Room {
     @JsonProperty("isStart")private boolean isStart; // if room is start of map
     @JsonProperty("isGoal")private boolean isGoal; // if room is end of map
     @JsonProperty("exit")private Tile exit; // exit tile
+    private Npc[] npcs;
 
     /**
      * Room -- defines an instance of a room
@@ -37,6 +38,7 @@ public class Room {
         this.isStart = isStart;
         this.isGoal = isGoal;
         this.exit = exit;
+        this.npcs = npcs;
     }
 
     /**
@@ -70,6 +72,8 @@ public class Room {
     public Tile getTile(int x, int y){
         return tiles[x][y];
     }
+
+
     public String getDescription(){
         return description;
     }
@@ -94,6 +98,10 @@ public class Room {
     @SuppressWarnings("exports")
     public Tile getExit(){
         return exit;
+    }
+
+    public Npc[] getNpcs(){
+        return npcs;
     }
 
     public String toString(){
