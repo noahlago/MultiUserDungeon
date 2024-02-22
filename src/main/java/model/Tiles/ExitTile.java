@@ -1,9 +1,10 @@
 package model.Tiles;
 
 import model.Visitor;
-
-public class ExitTile implements Tile{
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+public class ExitTile extends ConcreteTile{
+    private String name = "EXIT";
+    @JsonCreator
     public ExitTile(){
 
     }
@@ -18,5 +19,9 @@ public class ExitTile implements Tile{
     @Override
     public String toString() {
         return "[ E ]";
+    }
+
+    public String getName(){
+        return this.name;
     }
 }

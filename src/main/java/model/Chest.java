@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class represents a Chest, which can be found on occasional tiles, scattered throughout the rooms. 
  * Each Chest contains 1-5 items initially, which the Player Character can loot form the Chest, adding them to their inventory. 
@@ -11,11 +13,11 @@ import java.util.ArrayList;
  */
 public class Chest implements Container<Item>{
     /**Represents the maximum number of items a Chest can store.  */
-    public static final int MAX_ITEMS = 5;
+    @JsonProperty("MAX_ITEMS") public static final int MAX_ITEMS = 5;
     /**Maintains a count of the current # of items in this Chest.  */
-    private int totalItems;
+    @JsonProperty("totalItems") private int totalItems;
     /**Stores the items in the chest in an ArrayList, for easy adding and removing. */
-    private ArrayList<Item> items;
+    @JsonProperty("items") private ArrayList<Item> items;
 
     public Chest(Item[] fillItems){
         if(fillItems.length > MAX_ITEMS){ //Prevents an attempt to add more than the max # of Items to a Chest. 
@@ -87,6 +89,14 @@ public class Chest implements Container<Item>{
      */
     public boolean isEmpty() {
         return this.totalItems == 0;
+    }
+
+    public int getTotalItems(){
+        return this.totalItems;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
     }
     
 }

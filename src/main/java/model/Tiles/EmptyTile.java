@@ -1,9 +1,11 @@
 package model.Tiles;
 
 import model.Visitor;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class EmptyTile implements Tile{
-
+public class EmptyTile extends ConcreteTile{
+    private String name = "empty";
+    @JsonCreator
     public EmptyTile(){
 
     }
@@ -17,5 +19,9 @@ public class EmptyTile implements Tile{
     @Override
     public String toString() {
         return "[   ]";
+    }
+
+    public String getName(){
+        return this.name;
     }
 }

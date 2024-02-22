@@ -1,12 +1,14 @@
 package model.Tiles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import model.Visitor;
 
 @SuppressWarnings("unused")
-public class ObstacleTile implements Tile{
-    private String name;
-
-    public ObstacleTile(String name){
+public class ObstacleTile extends ConcreteTile{
+    @JsonProperty("name") private String name;
+    @JsonCreator
+    public ObstacleTile(@JsonProperty("name")String name){
         this.name = name;
     }
 
@@ -21,4 +23,10 @@ public class ObstacleTile implements Tile{
     public String toString() {
         return "[ O ]";
     }
+
+    public String getName() {
+        return name;
+    }
+
+    
 }

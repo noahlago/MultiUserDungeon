@@ -2,6 +2,9 @@ package model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class provides a concrete implementation of the Container interface, 
  * which represents a player character's Inventory, with all items the user carries. 
@@ -10,12 +13,13 @@ import java.util.ArrayList;
  * This class is a part of an implementation of the Composition Strategy as the Composite class, with minimal deviation.
  * @author Noah Lago (ndl3389@rit.edu)
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Inventory implements Container<Container<Item>>{
-    private int size;
-    private int totalItems;
-    private static final int MAX_BAGS = 6;
-    private Container<Item>[] bags;
-    private int numBags;
+    @JsonProperty("size") private int size;
+    @JsonProperty("totalItems") private int totalItems;
+    @JsonProperty("MAX_BAGS") private static final int MAX_BAGS = 6;
+    @JsonProperty("bags") private Container<Item>[] bags;
+    @JsonProperty("numBags") private int numBags;
 
     @SuppressWarnings("unchecked")
     public Inventory(){
@@ -135,18 +139,23 @@ public class Inventory implements Container<Container<Item>>{
     }
 
     /**
-     * @return total number of Items currently held in this Inventory. 
-     */
-    public int totalItems(){
-        return this.totalItems;
-    }
-
-    /**
      * @return whether this Inventory has reached maximum capacity. 
      */
     @Override
     public boolean isFull() {
         return this.totalItems == this.size;
+    }
+
+    public Container<Item>[] getBags() {
+        return bags;
+    }
+
+    public int getTotalItems(){
+        return this.totalItems;
+    }
+
+    public int getNumBags(){
+        return this.numBags;
     }
     
 }

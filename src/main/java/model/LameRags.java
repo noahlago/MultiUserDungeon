@@ -3,6 +3,6 @@ package model;
 public class LameRags extends Item{
     public LameRags(String name, String description){
         super(name, description);
-        super.defensePercent += 5;
+        super.defensePercent += 0.1;
     }
 }
