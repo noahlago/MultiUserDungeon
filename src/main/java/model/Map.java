@@ -13,9 +13,7 @@ import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
-import model.Tiles.Tile;
 import model.Tiles.TrapTile;
-import model.Character;
 import model.Tiles.ConcreteTile;
 
 /**
@@ -45,12 +43,14 @@ public class Map {
         ConcreteTile[][] tiles1 = new ConcreteTile[10][10];
         for(int row = 0; row < 10; row++){
             for(int col = 0; col < 10; col++){
-                tiles1[row][col] = new EmptyTile();
+                tiles1[row][col] = new EmptyTile(row, col);
             }
         }
         return tiles1;
     }
-
+    
+        
+       
     public ConcreteTile populateRoom(int x_dimension, int y_dimension, ConcreteTile[][] room) {
         Random rand = new Random();
         int trap_num = rand.nextInt(6);
