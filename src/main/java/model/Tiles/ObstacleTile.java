@@ -12,11 +12,14 @@ public class ObstacleTile extends ConcreteTile{
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void accept(Visitor visitor) {
         //Double dispatch, object calls visitors proper method
         visitor.visitObstacleTile(this);
-
     }
 
     @Override

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import model.Tiles.Tile;
+
 /**
  * Main implementation of MUD game
  * Defines a map, pc's name, and methods for the game to run
@@ -14,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MUD {
+
+    private Interact action;
     @JsonProperty("map") public Map map;
     @JsonProperty("name") public String name;
     @JsonProperty("player") public Pc player;
@@ -33,6 +37,8 @@ public class MUD {
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
         currentRoom = this.map.getRooms().get(0);
+        this.action = new Interact(this.currentRoom, this.player);
+
         this.cycle = new Day();
     }
 
@@ -224,6 +230,41 @@ public class MUD {
      * win game if tile is exit and room is goal
      */
 
+     public void movePlayer(int x, int y){
+        int[] playerLocation = player.getLocation();
+        int xCoord = playerLocation[0] + x;
+        int yCoord = playerLocation[1] + y;
+
+        int width = currentRoom.getWidth();
+        int height = currentRoom.getHeight();
+
+        //making sure the tile is in bounds
+        if((0<= xCoord && xCoord < width) && (0<= yCoord && yCoord < height)){
+            Tile nextTile = currentRoom.getTile(xCoord, yCoord);
+            System.out.println(nextTile);
+
+            nextTile.accept(action);
+
+        }
+
+        //player tries to move outside of playable area
+        else{
+            System.out.println("Cannot move out of bounds");
+        }
+     }
+
+
+
+    public static void main(String[] args) {
+        Pc play = new Pc(1,10,"mars",new Inventory(),100);
+        Map map = new Map();
+        map.setPlayer(play);
+        MUD game = new MUD(map,"Save 1");
+        game.printCurrentRoom();
+        game.movePlayer(0, 1);
+        
+        game.printCurrentRoom();
+    }
     // public static void main(String[] args) {
     //     Pc play = new Pc(1,10,"mars",new Inventory(),100);
     //     Map map = new Map();
