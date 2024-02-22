@@ -7,6 +7,7 @@ import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
+import model.Character;
 
 public class Interact implements Visitor{
 

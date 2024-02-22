@@ -119,7 +119,6 @@ public class PTUI {
                     try {
                         saveManager.deleteSaveGame(gameName);
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     break;
@@ -128,6 +127,14 @@ public class PTUI {
                         HashMap<String,MUD> allGames = saveManager.getGames();
                         for(String name : allGames.keySet()){
                             System.out.println(name);
+                        }
+                        System.out.println("Enter the name of the save file you want to load:");
+                        gameName = scanner.nextLine();
+                        if(allGames.containsKey(gameName)){
+                            currentGame = new PTUI(allGames.get(gameName));
+                        }
+                        else{
+                            throw new IOException();
                         }
                     } catch (IOException e) {
                         System.out.println("Saved game not found.");
