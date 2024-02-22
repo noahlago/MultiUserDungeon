@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MUD {
     @JsonProperty("map") private Map map;
     @JsonProperty("name") private String name;
-    @JsonProperty("player") private Character player;
+    @JsonProperty("player") private Pc player;
     @JsonProperty("currentRoom") private Room currentRoom;
     @JsonProperty("numTurns") private int numTurns;
     @JsonProperty("cycle") private Cycle cycle;
@@ -103,6 +103,38 @@ public class MUD {
     }
 
     /**
+     * NPC takes damage based on player's attack stat
+     * @param npc the NPC to attack
+     */
+    public void attackNpc(Npc npc){
+        System.out.println("You attacked " + npc + " for " + player.getAttack() + " damage\n" + npc.getName() + "'s health is now " + getHealth());
+        npc.takeDamage(player.getAttack());
+    }
+
+    /**
+     * Player takes damage
+     * @param amount the amount of damage to take
+     */
+    public void takeDamage(double amount){
+        System.out.println("You took " + amount + " damage\n Your health is now " + getHealth());
+        player.takeDamage(amount);
+    }
+
+    /**
+     * 
+     * @param item
+     * @return
+     */
+    public boolean useItem(Item item){
+        boolean result = player.useItem(item);
+        if(result == true){
+            System.out.println("You gained " + item.healthPoints + " health\nYour health is now " + getHealth());
+            return true;
+        }
+        System.out.println("Could not use item");
+        return false;
+    }
+    /**
      * Used to modify enemy stats when switching cycle state
      * @return list of NPCs in the current room
      */
@@ -157,7 +189,6 @@ public class MUD {
      * to do:
      * 
      * add visitor functionality (move to another tile)
-     * attack npcs
      * npcs attack pcs after each round
      * move to next room (if tile is exit)
      * use items 
