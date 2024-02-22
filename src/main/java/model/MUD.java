@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MUD {
     @JsonProperty("map") private Map map;
     @JsonProperty("name") private String name;
-    @JsonProperty("player") private Character player;
+    @JsonProperty("player") private Pc player;
     @JsonProperty("currentRoom") private Room currentRoom;
     @JsonProperty("numTurns") private int numTurns;
     @JsonProperty("cycle") private Cycle cycle;
@@ -103,6 +103,69 @@ public class MUD {
     }
 
     /**
+     * NPC takes damage based on player's attack stat
+     * @param npc the NPC to attack
+     */
+    public void attackNpc(Npc npc){
+        System.out.println("You attacked " + npc + " for " + player.getAttack() + " damage\n" + npc.getName() + "'s health is now " + getHealth());
+        npc.takeDamage(player.getAttack());
+    }
+
+    /**
+     * Player takes damage
+     * @param amount the amount of damage to take
+     */
+    public void takeDamage(double amount){
+        System.out.println("You took " + amount + " damage\n Your health is now " + getHealth());
+        player.takeDamage(amount);
+    }
+
+    /**
+     * Player uses item
+     * @param item item to use
+     * @return true if successfully used, false otherwise
+     */
+    public boolean useItem(Item item){
+        boolean result = player.useItem(item);
+        if(result == true){
+            System.out.println("You gained " + item.healthPoints + " health\nYour health is now " + getHealth());
+            return true;
+        }
+        System.out.println("Could not use " + item.getName());
+        return false;
+    }
+
+    /**
+     * Equips armor to player
+     * @param armor armor to equip
+     * @return true if successfully equipped, false otherwise
+     */
+    public boolean equipArmor(Item armor){
+        boolean result = player.equipArmor(armor);
+        if(result == true){
+            System.out.println("You equipped " + armor.getName() + " and gained " + armor.getDefensePercent() + "% health");
+            return true;
+        }
+        System.out.println("Could not equip " + armor.getName());
+        return false;
+    }
+
+    /**
+     * Equips weapon to player
+     * @param weapon weapon to equip
+     * @return true if successfully equipped, false otherwise
+     */
+    public boolean equipWeapon(Item weapon){
+        boolean result = player.equipWeapon(weapon);
+        if(result == true){
+            System.out.println("You equipped " + weapon.getName() + " and gained " + weapon.getAttackDamage() + "% attack");
+            return true;
+        }
+        System.out.println("Could not equip " + weapon.getName());
+        return false;
+    }
+
+    /**
      * Used to modify enemy stats when switching cycle state
      * @return list of NPCs in the current room
      */
@@ -114,12 +177,13 @@ public class MUD {
      * @return current state of cycle
      */
     public Cycle getCycle(){
+        System.out.println("It is currently " + cycle.toString());
         return cycle;
     }
 
     /**
      * Checks the turn count and switches state of the cycle if interval of 10
-     * Prints out current state
+     * Alerts user when cycle switches from day to night / vice versa
      */
     public void checkCycle(){
         if(numTurns % 10 == 0){
@@ -128,9 +192,6 @@ public class MUD {
             cycle.modifyNocturnalEnemies(getNpcs());
 
             System.out.println("It switched to " + cycle.toString());
-        }
-        else{
-            System.out.println("It is currently " + cycle.toString());
         }
     }
 
@@ -159,10 +220,8 @@ public class MUD {
      * to do:
      * 
      * add visitor functionality (move to another tile)
-     * attack npcs
      * npcs attack pcs after each round
      * move to next room (if tile is exit)
-     * use items 
      * equip weapons or armor
      * win game if tile is exit and room is goal
      */

@@ -137,13 +137,6 @@ public class Inventory implements Container<Container<Item>>{
     }
 
     /**
-     * @return total number of Items currently held in this Inventory. 
-     */
-    public int totalItems(){
-        return this.totalItems;
-    }
-
-    /**
      * @return whether this Inventory has reached maximum capacity. 
      */
     @Override
@@ -153,6 +146,14 @@ public class Inventory implements Container<Container<Item>>{
 
     public Container<Item>[] getBags() {
         return bags;
+    }
+
+    public int getTotalItems(){
+        return this.totalItems;
+    }
+
+    public int getNumBags(){
+        return this.numBags;
     }
     
 }

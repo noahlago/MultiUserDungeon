@@ -25,4 +25,22 @@ public abstract class Npc extends Character {
      public boolean getIsNocturnal(){
         return isNocturnal;
      }
+
+     public double getBaseAttack() {
+         return baseAttack;
+     }
+
+     public double getBaseHealth() {
+         return baseHealth;
+     }
+     public double getHealth(){
+        return health;
+     }
+     public String getName(){
+        return name;
+     }
+     public int getGoldAmount(){
+        return goldAmount;
+     }
+    
 }

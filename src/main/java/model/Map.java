@@ -14,6 +14,7 @@ import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.Tile;
 import model.Tiles.TrapTile;
+import model.Character;
 
 /**
  * This class represents a map, which is a collection of 2 or more rooms
@@ -155,10 +156,14 @@ public class Map {
         // tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
         //tiles1[7][2] = new CharacterTile();
         // tiles1[9][9] = new ExitTile();
+<<<<<<< HEAD
         // Tile exit1 = tiles1[9][9];
         Npc[] npcs1 = {};
+=======
+        Tile exit1 = tiles1[9][9];
+>>>>>>> 4c3cd59bd9ae5171388fd170d086ac9989d64e99
 
-        Room room1 = new Room(10, 10, "Room one: The beginning of the journey", tiles1, true, false, exit1, npcs1);
+        Room room1 = new Room(10, 10, "Room one: The beggining of the journey", tiles1, true, false, exit1);
 
         Tile[][] tiles2 = new Tile[8][8];
         for(int row = 0; row < 8; row++){
@@ -172,9 +177,8 @@ public class Map {
         tiles2[1][5] = new ChestTile(new Chest(new Item[0]));
         tiles2[7][7] = new ExitTile();
         Tile exit2 = tiles2[7][7];
-        Npc[] npcs2 = {};
 
-        Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2, npcs2);
+        Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2);
 
         createdRooms.add(room1);
         createdRooms.add(room2);
