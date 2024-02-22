@@ -45,11 +45,12 @@ public class Map {
         Tile[][] tiles1 = new Tile[10][10];
         for(int row = 0; row < 10; row++){
             for(int col = 0; col < 10; col++){
-                tiles1[row][col] = new EmptyTile();
+                tiles1[row][col] = new EmptyTile(row, col);
             }
         }
-
+        
         tiles1[0][0] = new CharacterTile(player);
+        tiles1[0][1] = new ObstacleTile("Sleeping Snorlax");
         tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
         //tiles1[7][2] = new CharacterTile();
         tiles1[9][9] = new ExitTile();
@@ -60,7 +61,7 @@ public class Map {
         Tile[][] tiles2 = new Tile[8][8];
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
-                tiles2[row][col] = new EmptyTile();
+                tiles2[row][col] = new EmptyTile(row, col);
             }
         }
 

@@ -58,13 +58,17 @@ public class Room {
         return tiles;
     }
 
+    public void updateTiles(Tile[][] tiles){
+        this.tiles = tiles;
+    }
+
     /**
      * @param x -- x coordinate
      * @param y -- y coordinate
      * @return tile within given coordinate
      */
     public Tile getTile(int x, int y){
-        return tiles[x][y];
+        return tiles[y][x];
     }
 
     /**

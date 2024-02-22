@@ -10,11 +10,14 @@ public class ObstacleTile implements Tile{
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void accept(Visitor visitor) {
         //Double dispatch, object calls visitors proper method
         visitor.visitObstacleTile(this);
-
     }
 
     @Override

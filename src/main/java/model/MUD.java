@@ -2,6 +2,8 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import model.Tiles.Tile;
+
 /**
  * Main implementation of MUD game
  * Defines a map, pc's name, and methods for the game to run
@@ -16,6 +18,7 @@ public class MUD {
     private Character player;
     private Room currentRoom;
     private int numTurns;
+    private Interact action;
 
     /**
      * Instance of a MUD game
@@ -28,6 +31,7 @@ public class MUD {
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
         currentRoom = this.map.getRooms().get(0);
+        this.action = new Interact(this.currentRoom, this.player);
     }
 
     /**
@@ -101,6 +105,29 @@ public class MUD {
      * lose game if pc health <= 0
      */
 
+     public void movePlayer(int x, int y){
+        int[] playerLocation = player.getLocation();
+        int xCoord = playerLocation[0] + x;
+        int yCoord = playerLocation[1] + y;
+
+        int width = currentRoom.getWidth();
+        int height = currentRoom.getHeight();
+
+        //making sure the tile is in bounds
+        if((0<= xCoord && xCoord < width) && (0<= yCoord && yCoord < height)){
+            Tile nextTile = currentRoom.getTile(xCoord, yCoord);
+            System.out.println(nextTile);
+
+            nextTile.accept(action);
+
+        }
+
+        //player tries to move outside of playable area
+        else{
+            System.out.println("Cannot move out of bounds");
+        }
+     }
+
 
 
     public static void main(String[] args) {
@@ -108,6 +135,9 @@ public class MUD {
         Map map = new Map();
         map.setPlayer(play);
         MUD game = new MUD(map,"Save 1");
+        game.printCurrentRoom();
+        game.movePlayer(0, 1);
+        
         game.printCurrentRoom();
     }
 }

@@ -39,6 +39,11 @@ public abstract class Character {
     public void gainHealth(double amount){
         health += amount;
     }
+
+    public int[] getLocation(){
+        return new int[] {currX,currY};
+    }
+
     public void moveLeft(){
         currX -= 1;
         
