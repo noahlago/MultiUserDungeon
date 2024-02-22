@@ -11,7 +11,6 @@ public abstract class Character {
     @JsonProperty("currX") protected int currX = 0;
     @JsonProperty("currY") protected int currY = 0;
 
-
     public Character(double health, double attack, String name,int goldAmount){
         this.health = health;
         this.attack = attack;
@@ -55,5 +54,7 @@ public abstract class Character {
         currY =- 1;
     }
     
-
+    public String toString(){
+        return "[name = " + getName() + ", health = " + getHealth() + ", attack = " + getAttack() + "]";
+    }
 }

@@ -1,12 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import model.Tiles.CharacterTile;
-import model.Tiles.Tile;
 
 /**
  * Main implementation of MUD game
@@ -55,6 +49,7 @@ public class MUD {
     public Character getPlayer(){
         return this.player;
     }
+
     /**
      * @return name of user
      */
@@ -67,7 +62,7 @@ public class MUD {
      * @return character toString
      */
     public Character getPlayerStats(){
-        return player; // make sure player has a toString
+        return player;
     }
 
     /**
@@ -96,7 +91,7 @@ public class MUD {
      * Increases number of turns
      */
     public void uptickTurns(){
-        numTurns+=1;
+        numTurns += 1;
     }
 
     /**
@@ -116,6 +111,13 @@ public class MUD {
     }
 
     /**
+     * @return current state of cycle
+     */
+    public Cycle getCycle(){
+        return cycle;
+    }
+
+    /**
      * Checks the turn count and switches state of the cycle if interval of 10
      * Prints out current state
      */
@@ -132,11 +134,26 @@ public class MUD {
         }
     }
 
+    /**
+     * Checks if the game is over
+     * Tells user if they won or lost if game over
+     * @return true if character health is <= 0 or character on exit tile of goal room, false otherwise
+     */
+    public boolean gameOver(){
+        if(getHealth() <= 0){
+            System.out.println("You lost!");
+            return true;
+        }
+        // else if (/*character on exit tile in goal room*/){
+        //     System.out.println("You won!");
+        // }
+        return false;
+    }
+
     @Override
     public String toString(){
         return this.currentRoom.toString();
     }
-
 
     /*
      * to do:
@@ -144,15 +161,11 @@ public class MUD {
      * add visitor functionality (move to another tile)
      * attack npcs
      * npcs attack pcs after each round
-     * day / night cycle
      * move to next room (if tile is exit)
      * use items 
      * equip weapons or armor
      * win game if tile is exit and room is goal
-     * lose game if pc health <= 0
      */
-
-
 
     public static void main(String[] args) {
         Pc play = new Pc(1,10,"mars",new Inventory(),100);
