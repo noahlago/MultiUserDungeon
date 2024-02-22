@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -49,10 +51,81 @@ public class Map {
             }
         }
 
-        tiles1[0][0] = new CharacterTile(player);
-        tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
+        Random rand = new Random();
+        int trap_num = rand.nextInt(6);
+        int obstacle_num = rand.nextInt(6);
+        int chest_num = rand.nextInt(4);
+        List<String> occupied_spots = new ArrayList<>();
+
+        for (int i = 0; i <= trap_num; i++) {
+            int random_x = rand.nextInt(10);
+            int random_y = rand.nextInt(10);
+            if (random_x == 9 && random_y == 9) {
+                trap_num++;
+                continue;
+            }
+
+            String x_val = String.valueOf(random_x);
+            String y_val = String.valueOf(random_y);
+            String result = x_val + y_val;
+
+            if (occupied_spots.contains(result)) {
+                trap_num++;
+                continue;
+            }
+            
+            occupied_spots.add(result);
+            tiles1[random_x][random_y] = new TrapTile("Spike Trap", "Deadly Spikes, ouch!");
+        }
+
+        for (int i = 0; i <= obstacle_num; i++) {
+            int random_x = rand.nextInt(10);
+            int random_y = rand.nextInt(10);
+            if (random_x == 9 && random_y == 9) {
+                obstacle_num++;
+                continue;
+            }
+
+            String x_val = String.valueOf(random_x);
+            String y_val = String.valueOf(random_y);
+            String result = x_val + y_val;
+
+            if (occupied_spots.contains(result)) {
+                obstacle_num++;
+                continue;
+            }
+            
+            occupied_spots.add(result);
+            tiles1[random_x][random_y] = new ObstacleTile("Big #@!%$ Boulder");
+        }
+
+        for (int i = 0; i <= chest_num; i++) {
+            int random_x = rand.nextInt(10);
+            int random_y = rand.nextInt(10);
+            if (random_x == 9 && random_y == 9) {
+                chest_num++;
+                continue;
+            }
+
+            String x_val = String.valueOf(random_x);
+            String y_val = String.valueOf(random_y);
+            String result = x_val + y_val;
+
+            if (occupied_spots.contains(result)) {
+                chest_num++;
+                continue;
+            }
+            
+            occupied_spots.add(result);
+            tiles1[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
+        }
+
+
+
+        // tiles1[0][0] = new CharacterTile(player);
+        // tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
         //tiles1[7][2] = new CharacterTile();
-        tiles1[9][9] = new ExitTile();
+        // tiles1[9][9] = new ExitTile();
         Tile exit1 = tiles1[9][9];
         Npc[] npcs1 = {};
 
