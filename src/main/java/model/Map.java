@@ -120,13 +120,42 @@ public class Map {
             tiles1[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
         }
 
+        Tile exit1 = tiles1[9][9];
+
+        int coin_flip = rand.nextInt(2);
+        if (coin_flip == 1) {
+            int random_x = rand.nextInt(10);
+            int coin_flip_2 = rand.nextInt(2);
+            if (coin_flip_2 == 1) {
+                tiles1[random_x][0] = new ExitTile();
+                exit1 = tiles1[random_x][0];
+            }
+            else {
+                tiles1[random_x][9] = new ExitTile();
+                exit1 = tiles1[random_x][9];
+            }
+        }
+        else {
+            int random_y = rand.nextInt(10);
+            int coin_flip_2 = rand.nextInt(2);
+            if (coin_flip_2 == 1) {
+                tiles1[0][random_y] = new ExitTile();
+                exit1 = tiles1[0][random_y];
+            }
+            else {
+                tiles1[9][random_y] = new ExitTile();
+                exit1 = tiles1[9][random_y];
+            }
+        }
+        
+
 
 
         // tiles1[0][0] = new CharacterTile(player);
         // tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
         //tiles1[7][2] = new CharacterTile();
         // tiles1[9][9] = new ExitTile();
-        Tile exit1 = tiles1[9][9];
+        // Tile exit1 = tiles1[9][9];
         Npc[] npcs1 = {};
 
         Room room1 = new Room(10, 10, "Room one: The beginning of the journey", tiles1, true, false, exit1, npcs1);
