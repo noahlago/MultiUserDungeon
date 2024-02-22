@@ -37,6 +37,10 @@ public class Map {
     public void setPlayer(Character player) {
         this.player = player;
     }
+
+    // public List build_board(int x_dimension,int y_dimension, ) {
+
+    // }
     
     /**
      * Creates hardcoded rooms for map
@@ -156,12 +160,8 @@ public class Map {
         // tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
         //tiles1[7][2] = new CharacterTile();
         // tiles1[9][9] = new ExitTile();
-<<<<<<< HEAD
         // Tile exit1 = tiles1[9][9];
         Npc[] npcs1 = {};
-=======
-        Tile exit1 = tiles1[9][9];
->>>>>>> 4c3cd59bd9ae5171388fd170d086ac9989d64e99
 
         Room room1 = new Room(10, 10, "Room one: The beggining of the journey", tiles1, true, false, exit1);
 
