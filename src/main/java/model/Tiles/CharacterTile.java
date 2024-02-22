@@ -22,10 +22,9 @@ public class CharacterTile implements Tile{
     @Override
     public String toString() {
         //If the character is an NPC display it as !
-        // if(this.character instanceof Npc){
-        //     return "[ ! ]";
-        // }
-        
+        if(this.character instanceof Npc){
+            return "[ ! ]";
+        }
         //if playable character display as i
         return "[ i ]";
     }

@@ -25,9 +25,12 @@ public class Map {
      * Map of rooms the player will go through
      * Currently hardcoded
      */
-    public Map(Character player){
-        this.player = player;
+    public Map(){
         this.rooms = createRooms();
+    }
+
+    public void setPlayer(Character player) {
+        this.player = player;
     }
     
     /**
@@ -50,7 +53,7 @@ public class Map {
         tiles1[9][9] = new ExitTile();
         Tile exit1 = tiles1[9][9];
 
-        Room room1 = new Room(10, 10, "Room one yippee", tiles1, true, false, exit1);
+        Room room1 = new Room(10, 10, "Room one: The begging of the journey", tiles1, true, false, exit1);
 
         Tile[][] tiles2 = new Tile[8][8];
         for(int row = 0; row < 8; row++){

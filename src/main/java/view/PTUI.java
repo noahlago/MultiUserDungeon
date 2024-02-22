@@ -1,13 +1,17 @@
 package view;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import model.MUD;
 import model.Map;
+import model.persistence.GameFileDAO;
 
 public class PTUI {
     private MUD game;
     public static Scanner scanner = new Scanner(System.in);
+
 
     public PTUI(MUD game){
         this.game = game;
@@ -25,6 +29,7 @@ public class PTUI {
     public void printHelp(){
         System.out.println("Help:");
         System.out.println("'m': print map");
+        System.out.println("'l': print map legend");
         System.out.println("'c': print control menu");
         System.out.println("'e': exit to main menu");
         System.out.println("'q': quit game completely");
@@ -46,7 +51,7 @@ public class PTUI {
      */
     public boolean playGame() {
         while(true) {
-            System.out.println("Round: "); //add round count from MUD instance
+            System.out.println("Round: " + (game.getTurns() / 2)); //add round count from MUD instance
             System.out.println("Enter a command or 'h' for a help menu: ");
             char command = scanner.next().charAt(0);
             switch(command){
@@ -69,6 +74,9 @@ public class PTUI {
                 case 'm':
                     System.out.println(game.toString());
                     break;
+                case 'l':
+                    printLegend();
+                    break;
                 case 'e':
                     return false;
                 case 'q':
@@ -80,16 +88,50 @@ public class PTUI {
     }
 
     public static void main(String[] args) {
+        while(true){
+        GameFileDAO saveManager = new GameFileDAO();
         System.out.println("Welcome to the ultimate Multi-User Dungeon!");
         //Print a list of all saved games (with numerical ID)
-        System.out.println("Enter # of the saved game you want to load, or '0' for a new game.");
+        System.out.println("Enter 's' to load a previous game file, 'd' to delete a saved game, or 'n' for a new game.");
         PTUI currentGame = new PTUI(null);
-        if(scanner.nextInt() == 0){
-            currentGame = new PTUI(new MUD(new Map(), "placeholder name"));
-        }else{
-            //load saved MUD game from file
-        }
 
-        currentGame.playGame();
+        char command = scanner.nextLine().charAt(0);
+        if(command != 's' || command != 'n' || command != 'd'){
+            System.out.println("Invalid command");
+            break;
+        }
+        String gameName;
+
+        switch(command){
+            case 'n':
+                System.out.println("Enter your character's name for the new game:");
+                System.out.println("(Note: entering a previously used name will overwrite that save)");
+                gameName = scanner.nextLine();
+                Map map = new Map();
+                MUD game = new MUD(map,gameName);
+                map.setPlayer(game.getPlayer());
+                currentGame = new PTUI(game);
+                break;
+            case 'd':
+                System.out.println("Enter the name of the saved game you want to delete:");
+                gameName = scanner.nextLine();
+                try {
+                    saveManager.deleteSaveGame(gameName);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                break;
+            case 's':
+                try {
+                    HashMap<String,MUD> allGames = saveManager.getGames();
+
+                } catch (IOException e) {
+                    System.out.println("Save file not found.");
+                }   
+                break;
+        }
+        while(currentGame.playGame() == true);
+    }
     }
 }

@@ -21,8 +21,8 @@ public class MUD {
      * @param map -- map to use
      * @param name -- name of user
      */
-    public MUD(String name){
-        this.map = new Map(player);
+    public MUD(Map map, String name){
+        this.map = map;
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
@@ -36,6 +36,9 @@ public class MUD {
         return map;
     }
 
+    public Character getPlayer(){
+        return this.player;
+    }
     /**
      * @return name of user
      */
@@ -60,10 +63,19 @@ public class MUD {
     private void printMap(){
         System.out.println(this.map);
     }
-
+    
     private void printCurrentRoom(){
         System.out.println(this.currentRoom);
     }
+
+    public void uptickTurns(){
+        numTurns+=1;
+    }
+    @Override
+    public String toString(){
+        return this.currentRoom.toString();
+    }
+
 
     /*
      * to do:
@@ -79,11 +91,13 @@ public class MUD {
      * lose game if pc health <= 0
      */
 
-   
 
 
     public static void main(String[] args) {
-        MUD game = new MUD("mike");
+        Pc play = new Pc(1,10,"mars",new Inventory(),100);
+        Map map = new Map();
+        map.setPlayer(play);
+        MUD game = new MUD(map,"Save 1");
         game.printCurrentRoom();
     }
 }
