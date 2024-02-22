@@ -224,11 +224,11 @@ public class MUD {
      * win game if tile is exit and room is goal
      */
 
-    // public static void main(String[] args) {
-    //     Pc play = new Pc(1,10,"mars",new Inventory(),100);
-    //     Map map = new Map();
-    //     map.setPlayer(play);
-    //     MUD game = new MUD(map,"Save 1");
-    //     game.printCurrentRoom();
-    // }
+    public static void main(String[] args) {
+        Pc play = new Pc(1,10,"mars",new Inventory(),100);
+        Map map = new Map();
+        map.setPlayer(play);
+        MUD game = new MUD(map,"Save 1");
+        game.printCurrentRoom();
+    }
 }
