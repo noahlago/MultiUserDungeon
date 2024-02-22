@@ -134,6 +134,8 @@ public class PTUI {
                 case 'x':
                     exit = true;
                     break;
+                case 'a':
+                    break;
                 default:
                     System.out.println("Invalid command");
                     break;
