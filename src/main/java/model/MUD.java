@@ -1,12 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import model.Tiles.CharacterTile;
-import model.Tiles.Tile;
 
 /**
  * Main implementation of MUD game
