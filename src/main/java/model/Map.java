@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import model.Tiles.CharacterTile;
@@ -15,6 +15,7 @@ import model.Tiles.ObstacleTile;
 import model.Tiles.Tile;
 import model.Tiles.TrapTile;
 import model.Character;
+import model.Tiles.ConcreteTile;
 
 /**
  * This class represents a map, which is a collection of 2 or more rooms
@@ -30,6 +31,7 @@ public class Map {
      * Map of rooms the player will go through
      * Currently hardcoded
      */
+    @JsonCreator 
     public Map(){
         this.rooms = createRooms();
     }
@@ -45,7 +47,7 @@ public class Map {
     public List<Room> createRooms(){
         List<Room> createdRooms = new ArrayList<>();
 
-        Tile[][] tiles1 = new Tile[10][10];
+        ConcreteTile[][] tiles1 = new ConcreteTile[10][10];
         for(int row = 0; row < 10; row++){
             for(int col = 0; col < 10; col++){
                 tiles1[row][col] = new EmptyTile();
@@ -121,7 +123,7 @@ public class Map {
             tiles1[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
         }
 
-        Tile exit1 = tiles1[9][9];
+        ConcreteTile exit1 = tiles1[9][9];
 
         int coin_flip = rand.nextInt(2);
         if (coin_flip == 1) {
@@ -158,7 +160,7 @@ public class Map {
 
         Room room1 = new Room(10, 10, "Room one: The beggining of the journey", tiles1, true, false, exit1, npcs1);
 
-        Tile[][] tiles2 = new Tile[8][8];
+        ConcreteTile[][] tiles2 = new ConcreteTile[8][8];
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
                 tiles2[row][col] = new EmptyTile();
@@ -169,7 +171,7 @@ public class Map {
         tiles2[7][2] = new ObstacleTile("Big #@!%$ Boulder");
         tiles2[1][5] = new ChestTile(new Chest(new Item[0]));
         tiles2[7][7] = new ExitTile();
-        Tile exit2 = tiles2[7][7];
+        ConcreteTile exit2 = tiles2[7][7];
         Npc[] npcs2 = {};
 
         Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2, npcs2);

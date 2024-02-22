@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class Npc extends Character {
@@ -7,7 +8,8 @@ public abstract class Npc extends Character {
     @JsonProperty("baseHealth") protected double baseHealth;
     @JsonProperty("baseAttack") protected double baseAttack;
 
-    public Npc(double health, double attack, String name,int goldAmount){
+    @JsonCreator
+    public Npc(@JsonProperty("health") double health, @JsonProperty("attack") double attack, @JsonProperty("name") String name, @JsonProperty("goldAmount") int goldAmount){
         super(health,attack,name,goldAmount);
         baseHealth = health;
         baseAttack = attack;

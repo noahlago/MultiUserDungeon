@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * This class is a part of an implementation of the Composition Strategy as the Composite class, with minimal deviation.
  * @author Noah Lago (ndl3389@rit.edu)
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Inventory implements Container<Container<Item>>{
     @JsonProperty("size") private int size;
     @JsonProperty("totalItems") private int totalItems;

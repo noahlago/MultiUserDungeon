@@ -1,6 +1,8 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Main implementation of MUD game
@@ -10,20 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * @author Zoe Rizzo (zjr1377@rit.edu)
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MUD {
     @JsonProperty("map") public Map map;
-    @JsonProperty("name") private String name;
-    @JsonProperty("player") private Pc player;
-    @JsonProperty("currentRoom") private Room currentRoom;
-    @JsonProperty("numTurns") private int numTurns;
-    @JsonProperty("cycle") private Cycle cycle;
+    @JsonProperty("name") public String name;
+    @JsonProperty("player") public Pc player;
+    @JsonProperty("currentRoom") public Room currentRoom;
+    @JsonProperty("numTurns") public int numTurns;
+    @JsonProperty("cycle") public Cycle cycle;
 
     /**
      * Instance of a MUD game
      * @param map -- map to use
-     * @param name -- name of user
+     * @param name -- name of users
      */
-    public MUD( Map map, String name){
+    @JsonCreator
+    public MUD(@JsonProperty("map") Map map, @JsonProperty("name")String name){
         this.map = map;
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);

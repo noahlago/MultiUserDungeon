@@ -2,7 +2,7 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Day implements Cycle{
+public class Day extends Cycle{
     @JsonProperty("name")
     private String name = "Day";
 
