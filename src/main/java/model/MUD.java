@@ -62,7 +62,7 @@ public class MUD {
      * @return character toString
      */
     public Character getPlayerStats(){
-        return player; // make sure player has a toString
+        return player;
     }
 
     /**
@@ -114,12 +114,13 @@ public class MUD {
      * @return current state of cycle
      */
     public Cycle getCycle(){
+        System.out.println("It is currently " + cycle.toString());
         return cycle;
     }
 
     /**
      * Checks the turn count and switches state of the cycle if interval of 10
-     * Prints out current state
+     * Alerts user when cycle switches from day to night / vice versa
      */
     public void checkCycle(){
         if(numTurns % 10 == 0){
@@ -128,9 +129,6 @@ public class MUD {
             cycle.modifyNocturnalEnemies(getNpcs());
 
             System.out.println("It switched to " + cycle.toString());
-        }
-        else{
-            System.out.println("It is currently " + cycle.toString());
         }
     }
 
