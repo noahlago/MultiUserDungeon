@@ -87,51 +87,54 @@ public class PTUI {
         }
     }
 
-    public static void main(String[] args) {
-        while(true){
+    public static void main(String[] args) throws IOException {
         GameFileDAO saveManager = new GameFileDAO();
-        System.out.println("Welcome to the ultimate Multi-User Dungeon!");
-        //Print a list of all saved games (with numerical ID)
-        System.out.println("Enter 's' to load a previous game file, 'd' to delete a saved game, or 'n' for a new game.");
-        PTUI currentGame = new PTUI(null);
+        boolean exit = false;
+        while(!exit){
+            System.out.println("Welcome to the ultimate Multi-User Dungeon!");
+            System.out.println("Enter 's' to load a previous game file, 'd' to delete a saved game, or 'n' for a new game. Or enter 'x' to exit the main menu.");
+            PTUI currentGame = new PTUI(null);
 
-        char command = scanner.nextLine().charAt(0);
-        if(command != 's' || command != 'n' || command != 'd'){
-            System.out.println("Invalid command");
-            break;
+            char command = scanner.nextLine().charAt(0);
+            String gameName;
+
+            switch(command){
+                case 'n':
+                    System.out.println("Enter your character's name for the new game:");
+                    System.out.println("(Note: entering a previously used name will overwrite that save)");
+                    gameName = scanner.nextLine();
+                    Map map = new Map();
+                    MUD game = new MUD(map,gameName);
+                    map.setPlayer(game.getPlayer());
+                    currentGame = new PTUI(game);
+                    saveManager.newSaveGame(game);
+                    break;
+                case 'd':
+                    System.out.println("Enter the name of the saved game you want to delete:");
+                    gameName = scanner.nextLine();
+                    try {
+                        saveManager.deleteSaveGame(gameName);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    break;
+                case 's':
+                    try {
+                        HashMap<String,MUD> allGames = saveManager.getGames();
+
+                    } catch (IOException e) {
+                        System.out.println("Saved game not found.");
+                    }   
+                    break;
+                case 'x':
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid command");
+                    break;
+            }
+            while(currentGame.playGame() == true);
         }
-        String gameName;
-
-        switch(command){
-            case 'n':
-                System.out.println("Enter your character's name for the new game:");
-                System.out.println("(Note: entering a previously used name will overwrite that save)");
-                gameName = scanner.nextLine();
-                Map map = new Map();
-                MUD game = new MUD(map,gameName);
-                map.setPlayer(game.getPlayer());
-                currentGame = new PTUI(game);
-                break;
-            case 'd':
-                System.out.println("Enter the name of the saved game you want to delete:");
-                gameName = scanner.nextLine();
-                try {
-                    saveManager.deleteSaveGame(gameName);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                break;
-            case 's':
-                try {
-                    HashMap<String,MUD> allGames = saveManager.getGames();
-
-                } catch (IOException e) {
-                    System.out.println("Save file not found.");
-                }   
-                break;
-        }
-        while(currentGame.playGame() == true);
-    }
     }
 }

@@ -28,14 +28,14 @@ public class GameFileDAO implements GameDAO{
      * @param objectMapper used to read to and write from the saves.json file. 
      */
     public GameFileDAO(){
-        this.filename = "saves.json";
+        this.filename = "data/saves.json";
         this.savedGames = new HashMap<>();
         this.objectMapper = new ObjectMapper();
 
         try{
             load(); //Loads all previously saved game files.
         }catch(IOException ioe){
-            System.out.println("Save file not found.");
+            System.out.println("Save file not loaded.");
         }
     }
 
@@ -53,10 +53,15 @@ public class GameFileDAO implements GameDAO{
      * @throws IOException if the file is not found
      */
     private void load() throws IOException{
-        MUD[] gameArray = objectMapper.readValue(new File(filename), MUD[].class);
-        savedGames = new HashMap<>();
-        for(MUD game : gameArray){
-            savedGames.put(game.getName(), game);
+        File saveFile = new File(filename);
+        if(saveFile.length() == 0){
+            System.out.println("No previously saved game files.");
+        }else{
+            MUD[] gameArray = objectMapper.readValue(new File(filename), MUD[].class);
+            savedGames = new HashMap<>();
+            for(MUD game : gameArray){
+                savedGames.put(game.getName(), game);
+            }
         }
     }
 
