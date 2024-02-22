@@ -1,12 +1,14 @@
 package model.Tiles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import model.Character;
 import model.Npc;
 import model.Visitor;
 
 @SuppressWarnings("unused")
 public class CharacterTile implements Tile{
-    private Character character;
+    @JsonProperty("character")private Character character;
 
     public CharacterTile(Character character){
         this.character = character;
@@ -27,5 +29,9 @@ public class CharacterTile implements Tile{
         }
         //if playable character display as i
         return "[ i ]";
+    }
+
+    public Character getCharacter(){
+        return this.character;
     }
 }

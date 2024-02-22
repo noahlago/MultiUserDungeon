@@ -3,6 +3,7 @@ package model.Tiles;
 import model.Visitor;
 
 public class ExitTile implements Tile{
+    private String name = "EXIT";
 
     public ExitTile(){
 
@@ -18,5 +19,9 @@ public class ExitTile implements Tile{
     @Override
     public String toString() {
         return "[ E ]";
+    }
+
+    public String getName(){
+        return this.name;
     }
 }

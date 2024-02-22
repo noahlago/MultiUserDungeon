@@ -1,13 +1,15 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public abstract class Character {
-    protected double health;
-    protected double attack;
-    protected int goldAmount;
-    protected String description;
-    protected String name;
-    protected int currX = 0;
-    protected int currY = 0;
+    @JsonProperty("health") protected double health;
+    @JsonProperty("attack") protected double attack;
+    @JsonProperty("goldAmount") protected int goldAmount;
+    @JsonProperty("description") protected String description;
+    @JsonProperty("name") protected String name;
+    @JsonProperty("currX") protected int currX = 0;
+    @JsonProperty("currY") protected int currY = 0;
 
 
     public Character(double health, double attack, String name,int goldAmount){

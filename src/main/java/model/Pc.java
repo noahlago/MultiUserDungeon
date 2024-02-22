@@ -1,9 +1,11 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Pc extends Character {
-    private Inventory inventory;
-    protected Item weaponSlot;
-    protected Item armorSlot;
+    @JsonProperty("inventory") private Inventory inventory;
+    @JsonProperty("weaponSlot") protected Item weaponSlot;
+    @JsonProperty("armorSlot") protected Item armorSlot;
     public Pc(double health, double attack, String name,Inventory inventory,int goldAmount){
         super(health,attack,name,goldAmount);
         this.inventory = inventory;

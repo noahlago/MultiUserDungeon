@@ -1,10 +1,12 @@
 package model.Tiles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import model.Visitor;
 
 @SuppressWarnings("unused")
 public class ObstacleTile implements Tile{
-    private String name;
+    @JsonProperty("name") private String name;
 
     public ObstacleTile(String name){
         this.name = name;
