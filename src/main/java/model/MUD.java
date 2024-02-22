@@ -1,6 +1,12 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import model.Tiles.CharacterTile;
+import model.Tiles.Tile;
 
 /**
  * Main implementation of MUD game
@@ -16,6 +22,7 @@ public class MUD {
     private Character player;
     private Room currentRoom;
     private int numTurns;
+    private Cycle cycle;
 
     /**
      * Instance of a MUD game
@@ -28,6 +35,7 @@ public class MUD {
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
         currentRoom = this.map.getRooms().get(0);
+        this.cycle = new Day();
     }
 
     /**
@@ -81,6 +89,35 @@ public class MUD {
     public void uptickTurns(){
         numTurns+=1;
     }
+
+    /**
+     * method used in PTUI to check if player's health is <= 0
+     * @return player's current health
+     */
+    public double getHealth(){
+        return player.getHealth();
+    }
+
+    public List<Npc> getNpcs(){
+        Tile[][] tiles = getCurrentRoom().getTiles();
+        List<Npc> npcs = new ArrayList<>();
+        for(int i = 0; i <= getCurrentRoom().getWidth(); i++){
+            for(int x = 0; x <= getCurrentRoom().getHeight(); x++){
+                // if(){
+                //     // npcs.add();
+                // }
+            }
+        }
+
+        return npcs;
+    }
+
+    public void checkCycle(){
+        if(numTurns % 10 == 0){
+            cycle.switchState(cycle);
+        }
+    }
+
     @Override
     public String toString(){
         return this.currentRoom.toString();
