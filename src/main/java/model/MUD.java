@@ -121,9 +121,9 @@ public class MUD {
     }
 
     /**
-     * 
-     * @param item
-     * @return
+     * Player uses item
+     * @param item item to use
+     * @return true if successfully used, false otherwise
      */
     public boolean useItem(Item item){
         boolean result = player.useItem(item);
@@ -131,9 +131,40 @@ public class MUD {
             System.out.println("You gained " + item.healthPoints + " health\nYour health is now " + getHealth());
             return true;
         }
-        System.out.println("Could not use item");
+        System.out.println("Could not use " + item.getName());
         return false;
     }
+
+    /**
+     * Equips armor to player
+     * @param armor armor to equip
+     * @return true if successfully equipped, false otherwise
+     */
+    public boolean equipArmor(Item armor){
+        boolean result = player.equipArmor(armor);
+        if(result == true){
+            System.out.println("You equipped " + armor.getName() + " and gained " + armor.getDefensePercent() + "% health");
+            return true;
+        }
+        System.out.println("Could not equip " + armor.getName());
+        return false;
+    }
+
+    /**
+     * Equips weapon to player
+     * @param weapon weapon to equip
+     * @return true if successfully equipped, false otherwise
+     */
+    public boolean equipWeapon(Item weapon){
+        boolean result = player.equipWeapon(weapon);
+        if(result == true){
+            System.out.println("You equipped " + weapon.getName() + " and gained " + weapon.getAttackDamage() + "% attack");
+            return true;
+        }
+        System.out.println("Could not equip " + weapon.getName());
+        return false;
+    }
+
     /**
      * Used to modify enemy stats when switching cycle state
      * @return list of NPCs in the current room
@@ -191,7 +222,6 @@ public class MUD {
      * add visitor functionality (move to another tile)
      * npcs attack pcs after each round
      * move to next room (if tile is exit)
-     * use items 
      * equip weapons or armor
      * win game if tile is exit and room is goal
      */
