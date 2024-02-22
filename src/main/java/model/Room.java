@@ -30,7 +30,7 @@ public class Room {
      * @param exit
      */
     @SuppressWarnings("exports")
-    public Room(int width, int height, String description, Tile[][] tiles, boolean isStart, boolean isGoal, Tile exit){
+    public Room(int width, int height, String description, Tile[][] tiles, boolean isStart, boolean isGoal, Tile exit, Npc[] npc){
         this.width = width;
         this.height = height;
         this.description = description;
