@@ -62,7 +62,7 @@ public class MUD {
      * @return character toString
      */
     public Character getPlayerStats(){
-        return player; // make sure player has a toString
+        return player;
     }
 
     /**
