@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Zoe Rizzo (zjr1377@rit.edu)
  */
 public class MUD {
-    @JsonProperty("map") private Map map;
+    @JsonProperty("map") public Map map;
     @JsonProperty("name") private String name;
     @JsonProperty("player") private Pc player;
     @JsonProperty("currentRoom") private Room currentRoom;
@@ -23,7 +23,7 @@ public class MUD {
      * @param map -- map to use
      * @param name -- name of user
      */
-    public MUD(@JsonProperty("map") Map map, @JsonProperty("name") String name){
+    public MUD( Map map, String name){
         this.map = map;
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);
@@ -35,17 +35,14 @@ public class MUD {
     /**
      * @return map toString
      */
-    @JsonProperty("map")
     public Map getMap(){
         return map;
     }
 
-    @JsonProperty("currentRoom")
     public Room getCurrentRoom(){
         return this.currentRoom;
     }
 
-    @JsonProperty("player")
     public Character getPlayer(){
         return this.player;
     }
@@ -53,7 +50,6 @@ public class MUD {
     /**
      * @return name of user
      */
-    @JsonProperty("name")
     public String getName(){
         return name;
     }
@@ -68,7 +64,6 @@ public class MUD {
     /**
      * @return number of turns made so far
      */
-    @JsonProperty("numTurns")
     public int getNumTurns(){
         return numTurns;
     }
@@ -83,7 +78,7 @@ public class MUD {
     /**
      * Prints description of current room
      */
-    private void printCurrentRoom(){
+    public void printCurrentRoom(){
         System.out.println(this.currentRoom);
     }
 
@@ -225,11 +220,11 @@ public class MUD {
      * win game if tile is exit and room is goal
      */
 
-    public static void main(String[] args) {
-        Pc play = new Pc(1,10,"mars",new Inventory(),100);
-        Map map = new Map();
-        map.setPlayer(play);
-        MUD game = new MUD(map,"Save 1");
-        game.printCurrentRoom();
-    }
+    // public static void main(String[] args) {
+    //     Pc play = new Pc(1,10,"mars",new Inventory(),100);
+    //     Map map = new Map();
+    //     map.setPlayer(play);
+    //     MUD game = new MUD(map,"Save 1");
+    //     game.printCurrentRoom();
+    // }
 }
