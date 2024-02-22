@@ -222,7 +222,6 @@ public class MUD {
      * add visitor functionality (move to another tile)
      * npcs attack pcs after each round
      * move to next room (if tile is exit)
-     * equip weapons or armor
      * win game if tile is exit and room is goal
      */
 
