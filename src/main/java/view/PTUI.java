@@ -52,7 +52,7 @@ public class PTUI {
      */
     public boolean playGame() {
         while(true) {
-            System.out.println("Round: " + (game.getTurns() / 2)); //add round count from MUD instance
+            System.out.println("Round: " + (game.getNumTurns() / 2)); //add round count from MUD instance
             System.out.println("Enter a command or 'h' for a help menu: ");
             char command = scanner.next().charAt(0);
             switch(command){
@@ -96,7 +96,11 @@ public class PTUI {
             System.out.println("Enter 's' to load a previous game file, 'd' to delete a saved game, or 'n' for a new game. Or enter 'x' to exit the main menu.");
             PTUI currentGame = new PTUI(null);
 
-            char command = scanner.nextLine().charAt(0);
+            String input = scanner.nextLine();
+            char command = 'a';
+            if(input.length() > 0){
+                command = input.charAt(0);
+            }
             String gameName;
 
             switch(command){
@@ -123,13 +127,17 @@ public class PTUI {
                 case 's':
                     try {
                         HashMap<String,MUD> allGames = saveManager.getGames();
-
+                        for(String name : allGames.keySet()){
+                            System.out.println(name);
+                        }
                     } catch (IOException e) {
                         System.out.println("Saved game not found.");
                     }   
                     break;
                 case 'x':
                     exit = true;
+                    break;
+                case 'a':
                     break;
                 default:
                     System.out.println("Invalid command");

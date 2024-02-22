@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class represents a bag, which is what comprises the player character's inventory. 
  * In this implementation of the Composition Strategy, the Bag class is the implementation of the Component
@@ -11,11 +13,11 @@ import java.util.ArrayList;
  */
 public class Bag implements Container<Item>{
     /**Represents the number of items this bag can hold.  */
-    private int size;
+    @JsonProperty("size") private int size;
     /**Item array to store the Items currently held by this bag.  */
-    private ArrayList<Item> items;
+    @JsonProperty("items") private ArrayList<Item> items;
     /**A count of the number of Items currently held by this bag.  */
-    private int totalItems;
+    @JsonProperty("totalItems") private int totalItems;
 
     public Bag(int size){
         this.size = size;
@@ -68,7 +70,6 @@ public class Bag implements Container<Item>{
     public ArrayList<Item> items() {
         return this.items;
     }
-
     /**
      * Returns whether this Bag has reached it's maximum capacity. 
      */
@@ -76,4 +77,12 @@ public class Bag implements Container<Item>{
     public boolean isFull() {
         return this.totalItems == this.size;
     } 
+
+    public int getTotalItems(){
+        return this.totalItems;
+    }
+
+    public ArrayList<Item> getItems() {
+        return this.items;
+    }
 }

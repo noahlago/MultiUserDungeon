@@ -1,10 +1,14 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 public class Pc extends Character {
-    private Inventory inventory;
-    protected Item weaponSlot;
-    protected Item armorSlot;
-    public Pc(double health, double attack, String name,Inventory inventory,int goldAmount){
+    @JsonProperty("inventory") private Inventory inventory;
+    @JsonProperty("weaponSlot") protected Item weaponSlot;
+    @JsonProperty("armorSlot") protected Item armorSlot;
+
+    @JsonCreator
+    public Pc(@JsonProperty("health") double health, @JsonProperty("attack") double attack, @JsonProperty("name") String name,@JsonProperty("inventory") Inventory inventory, @JsonProperty("goldAmount") int goldAmount){
         super(health,attack,name,goldAmount);
         this.inventory = inventory;
     }
@@ -18,10 +22,10 @@ public class Pc extends Character {
     }
     @Override
     public double getAttack(){
-        if(weaponSlot == null || weaponSlot.getAttack() == 0){
+        if(weaponSlot == null || weaponSlot.getAttackDamage() == 0){
             return attack;
         }else{
-            return (attack + weaponSlot.getAttack());
+            return (attack + weaponSlot.getAttackDamage());
         }
     }
 
@@ -42,7 +46,7 @@ public class Pc extends Character {
         return false;
     }
     public boolean equipWeapon(Item newWeapon){
-        if(newWeapon.getAttack() != 0 && inventory.remove(newWeapon) == true){
+        if(newWeapon.getAttackDamage() != 0 && inventory.remove(newWeapon) == true){
             this.weaponSlot = newWeapon;
             return true;
         }
@@ -70,4 +74,31 @@ public class Pc extends Character {
 
         this.inventory.remove(item);
     }
+    public Inventory getInventory(){
+        return inventory;
+    }
+    public Item getWeaponSlot(){
+        return weaponSlot;
+    }
+    public Item getArmorSlot(){
+        return armorSlot;
+    }
+    public int getGoldAmount(){
+        return goldAmount;
+    }
+    public double getHealth(){
+        return health;
+    }
+    public String getName(){
+        return name;
+    }
+    
+    public int getCurrX(){
+        return this.currX;
+    }
+
+    public int getCurrY(){
+        return this.currY;
+    }
+    
 }

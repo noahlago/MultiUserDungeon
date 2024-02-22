@@ -1,13 +1,15 @@
 package model.Tiles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import model.Chest;
 import model.Visitor;
 
 @SuppressWarnings("unused")
-public class ChestTile implements Tile{
-    private Chest chest;
-
-    public ChestTile(Chest chest){
+public class ChestTile extends ConcreteTile{
+    @JsonProperty("chest") private Chest chest;
+    @JsonCreator
+    public ChestTile(@JsonProperty("chest")Chest chest){
         this.chest = chest;
     }
 
@@ -20,5 +22,9 @@ public class ChestTile implements Tile{
     @Override
     public String toString() {
         return "[ C ]";
+    }
+
+    public Chest getChest() {
+        return chest;
     }
 }

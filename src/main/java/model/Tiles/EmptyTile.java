@@ -1,12 +1,15 @@
 package model.Tiles;
 
 import model.Visitor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class EmptyTile implements Tile{
-    private int row;
-    private int col;
+public class EmptyTile extends ConcreteTile{
+    @JsonProperty("row") private int row;
+    @JsonProperty("col") private int col;
 
-    public EmptyTile(int row, int col){
+    @JsonCreator
+    public EmptyTile(@JsonProperty("row") int row, @JsonProperty("col") int col){
         this.row = row;
         this.col = col;
     }
@@ -14,6 +17,7 @@ public class EmptyTile implements Tile{
     public int getCol() {
         return col;
     }
+
 
     public int getRow() {
         return row;
@@ -28,5 +32,9 @@ public class EmptyTile implements Tile{
     @Override
     public String toString() {
         return "[   ]";
+    }
+
+    public String getName(){
+        return this.name;
     }
 }
