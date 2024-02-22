@@ -57,11 +57,16 @@ public class GameFileDAO implements GameDAO{
         if(saveFile.length() == 0){
             System.out.println("No previously saved game files.");
         }else{
-            MUD[] gameArray = objectMapper.readValue(new File(filename), MUD[].class);
-            savedGames = new HashMap<>();
-            for(MUD game : gameArray){
-                savedGames.put(game.getName(), game);
+            try{
+                MUD[] gameArray = objectMapper.readValue(new File(filename), MUD[].class);
+                savedGames = new HashMap<>();
+                for(MUD game : gameArray){
+                    savedGames.put(game.getName(), game);
+                }
+            }catch(IOException e){
+                e.printStackTrace();
             }
+           
         }
     }
 

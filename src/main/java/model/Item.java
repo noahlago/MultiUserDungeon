@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class Item  {
@@ -9,7 +10,8 @@ public abstract class Item  {
     @JsonProperty("healthPoints") protected double healthPoints;
     @JsonProperty("defensePercent") protected double defensePercent;
 
-    public Item(String name, String description) {
+    @JsonCreator 
+    public Item(@JsonProperty("name") String name, @JsonProperty("description") String description) {
         this.name = name;
         this.attackDamage = 0.0;
         this.healthPoints = 0.0;

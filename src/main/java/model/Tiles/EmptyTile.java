@@ -1,10 +1,11 @@
 package model.Tiles;
 
 import model.Visitor;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class EmptyTile implements Tile{
+public class EmptyTile extends ConcreteTile{
     private String name = "empty";
-
+    @JsonCreator
     public EmptyTile(){
 
     }

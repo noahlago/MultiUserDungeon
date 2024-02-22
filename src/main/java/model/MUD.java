@@ -1,6 +1,8 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Main implementation of MUD game
@@ -10,20 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * @author Zoe Rizzo (zjr1377@rit.edu)
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MUD {
-    @JsonProperty("map") private Map map;
-    @JsonProperty("name") private String name;
-    @JsonProperty("player") private Pc player;
-    @JsonProperty("currentRoom") private Room currentRoom;
-    @JsonProperty("numTurns") private int numTurns;
-    @JsonProperty("cycle") private Cycle cycle;
+    @JsonProperty("map") public Map map;
+    @JsonProperty("name") public String name;
+    @JsonProperty("player") public Pc player;
+    @JsonProperty("currentRoom") public Room currentRoom;
+    @JsonProperty("numTurns") public int numTurns;
+    @JsonProperty("cycle") public Cycle cycle;
 
     /**
      * Instance of a MUD game
      * @param map -- map to use
-     * @param name -- name of user
+     * @param name -- name of users
      */
-    public MUD(@JsonProperty("map") Map map, @JsonProperty("name") String name){
+    @JsonCreator
+    public MUD(@JsonProperty("map") Map map, @JsonProperty("name")String name){
         this.map = map;
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);
@@ -35,17 +39,14 @@ public class MUD {
     /**
      * @return map toString
      */
-    @JsonProperty("map")
     public Map getMap(){
         return map;
     }
 
-    @JsonProperty("currentRoom")
     public Room getCurrentRoom(){
         return this.currentRoom;
     }
 
-    @JsonProperty("player")
     public Character getPlayer(){
         return this.player;
     }
@@ -53,7 +54,6 @@ public class MUD {
     /**
      * @return name of user
      */
-    @JsonProperty("name")
     public String getName(){
         return name;
     }
@@ -68,7 +68,6 @@ public class MUD {
     /**
      * @return number of turns made so far
      */
-    @JsonProperty("numTurns")
     public int getNumTurns(){
         return numTurns;
     }
@@ -83,7 +82,7 @@ public class MUD {
     /**
      * Prints description of current room
      */
-    private void printCurrentRoom(){
+    public void printCurrentRoom(){
         System.out.println(this.currentRoom);
     }
 
@@ -222,15 +221,14 @@ public class MUD {
      * add visitor functionality (move to another tile)
      * npcs attack pcs after each round
      * move to next room (if tile is exit)
-     * equip weapons or armor
      * win game if tile is exit and room is goal
      */
 
-    public static void main(String[] args) {
-        Pc play = new Pc(1,10,"mars",new Inventory(),100);
-        Map map = new Map();
-        map.setPlayer(play);
-        MUD game = new MUD(map,"Save 1");
-        game.printCurrentRoom();
-    }
+    // public static void main(String[] args) {
+    //     Pc play = new Pc(1,10,"mars",new Inventory(),100);
+    //     Map map = new Map();
+    //     map.setPlayer(play);
+    //     MUD game = new MUD(map,"Save 1");
+    //     game.printCurrentRoom();
+    // }
 }

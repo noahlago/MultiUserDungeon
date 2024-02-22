@@ -126,7 +126,9 @@ public class PTUI {
                 case 's':
                     try {
                         HashMap<String,MUD> allGames = saveManager.getGames();
-
+                        for(String name : allGames.keySet()){
+                            System.out.println(name);
+                        }
                     } catch (IOException e) {
                         System.out.println("Saved game not found.");
                     }   

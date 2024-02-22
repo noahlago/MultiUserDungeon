@@ -1,8 +1,8 @@
 package model;
 
-import model.Tiles.Tile;
+import model.Tiles.ConcreteTile;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 /**
  * This class represents a room, which is made up of a certain number of tiles (in width and height)
  * Each room has one exit tile, and other tiles can either be empty, traps, obstacles, characters, or chests
@@ -12,10 +12,10 @@ public class Room {
     @JsonProperty("width")private int width; // width of room
     @JsonProperty("height")private int height; // height of room
     @JsonProperty("description")private String description; // description of room
-    @JsonProperty("tiles")private Tile[][] tiles; // tiles within the room
+    @JsonProperty("tiles")private ConcreteTile[][] tiles; // tiles within the room
     @JsonProperty("isStart")private boolean isStart; // if room is start of map
     @JsonProperty("isGoal")private boolean isGoal; // if room is end of map
-    @JsonProperty("exit")private Tile exit; // exit tile
+    @JsonProperty("exit")private ConcreteTile exit; // exit tile
     private Npc[] npcs;
 
     /**
@@ -29,8 +29,8 @@ public class Room {
      * @param isGoal
      * @param exit
      */
-    @SuppressWarnings("exports")
-    public Room(int width, int height, String description, Tile[][] tiles, boolean isStart, boolean isGoal, Tile exit){
+    @JsonCreator
+    public Room(@JsonProperty("width")int width,@JsonProperty("height")int height, @JsonProperty("description")String description, @JsonProperty("tiles")ConcreteTile[][] tiles,@JsonProperty("isStart")boolean isStart,@JsonProperty("isGoal")boolean isGoal,@JsonProperty("exit")ConcreteTile exit,@JsonProperty("npc")Npc[] npcs){
         this.width = width;
         this.height = height;
         this.description = description;
@@ -58,8 +58,7 @@ public class Room {
     /**
      * @return list of tiles in room
      */
-    @SuppressWarnings("exports")
-    public Tile[][] getTiles(){
+    public ConcreteTile[][] getTiles(){
         return tiles;
     }
 
@@ -68,8 +67,7 @@ public class Room {
      * @param y -- y coordinate
      * @return tile within given coordinate
      */
-    @SuppressWarnings("exports")
-    public Tile getTile(int x, int y){
+    public ConcreteTile getTile(int x, int y){
         return tiles[x][y];
     }
 
@@ -95,8 +93,7 @@ public class Room {
     /**
      * @return exit tile
      */
-    @SuppressWarnings("exports")
-    public Tile getExit(){
+    public ConcreteTile getExit(){
         return exit;
     }
 
@@ -107,8 +104,8 @@ public class Room {
     public String toString(){
         String grid = "Room of " + width + "x" + height + " tiles\n" + description +"\n\n";
         
-        for(Tile[] row: tiles){
-            for(Tile col: row){
+        for(ConcreteTile[] row: tiles){
+            for(ConcreteTile col: row){
                 grid += col.toString();
             }
             grid+= "\n";

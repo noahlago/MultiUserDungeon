@@ -1,16 +1,18 @@
 package model.Tiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import model.Character;
 import model.Npc;
 import model.Visitor;
 
 @SuppressWarnings("unused")
-public class CharacterTile implements Tile{
-    @JsonProperty("character")private Character character;
 
-    public CharacterTile(Character character){
+public class CharacterTile extends ConcreteTile{
+    @JsonProperty("character")private Character character;
+    @JsonCreator
+    public CharacterTile(@JsonProperty("character")Character character){
         this.character = character;
     }
     

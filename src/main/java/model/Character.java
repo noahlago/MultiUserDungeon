@@ -1,8 +1,11 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public abstract class Character {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Character {
     @JsonProperty("health") protected double health;
     @JsonProperty("attack") protected double attack;
     @JsonProperty("goldAmount") protected int goldAmount;
@@ -11,7 +14,8 @@ public abstract class Character {
     @JsonProperty("currX") protected int currX = 0;
     @JsonProperty("currY") protected int currY = 0;
 
-    public Character(double health, double attack, String name,int goldAmount){
+    @JsonCreator
+    public Character( @JsonProperty("health")double health, @JsonProperty("attack") double attack,  @JsonProperty("name")String name, @JsonProperty("goldAmount")int goldAmount){
         this.health = health;
         this.attack = attack;
         this.name = name;
