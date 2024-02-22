@@ -49,6 +49,31 @@ public class Map {
         return tiles1;
     }
     
+    public List<Item> createItemList() {
+        
+        List<Item> master_list = new ArrayList<>();
+        Item diamond_armor = new CoolArmor("Diamond Armor","Made by Steve"); 
+        master_list.add(diamond_armor);
+        Item excalibur = new CoolSword("Excalibur", "Really OP");
+        master_list.add(excalibur);     
+
+        for (int i = 0; i <= 4; i++) {
+            Item peasent_rags = new LameRags("Peasent Rags", "It's better than nothing");
+            master_list.add(peasent_rags);
+            Item banana_suit = new LameRags("Banana Suit", "Not very protective, but at least you'll stand out!");
+            master_list.add(banana_suit);
+            Item dull_blade = new LameKnife("Dull Blade", "At least you won't cut yourself");
+            master_list.add(dull_blade);
+            Item flint_knife = new LameKnife("Flint Knife", "You can make a campfire with this");
+            master_list.add(flint_knife);
+            Item power_potion = new GoodPotion("Power Potion", "Very very super cool power potion");
+            master_list.add(power_potion);
+            Item good_steak = new GoodSteak("Steak", "Cooked to perfection");
+            master_list.add(good_steak);
+        }   
+
+        return master_list;
+    }
         
        
     public ConcreteTile populateRoom(int x_dimension, int y_dimension, ConcreteTile[][] room) {
@@ -116,7 +141,6 @@ public class Map {
                 chest_num++;
                 continue;
             }
-            
             occupied_spots.add(result);
             room[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
         }
