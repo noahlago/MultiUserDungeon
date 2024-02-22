@@ -54,8 +54,9 @@ public class Map {
         //tiles1[7][2] = new CharacterTile();
         tiles1[9][9] = new ExitTile();
         Tile exit1 = tiles1[9][9];
+        Npc[] npcs1 = {};
 
-        Room room1 = new Room(10, 10, "Room one: The beginning of the journey", tiles1, true, false, exit1);
+        Room room1 = new Room(10, 10, "Room one: The beginning of the journey", tiles1, true, false, exit1, npcs1);
 
         Tile[][] tiles2 = new Tile[8][8];
         for(int row = 0; row < 8; row++){
@@ -69,8 +70,9 @@ public class Map {
         tiles2[1][5] = new ChestTile(new Chest(new Item[0]));
         tiles2[7][7] = new ExitTile();
         Tile exit2 = tiles2[7][7];
+        Npc[] npcs2 = {};
 
-        Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2);
+        Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2, npcs2);
 
         createdRooms.add(room1);
         createdRooms.add(room2);

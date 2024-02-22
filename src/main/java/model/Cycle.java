@@ -13,4 +13,7 @@ public interface Cycle {
     
     // modifies nocturnal enemy stats based on current state
     public void modifyNocturnalEnemies(Npc[] npcs);
+
+    // prints current state
+    public String toString();
 }

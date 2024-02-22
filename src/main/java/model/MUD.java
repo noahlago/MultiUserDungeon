@@ -22,6 +22,7 @@ public class MUD {
     @JsonProperty("player") private Character player;
     @JsonProperty("currentRoom") private Room currentRoom;
     @JsonProperty("numTurns") private int numTurns;
+    @JsonProperty("cycle") private Cycle cycle;
 
     /**
      * Instance of a MUD game
@@ -77,14 +78,23 @@ public class MUD {
         return numTurns;
     }
 
+    /**
+     * Prints description of map
+     */
     public void printMap(){
         System.out.println(this.map);
     }
     
+    /**
+     * Prints description of current room
+     */
     private void printCurrentRoom(){
         System.out.println(this.currentRoom);
     }
 
+    /**
+     * Increases number of turns
+     */
     public void uptickTurns(){
         numTurns+=1;
     }
@@ -97,23 +107,28 @@ public class MUD {
         return player.getHealth();
     }
 
-    public List<Npc> getNpcs(){
-        Tile[][] tiles = getCurrentRoom().getTiles();
-        List<Npc> npcs = new ArrayList<>();
-        for(int i = 0; i <= getCurrentRoom().getWidth(); i++){
-            for(int x = 0; x <= getCurrentRoom().getHeight(); x++){
-                // if(){
-                //     // npcs.add();
-                // }
-            }
-        }
-
-        return npcs;
+    /**
+     * Used to modify enemy stats when switching cycle state
+     * @return list of NPCs in the current room
+     */
+    public Npc[] getNpcs(){
+        return getCurrentRoom().getNpcs();
     }
 
+    /**
+     * Checks the turn count and switches state of the cycle if interval of 10
+     * Prints out current state
+     */
     public void checkCycle(){
         if(numTurns % 10 == 0){
             cycle.switchState(cycle);
+            cycle.modifyDiurnalEnemies(getNpcs());
+            cycle.modifyNocturnalEnemies(getNpcs());
+
+            System.out.println("It switched to " + cycle.toString());
+        }
+        else{
+            System.out.println("It is currently " + cycle.toString());
         }
     }
 
