@@ -1,6 +1,7 @@
 package model;
 
 import model.Tiles.Tile;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This class represents a room, which is made up of a certain number of tiles (in width and height)
@@ -8,9 +9,9 @@ import model.Tiles.Tile;
  * @author Zoe Rizzo (zjr1377@rit.edu)
  */
 public class Room {
-    private int width; // width of room
-    private int height; // height of room
-    private String description; // description of room
+     @JsonProperty("width")private int width; // width of room
+     @JsonProperty("height")private int height; // height of room
+     @JsonProperty("description")private String description; // description of room
     private Tile[][] tiles; // tiles within the room
     private boolean isStart; // if room is start of map
     private boolean isGoal; // if room is end of map
@@ -66,18 +67,21 @@ public class Room {
     public Tile getTile(int x, int y){
         return tiles[x][y];
     }
+    public String getDescription(){
+        return description;
+    }
 
     /**
      * @return true if room is start, false otherwise
      */
-    public boolean isStart(){
+    public boolean getIsStart(){
         return isStart;
     }
 
     /**
      * @return true if room is goal, false otherwise
      */
-    public boolean isGoal(){
+    public boolean getIsGoal(){
         return isGoal;
     }
 

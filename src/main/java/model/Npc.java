@@ -1,9 +1,11 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public abstract class Npc extends Character {
-    protected boolean isNocturnal = false;
-    protected double baseHealth;
-    protected double baseAttack;
+    @JsonProperty("isNocturnal") protected boolean isNocturnal = false;
+    @JsonProperty("baseHealth") protected double baseHealth;
+    @JsonProperty("baseAttack") protected double baseAttack;
 
     public Npc(double health, double attack, String name,int goldAmount){
         super(health,attack,name,goldAmount);

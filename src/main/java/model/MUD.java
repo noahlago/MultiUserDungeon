@@ -17,12 +17,11 @@ import model.Tiles.Tile;
  * @author Zoe Rizzo (zjr1377@rit.edu)
  */
 public class MUD {
-    private Map map;
-    private String name;
-    private Character player;
-    private Room currentRoom;
-    private int numTurns;
-    private Cycle cycle;
+    @JsonProperty("map") private Map map;
+    @JsonProperty("name") private String name;
+    @JsonProperty("player") private Character player;
+    @JsonProperty("currentRoom") private Room currentRoom;
+    @JsonProperty("numTurns") private int numTurns;
 
     /**
      * Instance of a MUD game
@@ -73,12 +72,12 @@ public class MUD {
     /**
      * @return number of turns made so far
      */
-    @JsonProperty("turns")
-    public int getTurns(){
+    @JsonProperty("numTurns")
+    public int getNumTurns(){
         return numTurns;
     }
 
-    private void printMap(){
+    public void printMap(){
         System.out.println(this.map);
     }
     

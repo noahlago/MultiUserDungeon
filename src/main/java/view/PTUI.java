@@ -51,7 +51,7 @@ public class PTUI {
      */
     public boolean playGame() {
         while(true) {
-            System.out.println("Round: " + (game.getTurns() / 2)); //add round count from MUD instance
+            System.out.println("Round: " + (game.getNumTurns() / 2)); //add round count from MUD instance
             System.out.println("Enter a command or 'h' for a help menu: ");
             char command = scanner.next().charAt(0);
             switch(command){

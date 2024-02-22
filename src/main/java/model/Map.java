@@ -20,8 +20,8 @@ import model.Tiles.TrapTile;
  */
 public class Map {
 
-    private List<Room> rooms; // list of rooms in the map
-    private Character player;
+    @JsonProperty("rooms") private List<Room> rooms; // list of rooms in the map
+    @JsonProperty("player") private Character player;
 
     /**
      * Map of rooms the player will go through
