@@ -2,10 +2,10 @@ package model;
 
 import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
+import model.Tiles.ConcreteTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
-import model.Tiles.Tile;
 import model.Tiles.TrapTile;
 
 public class Interact implements Visitor{
@@ -49,7 +49,7 @@ public class Interact implements Visitor{
         System.out.println(col);
 
         int[] loco = player.getLocation();
-        Tile[][] tiles = currentRoom.getTiles();
+        ConcreteTile[][] tiles = currentRoom.getTiles();
         tiles[loco[1]][loco[0]] = new EmptyTile(loco[1],loco[0]);
         tiles[row][col] = new CharacterTile(player);
         currentRoom.updateTiles(tiles);

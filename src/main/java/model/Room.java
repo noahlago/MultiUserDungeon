@@ -62,7 +62,7 @@ public class Room {
         return tiles;
     }
 
-    public void updateTiles(Tile[][] tiles){
+    public void updateTiles(ConcreteTile[][] tiles){
         this.tiles = tiles;
     }
 

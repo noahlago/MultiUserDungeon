@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import model.Visitor;
 
-@SuppressWarnings("unused")
 public class ObstacleTile extends ConcreteTile{
     @JsonProperty("name") private String name;
     @JsonCreator
@@ -26,10 +25,5 @@ public class ObstacleTile extends ConcreteTile{
     public String toString() {
         return "[ O ]";
     }
-
-    public String getName() {
-        return name;
-    }
-
     
 }

@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import model.MUD;
 import model.Map;
-import model.Tiles.Tile;
 import model.persistence.GameFileDAO;
 
 public class PTUI {

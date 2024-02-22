@@ -12,9 +12,7 @@ import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
-import model.Tiles.Tile;
 import model.Tiles.TrapTile;
-import model.Character;
 import model.Tiles.ConcreteTile;
 
 /**
