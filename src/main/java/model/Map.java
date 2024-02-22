@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
@@ -79,8 +81,14 @@ public class Map {
     /**
      * @return list of rooms in the map
      */
+    @JsonProperty("rooms")
     public List<Room> getRooms(){
         return rooms;
+    }
+
+    @JsonProperty("player")
+    public Character getPlayer(){
+        return this.player;
     }
 
     /**

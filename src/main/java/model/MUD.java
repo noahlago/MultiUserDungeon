@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Main implementation of MUD game
@@ -21,7 +22,7 @@ public class MUD {
      * @param map -- map to use
      * @param name -- name of user
      */
-    public MUD(Map map, String name){
+    public MUD(@JsonProperty("map") Map map, @JsonProperty("name") String name){
         this.map = map;
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);
@@ -32,16 +33,24 @@ public class MUD {
     /**
      * @return map toString
      */
+    @JsonProperty("map")
     public Map getMap(){
         return map;
     }
 
+    @JsonProperty("currentRoom")
+    public Room getCurrentRoom(){
+        return this.currentRoom;
+    }
+
+    @JsonProperty("player")
     public Character getPlayer(){
         return this.player;
     }
     /**
      * @return name of user
      */
+    @JsonProperty("name")
     public String getName(){
         return name;
     }
@@ -56,6 +65,7 @@ public class MUD {
     /**
      * @return number of turns made so far
      */
+    @JsonProperty("turns")
     public int getTurns(){
         return numTurns;
     }
