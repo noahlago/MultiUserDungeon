@@ -12,9 +12,7 @@ import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
-import model.Tiles.Tile;
 import model.Tiles.TrapTile;
-import model.Character;
 import model.Tiles.ConcreteTile;
 
 /**
@@ -40,24 +38,44 @@ public class Map {
         this.player = player;
     }
 
-    // public List build_board(int x_dimension,int y_dimension, ) {
-
-    // }
-    
-    /**
-     * Creates hardcoded rooms for map
-     * @return List of rooms
-     */
-    public List<Room> createRooms(){
-        List<Room> createdRooms = new ArrayList<>();
-
+    public ConcreteTile[][] createRoom(int x_dimension,int y_dimension) {
         ConcreteTile[][] tiles1 = new ConcreteTile[10][10];
         for(int row = 0; row < 10; row++){
             for(int col = 0; col < 10; col++){
-                tiles1[row][col] = new EmptyTile();
+                tiles1[row][col] = new EmptyTile(row, col);
             }
         }
+        return tiles1;
+    }
+    
+    public List<Item> createItemList() {
+        
+        List<Item> master_list = new ArrayList<>();
+        Item diamond_armor = new CoolArmor("Diamond Armor","Made by Steve"); 
+        master_list.add(diamond_armor);
+        Item excalibur = new CoolSword("Excalibur", "Really OP");
+        master_list.add(excalibur);     
 
+        for (int i = 0; i <= 4; i++) {
+            Item peasent_rags = new LameRags("Peasent Rags", "It's better than nothing");
+            master_list.add(peasent_rags);
+            Item banana_suit = new LameRags("Banana Suit", "Not very protective, but at least you'll stand out!");
+            master_list.add(banana_suit);
+            Item dull_blade = new LameKnife("Dull Blade", "At least you won't cut yourself");
+            master_list.add(dull_blade);
+            Item flint_knife = new LameKnife("Flint Knife", "You can make a campfire with this");
+            master_list.add(flint_knife);
+            Item power_potion = new GoodPotion("Power Potion", "Very very super cool power potion");
+            master_list.add(power_potion);
+            Item good_steak = new GoodSteak("Steak", "Cooked to perfection");
+            master_list.add(good_steak);
+        }   
+
+        return master_list;
+    }
+        
+       
+    public ConcreteTile populateRoom(int x_dimension, int y_dimension, ConcreteTile[][] room) {
         Random rand = new Random();
         int trap_num = rand.nextInt(6);
         int obstacle_num = rand.nextInt(6);
@@ -65,9 +83,9 @@ public class Map {
         List<String> occupied_spots = new ArrayList<>();
 
         for (int i = 0; i <= trap_num; i++) {
-            int random_x = rand.nextInt(10);
-            int random_y = rand.nextInt(10);
-            if (random_x == 9 && random_y == 9) {
+            int random_x = rand.nextInt(x_dimension);
+            int random_y = rand.nextInt(y_dimension);
+            if (random_x == x_dimension-1 && random_y == y_dimension-1) {
                 trap_num++;
                 continue;
             }
@@ -82,13 +100,13 @@ public class Map {
             }
             
             occupied_spots.add(result);
-            tiles1[random_x][random_y] = new TrapTile("Spike Trap", "Deadly Spikes, ouch!");
+            room[random_x][random_y] = new TrapTile("Spike Trap", "Deadly Spikes, ouch!");
         }
 
         for (int i = 0; i <= obstacle_num; i++) {
-            int random_x = rand.nextInt(10);
-            int random_y = rand.nextInt(10);
-            if (random_x == 9 && random_y == 9) {
+            int random_x = rand.nextInt(x_dimension-1);
+            int random_y = rand.nextInt(y_dimension-1);
+            if (random_x == x_dimension-1 && random_y == y_dimension-1) {
                 obstacle_num++;
                 continue;
             }
@@ -103,13 +121,13 @@ public class Map {
             }
             
             occupied_spots.add(result);
-            tiles1[random_x][random_y] = new ObstacleTile("Big #@!%$ Boulder");
+            room[random_x][random_y] = new ObstacleTile("Big #@!%$ Boulder");
         }
 
         for (int i = 0; i <= chest_num; i++) {
-            int random_x = rand.nextInt(10);
-            int random_y = rand.nextInt(10);
-            if (random_x == 9 && random_y == 9) {
+            int random_x = rand.nextInt(x_dimension);
+            int random_y = rand.nextInt(y_dimension);
+            if (random_x == x_dimension-1 && random_y == y_dimension-1) {
                 chest_num++;
                 continue;
             }
@@ -122,62 +140,80 @@ public class Map {
                 chest_num++;
                 continue;
             }
-            
             occupied_spots.add(result);
-            tiles1[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
+            room[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
         }
 
-        ConcreteTile exit1 = tiles1[9][9];
+        ConcreteTile exit1 = room[9][9];
 
-        int coin_flip = rand.nextInt(2);
-        if (coin_flip == 1) {
-            int random_x = rand.nextInt(10);
-            int coin_flip_2 = rand.nextInt(2);
-            if (coin_flip_2 == 1) {
-                tiles1[random_x][0] = new ExitTile();
-                exit1 = tiles1[random_x][0];
+        while (true) {
+            int coin_flip = rand.nextInt(2);
+            if (coin_flip == 1) {
+                int random_x = rand.nextInt(x_dimension);
+                int coin_flip_2 = rand.nextInt(2);
+                String x_val = String.valueOf(random_x);
+                String y_val = String.valueOf(coin_flip_2);
+                String result = x_val + y_val;
+    
+                if (occupied_spots.contains(result)) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 1) {
+                    room[random_x][0] = new ExitTile();
+                    exit1 = room[random_x][0];
+                    break;
+                }
+                else {
+                    room[random_x][9] = new ExitTile();
+                    exit1 = room[random_x][9];
+                    break;
+                }
             }
             else {
-                tiles1[random_x][9] = new ExitTile();
-                exit1 = tiles1[random_x][9];
+                int random_y = rand.nextInt(y_dimension);
+                int coin_flip_2 = rand.nextInt(2);
+                String x_val = String.valueOf(coin_flip_2);
+                String y_val = String.valueOf(random_y);
+                String result = x_val + y_val;
+    
+                if (occupied_spots.contains(result)) {
+                    continue;
+                }
+                
+                if (coin_flip_2 == 1) {
+                    room[0][random_y] = new ExitTile();        
+                    exit1 = room[0][random_y];
+                    break;
+                }
+                else {
+                    room[9][random_y] = new ExitTile();
+                    exit1 = room[9][random_y];
+                    break;
+                }
             }
         }
-        else {
-            int random_y = rand.nextInt(10);
-            int coin_flip_2 = rand.nextInt(2);
-            if (coin_flip_2 == 1) {
-                tiles1[0][random_y] = new ExitTile();
-                exit1 = tiles1[0][random_y];
-            }
-            else {
-                tiles1[9][random_y] = new ExitTile();
-                exit1 = tiles1[9][random_y];
-            }
-        }
-
-        // tiles1[0][0] = new CharacterTile(player);
-        // tiles1[3][5] = new ChestTile(new Chest(new Item[0]));
-        //tiles1[7][2] = new CharacterTile();
-        // tiles1[9][9] = new ExitTile();
-        // Tile exit1 = tiles1[9][9];
+        return exit1;
+    }
+    
+    /**
+     * Creates hardcoded rooms for map
+     * @return List of rooms
+     */
+    public List<Room> createRooms(){
+        List<Room> createdRooms = new ArrayList<>();
+        // Creates room based on dimensions
+        ConcreteTile[][] tiles1 = createRoom(10,10);
+        // Randomly populates room with traps, obsticales, and chests. Returns Exit located at random position
+        ConcreteTile exit1 = populateRoom(10, 10, tiles1);
         Npc[] npcs1 = {};
-
+        // fully creates the room
         Room room1 = new Room(10, 10, "Room one: The beggining of the journey", tiles1, true, false, exit1, npcs1);
 
-        ConcreteTile[][] tiles2 = new ConcreteTile[8][8];
-        for(int row = 0; row < 8; row++){
-            for(int col = 0; col < 8; col++){
-                tiles2[row][col] = new EmptyTile();
-            }
-        }
 
-        tiles2[3][4] = new TrapTile("Spike Trap", "Deadly Spikes, ouch!");
-        tiles2[7][2] = new ObstacleTile("Big #@!%$ Boulder");
-        tiles2[1][5] = new ChestTile(new Chest(new Item[0]));
-        tiles2[7][7] = new ExitTile();
-        ConcreteTile exit2 = tiles2[7][7];
+        ConcreteTile[][] tiles2 = createRoom(8,8);
+        ConcreteTile exit2 = populateRoom(8,8,tiles2);
         Npc[] npcs2 = {};
-
         Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2, npcs2);
 
         createdRooms.add(room1);
@@ -209,5 +245,11 @@ public class Map {
         }
 
         return retVal;
+    }
+
+    public void renderRooms(){
+        for(Room room : rooms){
+            room.specializeTiles();
+        }
     }
 }

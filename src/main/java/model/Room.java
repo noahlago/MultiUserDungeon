@@ -1,8 +1,9 @@
 package model;
 
-import model.Tiles.ConcreteTile;
+import model.Tiles.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * This class represents a room, which is made up of a certain number of tiles (in width and height)
  * Each room has one exit tile, and other tiles can either be empty, traps, obstacles, characters, or chests
@@ -16,7 +17,7 @@ public class Room {
     @JsonProperty("isStart")private boolean isStart; // if room is start of map
     @JsonProperty("isGoal")private boolean isGoal; // if room is end of map
     @JsonProperty("exit")private ConcreteTile exit; // exit tile
-    private Npc[] npcs;
+    @JsonProperty("npcs")private Npc[] npcs;
 
     /**
      * Room -- defines an instance of a room
@@ -62,11 +63,16 @@ public class Room {
         return tiles;
     }
 
+    public void updateTiles(ConcreteTile[][] tiles){
+        this.tiles = tiles;
+    }
+
     /**
      * @param x -- x coordinate
      * @param y -- y coordinate
      * @return tile within given coordinate
      */
+
     public ConcreteTile getTile(int x, int y){
         return tiles[x][y];
     }
@@ -112,5 +118,28 @@ public class Room {
         }
 
         return grid;
+    }
+
+    public void specializeTiles(){
+        for(int i = 0; i < tiles.length; i++){
+            for(int j = 0; j < tiles[i].length; j++){
+                ConcreteTile current = tiles[i][j];
+                String type = current.getType();
+                if(type.equals("CHARACTER")){
+                    tiles[i][j] = new CharacterTile(tiles[i][j].getCharacter());
+                }else if(type.equals("CHEST")){
+                    tiles[i][j] = new ChestTile(tiles[i][j].getChest());
+                }else if(type.equals("EMPTY")){
+                    tiles[i][j] = new EmptyTile(tiles[i][j].getRow(), tiles[i][j].getCol());
+                }else if(type.equals("EXIT")){
+                    tiles[i][j] = new ExitTile();
+                }else if(type.equals("TRAP")){
+                    tiles[i][j] = new TrapTile(tiles[i][j].getName(), tiles[i][j].getDescription());
+                }else{
+                    tiles[i][j] = new EmptyTile(i, j);
+                }
+            }
+        }
+        //System.out.println(this);
     }
 }

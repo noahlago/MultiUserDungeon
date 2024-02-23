@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * In the Composite Strategy, this class is a Leaf implementation of the Container interface.
  * @author Noah Lago (ndl3389@rit.edu)
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Chest implements Container<Item>{
     /**Represents the maximum number of items a Chest can store.  */
     @JsonProperty("MAX_ITEMS") public static final int MAX_ITEMS = 5;
@@ -19,8 +21,10 @@ public class Chest implements Container<Item>{
     /**Stores the items in the chest in an ArrayList, for easy adding and removing. */
     @JsonProperty("items") private ArrayList<Item> items;
 
-    public Chest(Item[] fillItems){
-        if(fillItems.length > MAX_ITEMS){ //Prevents an attempt to add more than the max # of Items to a Chest. 
+    public Chest(@JsonProperty("fillItems") Item[] fillItems){
+        if(fillItems == null){
+            fillItems = new Item[0];
+        }else if(fillItems.length > MAX_ITEMS){ //Prevents an attempt to add more than the max # of Items to a Chest. 
             throw new IndexOutOfBoundsException("Too many items to fit in this chest. ");
         }
         this.items = new ArrayList<>();

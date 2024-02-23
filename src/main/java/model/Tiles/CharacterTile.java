@@ -11,9 +11,11 @@ import model.Visitor;
 
 public class CharacterTile extends ConcreteTile{
     @JsonProperty("character")private Character character;
+
     @JsonCreator
     public CharacterTile(@JsonProperty("character")Character character){
         this.character = character;
+        super.setType("CHARACTER");
     }
     
     @Override

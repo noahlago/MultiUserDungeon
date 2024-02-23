@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import model.Chest;
 import model.Visitor;
 
-@SuppressWarnings("unused")
 public class ChestTile extends ConcreteTile{
     @JsonProperty("chest") private Chest chest;
+
     @JsonCreator
     public ChestTile(@JsonProperty("chest")Chest chest){
         this.chest = chest;
+        super.setType("CHEST");
     }
 
     @Override
@@ -27,4 +28,5 @@ public class ChestTile extends ConcreteTile{
     public Chest getChest() {
         return chest;
     }
+    
 }
