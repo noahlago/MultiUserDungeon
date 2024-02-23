@@ -14,6 +14,7 @@ public class TrapTile extends ConcreteTile{
         this.name = name;
         this.description = description;
         this.armed = true;
+        super.setType("TRAP");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -249,5 +248,11 @@ public class Map {
         }
 
         return retVal;
+    }
+
+    public void renderRooms(){
+        for(Room room : rooms){
+            room.specializeTiles();
+        }
     }
 }

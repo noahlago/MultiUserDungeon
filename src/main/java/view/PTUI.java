@@ -17,6 +17,10 @@ public class PTUI {
         this.game = game;
     }
 
+    public void renderRooms(){
+        this.game.renderRooms();
+    }
+
     public void printControls(){
         System.out.println("Controls:");
         System.out.println("'w' -> move up");
@@ -132,6 +136,7 @@ public class PTUI {
                         gameName = scanner.nextLine();
                         if(allGames.containsKey(gameName)){
                             currentGame = new PTUI(allGames.get(gameName));
+                            currentGame.renderRooms();
                         }
                         else{
                             throw new IOException();
