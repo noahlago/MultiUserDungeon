@@ -143,8 +143,18 @@ public class Map {
                 chest_num++;
                 continue;
             }
+            
+            List<Item> loot_items = createItemList();
+            int item_amount = rand.nextInt(6);
+            Chest chest = new Chest(null);
+
+            for (int x = 0; x < item_amount; x++) {
+                Item item = loot_items.get(x);
+                chest.add(item);
+            }
+
             occupied_spots.add(result);
-            room[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
+            room[random_x][random_y] = new ChestTile(chest);
         }
 
         ConcreteTile exit1 = room[9][9];
