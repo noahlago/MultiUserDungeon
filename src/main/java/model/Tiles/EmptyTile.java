@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class EmptyTile extends ConcreteTile{
     @JsonProperty("row") private int row;
     @JsonProperty("col") private int col;
-    @JsonProperty("name") private String name = "EMPTY";
 
     @JsonCreator
     public EmptyTile(@JsonProperty("row") int row, @JsonProperty("col") int col){
         this.row = row;
         this.col = col;
+        super.setType("EMPTY");
     }
 
     public int getCol() {
@@ -35,7 +35,4 @@ public class EmptyTile extends ConcreteTile{
         return "[   ]";
     }
 
-    public String getName(){
-        return this.name;
-    }
 }

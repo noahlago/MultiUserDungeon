@@ -3,10 +3,9 @@ package model.Tiles;
 import model.Visitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 public class ExitTile extends ConcreteTile{
-    private String name = "EXIT";
     @JsonCreator
     public ExitTile(){
-
+        super.setType("EXIT");
     }
     
     @Override
@@ -21,7 +20,4 @@ public class ExitTile extends ConcreteTile{
         return "[ E ]";
     }
 
-    public String getName(){
-        return this.name;
-    }
 }

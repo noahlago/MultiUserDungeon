@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import model.Tiles.CharacterTile;
 import model.Tiles.ConcreteTile;
-import model.Tiles.Tile;
 
 /**
  * Main implementation of MUD game
@@ -246,12 +245,43 @@ public class MUD {
         int width = currentRoom.getWidth();
         int height = currentRoom.getHeight();
 
-        //making sure the tile is in bounds
+        //making sure all adjacent tiles are in bounds
         if((0< xCoord && xCoord < width-1) && (0 < yCoord && yCoord < height-1)){
             closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);
             closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);
             closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);
             closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);
+        }
+        else{
+            //x = 0, you can only move right
+            if(xCoord == 0){
+                closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);
+            }
+            //x = width, you can only move left
+            else if(xCoord == width-1){
+                closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);
+            }
+            //otherwise, move left and right
+            else{
+                closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);
+                closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);
+            }
+
+            //y = 0, can only move up
+            if(yCoord == 0){  
+                closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);
+            }
+            //y=height, can only move down
+            else if(yCoord == height-1){   
+                closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);
+            }
+            //otherwise, move up and down
+            else{
+                closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);
+                closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);
+            }
+
+    
         }
         return closeTiles;
     }
@@ -315,6 +345,11 @@ public class MUD {
         else {
             System.out.println("Cannot move out of bounds");
         }
+    }
+
+    public void renderRooms(){
+        this.map.renderRooms();
+        this.currentRoom.specializeTiles();
     }
 
     public static void main(String[] args) {

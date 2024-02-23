@@ -6,9 +6,11 @@ import model.Visitor;
 
 public class ObstacleTile extends ConcreteTile{
     @JsonProperty("name") private String name;
+    @JsonProperty("type") private String type = "OBSTACLE";
     @JsonCreator
     public ObstacleTile(@JsonProperty("name")String name){
         this.name = name;
+        super.setType("OBSTACLE");
     }
 
     public String getName() {
