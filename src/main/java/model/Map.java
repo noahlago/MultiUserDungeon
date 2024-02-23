@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -71,6 +72,8 @@ public class Map {
             Item good_steak = new GoodSteak("Steak", "Cooked to perfection");
             master_list.add(good_steak);
         }   
+
+        Collections.shuffle(master_list);
 
         return master_list;
     }
