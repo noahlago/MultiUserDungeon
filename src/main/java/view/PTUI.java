@@ -68,16 +68,16 @@ public class PTUI {
                 case 'c':
                     this.printControls();
                 case 'w':
-                    game.movePlayer(0, -1);
-                    break;
-                case 's':
-                    game.movePlayer(0, 1);
-                    break;
-                case 'a':
                     game.movePlayer(-1, 0);
                     break;
-                case 'd':
+                case 's':
                     game.movePlayer(1, 0);
+                    break;
+                case 'a':
+                    game.movePlayer(0, -1);
+                    break;
+                case 'd':
+                    game.movePlayer(0, 1);
                     break;
                 case 'm':
                     System.out.println(game.toString());
