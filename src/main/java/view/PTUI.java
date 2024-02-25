@@ -49,9 +49,11 @@ public class PTUI {
         System.out.println("'T': trap");
     }
 
-    // public int chooseItem(){
-
-    // }
+    public int chooseItem(){
+        System.out.println("Enter the # of the item you wish to remove from the chest:");
+        int itemNum = scanner.nextInt();
+        return itemNum;
+    }
 
     /**
      * Main implementation of the PTUI, allowing the player to interact with the game, and control their character. 
