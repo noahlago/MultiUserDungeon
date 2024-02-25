@@ -11,10 +11,12 @@ import model.Character;
 
 public class Interact implements Visitor{
 
+    private MUD game;
     private Room currentRoom;
     private Character player;
 
-    public Interact(Room room, Character player){
+    public Interact(MUD game, Room room, Character player){
+        this.game = game;
         this.currentRoom = room;
         this.player = player;
     }
@@ -42,7 +44,6 @@ public class Interact implements Visitor{
         // TODO Playable character should move to the empty tile
         //throw new UnsupportedOperationException("Unimplemented method 'visitEmptyTile'");
         
-        System.out.println("MOVE HERE PLEASE");
         int row = eTile.getRow();
         int col = eTile.getCol();
 
@@ -60,7 +61,9 @@ public class Interact implements Visitor{
     @Override
     public void visitExitTile(ExitTile eTile) {
         // TODO Character should leave the room 
-        throw new UnsupportedOperationException("Unimplemented method 'visitExitTile'");
+        //throw new UnsupportedOperationException("Unimplemented method 'visitExitTile'");
+        //moves map to the next room in sequence
+        game.nextRoom();
     }
 
     @Override

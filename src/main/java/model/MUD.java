@@ -45,7 +45,7 @@ public class MUD {
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
         currentRoom = this.map.getRooms().get(0);
-        this.action = new Interact(this.currentRoom, this.player);
+        this.action = new Interact(this, this.currentRoom, this.player);
 
         this.cycle = new Day();
     }
@@ -59,6 +59,14 @@ public class MUD {
 
     public Room getCurrentRoom() {
         return this.currentRoom;
+    }
+
+    /**
+     * moves the game to the next room in the sequence
+     */
+    public void nextRoom(){
+        this.currentRoom = this.map.getRooms().get(1);
+        this.action = new Interact(this, this.currentRoom, this.player);
     }
 
     public Character getPlayer() {
@@ -358,9 +366,13 @@ public class MUD {
         map.setPlayer(play);
         MUD game = new MUD(map, "Save 1");
         game.printCurrentRoom();
-        game.movePlayer(0, 1);
 
+
+        game.nextRoom();
         game.printCurrentRoom();
+        //game.movePlayer(0, 1);
+
+        //game.printCurrentRoom();
     }
 
 }
