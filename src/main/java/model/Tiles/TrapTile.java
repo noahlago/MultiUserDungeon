@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import model.Visitor;
 
-@SuppressWarnings("unused")
 public class TrapTile extends ConcreteTile{
     @JsonProperty("name") private String name;
     @JsonProperty("description") private String description;

@@ -7,7 +7,6 @@ import model.Character;
 import model.Npc;
 import model.Visitor;
 
-@SuppressWarnings("unused")
 
 public class CharacterTile extends ConcreteTile{
     @JsonProperty("character")private Character character;
