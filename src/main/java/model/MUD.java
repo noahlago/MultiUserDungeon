@@ -366,13 +366,15 @@ public class MUD {
         map.setPlayer(play);
         MUD game = new MUD(map, "Save 1");
         game.printCurrentRoom();
+        
+        // game.movePlayer(0, 1);
+        // game.printCurrentRoom();
+        // game.movePlayer(1, 0);
+        // game.printCurrentRoom();
 
-
-        game.nextRoom();
-        game.printCurrentRoom();
-        //game.movePlayer(0, 1);
-
-        //game.printCurrentRoom();
+        // game.nextRoom();
+        // game.printCurrentRoom();
+        
     }
 
 }
