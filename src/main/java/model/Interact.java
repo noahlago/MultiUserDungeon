@@ -75,6 +75,7 @@ public class Interact implements Visitor{
         //get the row and col of the tile being interacted with
         int row = eTile.getRow();
         int col = eTile.getCol();
+        System.out.println("TILE: " + row + " " + col);
 
         //get the players location
         int[] loco = player.getLocation();
@@ -86,6 +87,9 @@ public class Interact implements Visitor{
         
         //set the interacted with tiles location to the players new location
         tiles[row][col] = new CharacterTile(player);
+
+        //update players location
+        player.updateLocation(row, col);
 
         //update the tiles array to reflect the changes
         currentRoom.updateTiles(tiles);

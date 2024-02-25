@@ -338,7 +338,7 @@ public class MUD {
 
         // making sure the tile is in bounds
         if ((0 <= xCoord && xCoord < width) && (0 <= yCoord && yCoord < height)) {
-            currentRoom.getTile(xCoord, yCoord).accept(action);
+            
             CharacterTile[] charTiles = getCharacterTiles();
             if(charTiles != null){
                 for(int i = 0;i< charTiles.length;i++){
@@ -346,6 +346,8 @@ public class MUD {
                     player.takeDamage(npc.getAttack());
                 }
             }
+
+            currentRoom.getTile(xCoord, yCoord).accept(action);
 
         }
 
