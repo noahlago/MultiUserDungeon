@@ -340,7 +340,7 @@ public class MUD {
         if ((0 <= xCoord && xCoord < width) && (0 <= yCoord && yCoord < height)) {
             currentRoom.getTile(xCoord, yCoord).accept(action);
             CharacterTile[] charTiles = getCharacterTiles();
-            if(charTiles[0] != null){
+            if(charTiles != null){
                 for(int i = 0;i< charTiles.length;i++){
                     Npc npc = (Npc)charTiles[i].getCharacter();
                     player.takeDamage(npc.getAttack());

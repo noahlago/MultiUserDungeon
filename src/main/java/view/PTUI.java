@@ -49,6 +49,10 @@ public class PTUI {
         System.out.println("'T': trap");
     }
 
+    // public int chooseItem(){
+
+    // }
+
     /**
      * Main implementation of the PTUI, allowing the player to interact with the game, and control their character. 
      * @return whether or not to exit the game entirely (if not, exits to main menu instead). 
