@@ -37,6 +37,7 @@ public class PTUI {
         System.out.println("'c': print control menu");
         System.out.println("'e': exit to main menu");
         System.out.println("'q': quit game completely");
+        System.out.println("'i': print inventory");
     }
 
     public void printLegend(){
@@ -49,7 +50,7 @@ public class PTUI {
         System.out.println("'T': trap");
     }
 
-    public int chooseItem(){
+    public static int chooseItem(){
         System.out.println("Enter the # of the item you wish to remove from the chest:");
         int itemNum = scanner.nextInt();
         return itemNum;
@@ -87,6 +88,8 @@ public class PTUI {
                 case 'l':
                     printLegend();
                     break;
+                case 'i':
+                    System.out.println(this.game.inventoryString());
                 case 'e':
                     return false;
                 case 'q':

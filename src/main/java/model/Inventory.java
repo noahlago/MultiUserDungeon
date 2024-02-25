@@ -157,5 +157,21 @@ public class Inventory implements Container<Container<Item>>{
     public int getNumBags(){
         return this.numBags;
     }
+
+    @Override
+    public String toString(){
+        String inv = "Inventory: \n";
+        for(Container<Item> bag : bags){
+            if(bag != null){
+                inv += "( ";
+                for(Item item : bag.items()){
+                    inv += "{" + item + "}";
+                }
+                inv += " )\n";
+            }
+        }
+
+        return inv;
+    }
     
 }

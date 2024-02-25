@@ -312,7 +312,9 @@ public class MUD {
         return null;
     }
 
-    
+    public String inventoryString(){
+        return this.player.inventoryString();
+    }
 
     @Override
     public String toString() {

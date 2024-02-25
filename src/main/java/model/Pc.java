@@ -100,5 +100,9 @@ public class Pc extends Character {
     public int getCurrY(){
         return this.currY;
     }
+
+    public String inventoryString(){
+        return this.inventory.toString();
+    }
     
 }

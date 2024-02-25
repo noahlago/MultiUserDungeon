@@ -38,4 +38,15 @@ public abstract class Item  {
         return defensePercent;
     }
 
+    @Override
+    public String toString() {
+        if(this.attackDamage != 0){
+            return this.name + " [damage: " + this.attackDamage + "]";
+        }else if(this.healthPoints != 0){
+            return this.name + " [hp: " + this.healthPoints + "]";
+        }else{
+            return this.name + " [defense: " +this.defensePercent + "%]";
+        }
+    }
+
 }
