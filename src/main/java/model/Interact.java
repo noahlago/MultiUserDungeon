@@ -83,7 +83,7 @@ public class Interact implements Visitor{
         //copy of the current room
         ConcreteTile[][] tiles = currentRoom.getTiles();
         //set the players old location to an empty tile
-        tiles[loco[1]][loco[0]] = new EmptyTile(loco[1],loco[0]);
+        tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
         
         //set the interacted with tiles location to the players new location
         tiles[row][col] = new CharacterTile(player);

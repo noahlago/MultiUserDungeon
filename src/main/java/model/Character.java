@@ -50,8 +50,8 @@ public class Character {
     }
 
     public void updateLocation(int row, int col){
-        this.currX = col;
-        this.currY = row;
+        this.currX = row;
+        this.currY = col;
     }
 
     public void moveLeft(){
