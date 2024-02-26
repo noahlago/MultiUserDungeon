@@ -28,13 +28,29 @@ public class Interact implements Visitor{
 
     @Override
     public void visitCharacterTile(CharacterTile cTile) {
-        // TODO Interaction between playable character and character on tile, need to know turn for who takes damage??
-        
-        //PLayer hits NPC
+        //Player hits NPC
         Character npc = cTile.getCharacter();
         npc.takeDamage(player.getAttack());
+        System.out.println("You hit " + npc.getName() + "\t Health: " + npc.getHealth());
 
-        //npc dies and tile becomes empty
+        //if the npc health is reduced to 0 or below they die
+        if(npc.getHealth() <=0){
+
+            System.out.println("You killed " + npc.getName());
+
+            int row = cTile.getRow();
+            int col = cTile.getCol();
+
+            //get copy of room
+            ConcreteTile[][] tiles = currentRoom.getTiles();
+
+            //set the tile to an empty one
+            tiles[row][col] = new EmptyTile(row, col);
+
+            //update the tiles array to reflect the changes
+            currentRoom.updateTiles(tiles);
+        }
+        
     }
 
     @Override
@@ -77,7 +93,6 @@ public class Interact implements Visitor{
         //get the row and col of the tile being interacted with
         int row = eTile.getRow();
         int col = eTile.getCol();
-        System.out.println("TILE: " + row + " " + col);
 
         //get the players location
         int[] loco = player.getLocation();
