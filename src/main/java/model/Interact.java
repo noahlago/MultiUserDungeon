@@ -7,60 +7,101 @@ import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
+import view.PTUI;
+
+import java.util.ArrayList;
+
 import model.Character;
 
+@SuppressWarnings("unused")
 public class Interact implements Visitor{
 
+    private MUD game;
     private Room currentRoom;
-    private Character player;
+    private Pc player;
 
-    public Interact(Room room, Character player){
+    public Interact(MUD game, Room room, Pc player){
+        this.game = game;
         this.currentRoom = room;
         this.player = player;
     }
 
     @Override
     public void visitCharacterTile(CharacterTile cTile) {
-        // TODO Interaction between playable character and character on tile
-        throw new UnsupportedOperationException("Unimplemented method 'visitCharacterTile'");
+        // TODO Interaction between playable character and character on tile, need to know turn for who takes damage??
+        
+        //PLayer hits NPC
+        Character npc = cTile.getCharacter();
+        npc.takeDamage(player.getAttack());
+
+        //npc dies and tile becomes empty
     }
 
     @Override
     public void visitChestTile(ChestTile cTile) {
-        // TODO Interaction between character and chest with items
-        throw new UnsupportedOperationException("Unimplemented method 'visitChestTile'");
+        ArrayList<Item> items = cTile.getChest().getItems();
+        
+        int x = 0;
+        for(Item i : items){
+            System.out.println((x+1) + ": " + i.getName());
+            x++;
+        }
+
+        int itemNum = PTUI.chooseItem();
+        if(itemNum < 0 || itemNum > items.size()){
+            System.out.println("Invalid item #. Try again. ");
+        }else{
+            Item acquired = items.get(itemNum - 1);
+            cTile.getChest().remove(acquired);
+            player.addItem(acquired);
+        }
     }
 
     @Override
     public void visitTrapTile(TrapTile tTile) {
-        // TODO Interactoin between character and Trap 
-        throw new UnsupportedOperationException("Unimplemented method 'visitTrapTile'");
+        // TODO Interaction between character and Trap, trap needs to be disarmed or else
+        
+        //if the trap is armed the user takes damage
+        if(tTile.isArmed()){
+            if(tTile.getName().equals("Spike Trap")){
+                player.takeDamage(25);
+            }
+            else{
+                player.takeDamage(15);
+            }
+        }
     }
 
     @Override
     public void visitEmptyTile(EmptyTile eTile) {
-        // TODO Playable character should move to the empty tile
-        //throw new UnsupportedOperationException("Unimplemented method 'visitEmptyTile'");
-        
-        System.out.println("MOVE HERE PLEASE");
+        //get the row and col of the tile being interacted with
         int row = eTile.getRow();
         int col = eTile.getCol();
+        System.out.println("TILE: " + row + " " + col);
 
-        System.out.println(row);
-        System.out.println(col);
-
+        //get the players location
         int[] loco = player.getLocation();
+
+        //copy of the current room
         ConcreteTile[][] tiles = currentRoom.getTiles();
-        tiles[loco[1]][loco[0]] = new EmptyTile(loco[1],loco[0]);
+        //set the players old location to an empty tile
+        tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
+        
+        //set the interacted with tiles location to the players new location
         tiles[row][col] = new CharacterTile(player);
+
+        //update players location
+        player.updateLocation(row, col);
+
+        //update the tiles array to reflect the changes
         currentRoom.updateTiles(tiles);
 
     }
 
     @Override
     public void visitExitTile(ExitTile eTile) {
-        // TODO Character should leave the room 
-        throw new UnsupportedOperationException("Unimplemented method 'visitExitTile'");
+        //moves map to the next room in sequence
+        game.nextRoom();
     }
 
     @Override

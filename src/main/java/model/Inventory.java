@@ -14,16 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Noah Lago (ndl3389@rit.edu)
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Inventory implements Container<Container<Item>>{
+public class Inventory implements Container<Bag>{
     @JsonProperty("size") private int size;
     @JsonProperty("totalItems") private int totalItems;
     @JsonProperty("MAX_BAGS") private static final int MAX_BAGS = 6;
-    @JsonProperty("bags") private Container<Item>[] bags;
+    @JsonProperty("bags") private Bag[] bags;
     @JsonProperty("numBags") private int numBags;
 
-    @SuppressWarnings("unchecked")
     public Inventory(){
-        this.bags = new Container[MAX_BAGS];
+        this.bags = new Bag[MAX_BAGS];
         this.size = 0;
         this.totalItems = 0;
         this.numBags = 0;
@@ -55,7 +54,7 @@ public class Inventory implements Container<Container<Item>>{
      * @param newBag the new Bag to attempt to add to the Inventory. 
      * @return whether the new Bag was successfully added to this Inventory. 
      */
-    public boolean addBag(Container<Item> newBag){
+    public boolean addBag(Bag newBag){
         if(this.numBags < MAX_BAGS){
             this.bags[numBags] = newBag;
             numBags++;
@@ -156,6 +155,22 @@ public class Inventory implements Container<Container<Item>>{
 
     public int getNumBags(){
         return this.numBags;
+    }
+
+    @Override
+    public String toString(){
+        String inv = "Inventory: \n";
+        for(Container<Item> bag : bags){
+            if(bag != null){
+                inv += "( ";
+                for(Item item : bag.items()){
+                    inv += "{" + item + "}";
+                }
+                inv += " )\n";
+            }
+        }
+
+        return inv;
     }
     
 }

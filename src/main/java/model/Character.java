@@ -49,18 +49,23 @@ public class Character {
         return new int[] {currX,currY};
     }
 
+    public void updateLocation(int row, int col){
+        this.currX = row;
+        this.currY = col;
+    }
+
     public void moveLeft(){
-        currX -= 1;
+        currY -= 1;
         
     }
     public void moveRight(){
-        currX += 1;
+        currY += 1;
     }
     public void moveUp(){
-        currY =+ 1;
+        currX -= 1;
     }
     public void moveDown(){
-        currY =- 1;
+        currX += 1;
     }
     
     public String toString(){

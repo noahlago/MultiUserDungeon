@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -70,6 +71,8 @@ public class Map {
             Item good_steak = new GoodSteak("Steak", "Cooked to perfection");
             master_list.add(good_steak);
         }   
+
+        Collections.shuffle(master_list);
 
         return master_list;
     }
@@ -140,11 +143,22 @@ public class Map {
                 chest_num++;
                 continue;
             }
+            
+            List<Item> loot_items = createItemList();
+            int item_amount = rand.nextInt(6);
+            Chest chest = new Chest(null);
+
+            for (int x = 0; x < item_amount; x++) {
+                Item item = loot_items.get(x);
+                chest.add(item);
+            }
+
             occupied_spots.add(result);
-            room[random_x][random_y] = new ChestTile(new Chest(new Item[0]));
+            room[random_x][random_y] = new ChestTile(chest);
         }
 
         ConcreteTile exit1 = room[9][9];
+        room[0][0] = new CharacterTile(player);
 
         while (true) {
             int coin_flip = rand.nextInt(2);
