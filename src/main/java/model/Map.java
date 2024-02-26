@@ -77,21 +77,21 @@ public class Map {
         return master_list;
     }
 
-    public List<Character> createNPCList() {
-        List<Character> master_list = new ArrayList<>();
-        Character dragon = new Character(150.0, 20.0, "Dragon", 20);
+    public List<Npc> createNPCList() {
+        List<Npc> master_list = new ArrayList<>();
+        Npc dragon = new Npc(150.0, 20.0, "Dragon", 20);
         master_list.add(dragon);
         for (int i = 0; i<4; i++) {
-            Character goblin = new Character(50.0, 5.0, "Goblin", 10);
+            Npc goblin = new Npc(50.0, 5.0, "Goblin", 10);
             master_list.add(goblin);
             master_list.add(goblin);
-            Character troll = new Character(75.0, 10.0, "Troll", 10);
+            Npc troll = new Npc(75.0, 10.0, "Troll", 10);
             master_list.add(troll);
-            Character werewolf = new Character(100.0, 10.0, "Werewolf", 10);
+            Npc werewolf = new Npc(100.0, 10.0, "Werewolf", 10);
             master_list.add(werewolf);
-            Character minotaur = new Character(125.0, 15.0, "Minotaur", 10);
+            Npc minotaur = new Npc(125.0, 15.0, "Minotaur", 10);
             master_list.add(minotaur);
-            Character Golem = new Character(150.0, 5.0, "Golem", 10);
+            Npc Golem = new Npc(150.0, 5.0, "Golem", 10);
             master_list.add(Golem);
         }
 
@@ -122,9 +122,9 @@ public class Map {
             }
 
             occupied_spots.add(result);
-            List<Character> enemy_list = createNPCList();
-            Character list = enemy_list.get(0);
-            room[random_x][random_y] = new CharacterTile(list, random_x, random_y);
+            List<Npc> enemy_list = createNPCList();
+            Npc character = enemy_list.get(0);
+            room[random_x][random_y] = new CharacterTile(character, random_x, random_y);
         }
 
         for (int i = 0; i <= trap_num; i++) {
