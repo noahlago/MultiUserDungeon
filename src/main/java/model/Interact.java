@@ -51,7 +51,7 @@ public class Interact implements Visitor{
         if(itemNum < 0 || itemNum > items.size()){
             System.out.println("Invalid item #. Try again. ");
         }else{
-            Item acquired = items.get(itemNum);
+            Item acquired = items.get(itemNum - 1);
             cTile.getChest().remove(acquired);
             player.addItem(acquired);
         }

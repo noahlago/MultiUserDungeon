@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A Bag allows for items to be added and removed as needed, and each bag has a set number of items it can hold. 
  * @author Noah Lago (ndl3389@rit.edu)
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Bag implements Container<Item>{
     /**Represents the number of items this bag can hold.  */
     @JsonProperty("size") private int size;
@@ -23,6 +26,13 @@ public class Bag implements Container<Item>{
         this.size = size;
         this.items = new ArrayList<>();
         this.totalItems = 0;
+    }
+
+    @JsonCreator
+    public Bag(@JsonProperty("size") int size, @JsonProperty("items") ArrayList<Item> items, @JsonProperty("totalItems") int totalItems){
+        this.size = size;
+        this.items = items;
+        this.totalItems = totalItems;
     }
     
     /**

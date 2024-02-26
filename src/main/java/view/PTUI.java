@@ -61,7 +61,7 @@ public class PTUI {
      * @return whether or not to exit the game entirely (if not, exits to main menu instead). 
      */
     public boolean playGame() {
-        while(!(game.gameOver())) {
+        while(game != null && !(game.gameOver())) {
             System.out.println("Round: " + (game.getNumTurns() / 2)); //add round count from MUD instance
             System.out.println("Current Health: " + game.getHealth());
             System.out.println("Enter a command or 'h' for a help menu: ");
@@ -91,6 +91,7 @@ public class PTUI {
                     break;
                 case 'i':
                     System.out.println(this.game.inventoryString());
+                    break;
                 case 'e':
                     return false;
                 case 'q':
@@ -98,6 +99,9 @@ public class PTUI {
                 default:
                     this.printHelp();
             }
+        }
+        if(game == null){
+            System.out.println("GAME IS NULL!");
         }
         return !game.gameOver();
     }
@@ -117,6 +121,7 @@ public class PTUI {
             }
             String gameName;
 
+
             switch(command){
                 case 'n':
                     System.out.println("Enter your character's name for the new game:");
@@ -127,12 +132,16 @@ public class PTUI {
                     map.setPlayer(game.getPlayer());
                     currentGame = new PTUI(game);
                     saveManager.newSaveGame(game);
+                    exit = currentGame.playGame();
+                    saveManager.updateSaveGame(game);
+                    saveManager.save();
                     break;
                 case 'd':
                     System.out.println("Enter the name of the saved game you want to delete:");
                     gameName = scanner.nextLine();
                     try {
                         saveManager.deleteSaveGame(gameName);
+                        saveManager.save();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -148,6 +157,9 @@ public class PTUI {
                         if(allGames.containsKey(gameName)){
                             currentGame = new PTUI(allGames.get(gameName));
                             currentGame.renderRooms();
+                            exit = currentGame.playGame();
+                            saveManager.updateSaveGame(currentGame.game);
+                            saveManager.save();
                         }
                         else{
                             throw new IOException();
@@ -165,7 +177,7 @@ public class PTUI {
                     System.out.println("Invalid command");
                     break;
             }
-            while(currentGame.playGame() == true);
+            // while(currentGame.playGame());
         }
     }
 }

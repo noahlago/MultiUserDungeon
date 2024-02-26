@@ -11,6 +11,9 @@ public class Pc extends Character {
     public Pc(@JsonProperty("health") double health, @JsonProperty("attack") double attack, @JsonProperty("name") String name,@JsonProperty("inventory") Inventory inventory, @JsonProperty("goldAmount") int goldAmount){
         super(health,attack,name,goldAmount);
         this.inventory = inventory;
+        if(inventory.getBags()[0] == null){
+            inventory.addBag(new Bag(5));
+        }
     }
     @Override
     public void takeDamage(double amount){
