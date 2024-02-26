@@ -76,6 +76,28 @@ public class Map {
 
         return master_list;
     }
+
+    public List<Character> createNPCList() {
+        List<Character> master_list = new ArrayList<>();
+        Character dragon = new Character(150.0, 20.0, "Dragon", 20);
+        master_list.add(dragon);
+        for (int i = 0; i<4; i++) {
+            Character goblin = new Character(50.0, 5.0, "Goblin", 10);
+            master_list.add(goblin);
+            master_list.add(goblin);
+            Character troll = new Character(75.0, 10.0, "Troll", 10);
+            master_list.add(troll);
+            Character werewolf = new Character(100.0, 10.0, "Werewolf", 10);
+            master_list.add(werewolf);
+            Character minotaur = new Character(125.0, 15.0, "Minotaur", 10);
+            master_list.add(minotaur);
+            Character Golem = new Character(150.0, 5.0, "Golem", 10);
+            master_list.add(Golem);
+        }
+
+        Collections.shuffle(master_list);
+        return master_list;
+    }
         
        
     public ConcreteTile populateRoom(int x_dimension, int y_dimension, ConcreteTile[][] room) {
@@ -83,7 +105,27 @@ public class Map {
         int trap_num = rand.nextInt(6);
         int obstacle_num = rand.nextInt(6);
         int chest_num = rand.nextInt(4);
+        int opp_num = rand.nextInt(5) + 1;
         List<String> occupied_spots = new ArrayList<>();
+
+        for (int i = 0; i <= opp_num; i++) {
+            int random_x = rand.nextInt(x_dimension);
+            int random_y = rand.nextInt(y_dimension);
+
+            String x_val = String.valueOf(random_x);
+            String y_val = String.valueOf(random_y);
+            String result = x_val + y_val;
+
+            if (occupied_spots.contains(result)) {
+                opp_num++;
+                continue;
+            }
+
+            occupied_spots.add(result);
+            List<Character> enemy_list = createNPCList();
+            Character list = enemy_list.get(0);
+            room[random_x][random_y] = new CharacterTile(list);
+        }
 
         for (int i = 0; i <= trap_num; i++) {
             int random_x = rand.nextInt(x_dimension);
@@ -174,6 +216,43 @@ public class Map {
                 }
 
                 if (coin_flip_2 == 1) {
+                    if (random_x == 0) {
+                        if (occupied_spots.contains("01") && occupied_spots.contains("10")) {
+                            continue;
+                        }
+                    }
+                    if (random_x == 9) {
+                        if (occupied_spots.contains("89") && occupied_spots.contains("98")) {
+                            continue;
+                        }
+                    }
+
+                    String add = String.valueOf(random_x+1);
+                    String block1 = add + "0";
+
+                    String cord1 = String.valueOf(random_x-1);
+                    String block2 = cord1 + "0";
+
+                    String cord2 = String.valueOf(random_x);
+                    String block3 = cord2 + "1";
+                    
+                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
+                        continue;
+                    }
+
+                    add = String.valueOf(random_x+1);
+                    block1 = add + "9";
+
+                    cord1 = String.valueOf(random_x-1);
+                    block2 = cord1 + "9";
+
+                    cord2 = String.valueOf(random_x);
+                    block3 = cord2 + "8";
+                    
+                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
+                        continue;
+                    }
+                    
                     room[random_x][0] = new ExitTile();
                     exit1 = room[random_x][0];
                     break;
@@ -196,6 +275,43 @@ public class Map {
                 }
                 
                 if (coin_flip_2 == 1) {
+                    if (random_y == 0) {
+                        if (occupied_spots.contains("01") && occupied_spots.contains("10")) {
+                            continue;
+                        }
+                    }
+                    if (random_y == 9) {
+                        if (occupied_spots.contains("89") && occupied_spots.contains("98")) {
+                            continue;
+                        }
+                    }
+
+                    String add = String.valueOf(random_y+1);
+                    String block1 = "0" + add;
+
+                    String cord1 = String.valueOf(random_y-1);
+                    String block2 = "0" + cord1;
+
+                    String cord2 = String.valueOf(random_y);
+                    String block3 = "1" + cord2;
+                    
+                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
+                        continue;
+                    }
+
+                    add = String.valueOf(random_y+1);
+                    block1 = "9" + add;
+
+                    cord1 = String.valueOf(random_y-1);
+                    block2 = "9" + cord1;
+
+                    cord2 = String.valueOf(random_y);
+                    block3 = "8" + cord2;
+                    
+                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
+                        continue;
+                    }
+
                     room[0][random_y] = new ExitTile();        
                     exit1 = room[0][random_y];
                     break;
