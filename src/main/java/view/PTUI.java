@@ -61,8 +61,9 @@ public class PTUI {
      * @return whether or not to exit the game entirely (if not, exits to main menu instead). 
      */
     public boolean playGame() {
-        while(true) {
+        while(!(game.gameOver())) {
             System.out.println("Round: " + (game.getNumTurns() / 2)); //add round count from MUD instance
+            System.out.println("Current Health: " + game.getHealth());
             System.out.println("Enter a command or 'h' for a help menu: ");
             char command = scanner.next().charAt(0);
             switch(command){
@@ -98,6 +99,7 @@ public class PTUI {
                     this.printHelp();
             }
         }
+        return !game.gameOver();
     }
 
     public static void main(String[] args) throws IOException {

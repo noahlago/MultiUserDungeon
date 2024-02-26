@@ -7,6 +7,7 @@ import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
+import view.PTUI;
 
 import java.util.ArrayList;
 
@@ -17,9 +18,9 @@ public class Interact implements Visitor{
 
     private MUD game;
     private Room currentRoom;
-    private Character player;
+    private Pc player;
 
-    public Interact(MUD game, Room room, Character player){
+    public Interact(MUD game, Room room, Pc player){
         this.game = game;
         this.currentRoom = room;
         this.player = player;
@@ -38,9 +39,6 @@ public class Interact implements Visitor{
 
     @Override
     public void visitChestTile(ChestTile cTile) {
-        // TODO Interaction between character and chest with items
-        //throw new UnsupportedOperationException("Unimplemented method 'visitChestTile'");
-    
         ArrayList<Item> items = cTile.getChest().getItems();
         
         int x = 0;
@@ -49,10 +47,14 @@ public class Interact implements Visitor{
             x++;
         }
 
-        //Prompt user for which # item they want
-
-        //TODO Call PTUI to get user input? then we know which items the user wants
-        
+        int itemNum = PTUI.chooseItem();
+        if(itemNum < 0 || itemNum > items.size()){
+            System.out.println("Invalid item #. Try again. ");
+        }else{
+            Item acquired = items.get(itemNum);
+            cTile.getChest().remove(acquired);
+            player.addItem(acquired);
+        }
     }
 
     @Override

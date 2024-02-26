@@ -104,5 +104,9 @@ public class Pc extends Character {
     public String inventoryString(){
         return this.inventory.toString();
     }
+
+    public void addItem(Item item){
+        this.inventory.add(item);
+    }
     
 }
