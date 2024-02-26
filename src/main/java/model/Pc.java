@@ -15,14 +15,26 @@ public class Pc extends Character {
             inventory.addBag(new Bag(5));
         }
     }
+    /**
+     * Calculates the amount of damage to take based on armor and defense
+     * @param amount the amount of damage to take
+     */
     @Override
     public void takeDamage(double amount){
         if(armorSlot == null || armorSlot.getDefensePercent() == 0){
             health -= amount;
+            System.out.println("You took " + amount + " damage\n Your health is now " + getHealth());
         }else{
-            health = health - (amount * (1- armorSlot.getDefensePercent()));
+            double damage = (amount * (1- armorSlot.getDefensePercent()));
+            health = health - damage;
+            System.out.println("You took " + damage + " damage\n Your health is now " + getHealth());
         }
     }
+
+    /**
+     * Calculates attack amount based on equipped weapon
+     * @return attack amount
+     */
     @Override
     public double getAttack(){
         if(weaponSlot == null || weaponSlot.getAttackDamage() == 0){
@@ -32,51 +44,99 @@ public class Pc extends Character {
         }
     }
 
+    /**
+     * Uses an item to increase player health
+     * @param item item to use
+     * @return true if item used successfully, false otherwise
+     */
     public boolean useItem(Item item){
         if(item.getHealthPoints() > 0){
             inventory.remove(item);
             gainHealth(item.getHealthPoints());
+            System.out.println("You gained " + item.healthPoints + " health\nYour health is now " + getHealth());
             return true;
         }
+        System.out.println("Could not use " + item.getName());
         return false;
     }
 
+    /**
+     * Equips new armor into weapon slot, removes previously equipped armor
+     * @param newArmor armor to equip
+     * @return true if armor is successfully equipped, false otherwise
+     */
     public boolean equipArmor(Item newArmor){
         if(inventory.remove(newArmor) == true && newArmor.getDefensePercent() != 0){
+            if(armorSlot != null){
+                System.out.println("Unequipped " + armorSlot.getName());
+                RemoveArmor();
+            }
             this.armorSlot = newArmor;
+            System.out.println("You equipped " + newArmor.getName() + " and gained " + newArmor.getDefensePercent() + "% health");
             return true;
         }
+        System.out.println("Could not equip " + newArmor.getName() + " as armor");
         return false;
     }
+
+    /**
+     * Equips a new weapon into weapon slot, removes previously equipped weapon
+     * @param newWeapon weapon to equip
+     * @return true if weapon is successfully equipped, false otherwise
+     */
     public boolean equipWeapon(Item newWeapon){
         if(newWeapon.getAttackDamage() != 0 && inventory.remove(newWeapon) == true){
+            if(weaponSlot != null){
+                System.out.println("Unequipped " + weaponSlot.getName());
+                RemoveWeapon();
+            }
             this.weaponSlot = newWeapon;
+            System.out.println("You equipped " + newWeapon.getName() + " and gained " + newWeapon.getAttackDamage() + "% attack");
             return true;
         }
+        System.out.println("Could not equip " + newWeapon.getName() + " as weapon");
         return false;
     }
     
+    /**
+     * Unequips armor and stores in inventory
+     * @return true if armor is removed, false if no armor equipped
+     */
     public boolean RemoveArmor(){
         if(armorSlot != null){
-        this.inventory.add(armorSlot);
-        this.armorSlot = null;
-        return true;
+            System.out.println("Unequipped " + armorSlot.getName());
+            this.inventory.add(armorSlot);
+            this.armorSlot = null;
+            return true;
         }
+        System.out.println("No armor equipped");
         return false;
     }
+
+    /**
+     * Unequips weapon and stores in inventory
+     * @return true if weapon is removed, false if no weapon equipped
+     */
     public boolean RemoveWeapon(){
         if(weaponSlot != null){
-        this.inventory.add(weaponSlot);
-        this.weaponSlot = null;
-        return true;
+            System.out.println("Unequipped " + weaponSlot.getName());
+            this.inventory.add(weaponSlot);
+            this.weaponSlot = null;
+            return true;
         }
+        System.out.println("No weapon equipped");
         return false;
     }
     
+    /**
+     * Destroys an item in player's inventory
+     * @param item item to destroy
+     */
     public void destroyItem(Item item){
-
+        System.out.println("Destroyed " + item.getName());
         this.inventory.remove(item);
     }
+    
     public Inventory getInventory(){
         return inventory;
     }
