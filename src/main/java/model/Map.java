@@ -124,7 +124,7 @@ public class Map {
             occupied_spots.add(result);
             List<Character> enemy_list = createNPCList();
             Character list = enemy_list.get(0);
-            room[random_x][random_y] = new CharacterTile(list);
+            room[random_x][random_y] = new CharacterTile(list, random_x, random_y);
         }
 
         for (int i = 0; i <= trap_num; i++) {
@@ -200,7 +200,7 @@ public class Map {
         }
 
         ConcreteTile exit1 = room[9][9];
-        room[0][0] = new CharacterTile(player);
+        room[0][0] = new CharacterTile(player, 0, 0);
 
         while (true) {
             int coin_flip = rand.nextInt(2);

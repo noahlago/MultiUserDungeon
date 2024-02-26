@@ -129,7 +129,7 @@ public class Interact implements Visitor{
         tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
         
         //set the interacted with tiles location to the players new location
-        tiles[row][col] = new CharacterTile(player);
+        tiles[row][col] = new CharacterTile(player, row ,col);
 
         //update players location
         player.updateLocation(row, col);
