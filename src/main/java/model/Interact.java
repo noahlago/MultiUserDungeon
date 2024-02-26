@@ -10,6 +10,7 @@ import model.Tiles.TrapTile;
 import view.PTUI;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import model.Character;
 
@@ -75,16 +76,41 @@ public class Interact implements Visitor{
 
     @Override
     public void visitTrapTile(TrapTile tTile) {
-        // TODO Interaction between character and Trap, trap needs to be disarmed or else
-        
-        //if the trap is armed the user takes damage
-        if(tTile.isArmed()){
-            if(tTile.getName().equals("Spike Trap")){
-                player.takeDamage(25);
+       //Random variable for if trap is disarmed
+        Random rand = new Random();
+
+        //An already discovered trap is interacted with
+        if(tTile.isArmed() && tTile.getDiscovered() == true){
+            System.out.println("You try to disarm the trap");
+
+            int chance = rand.nextInt(2);
+            if(chance == 1){
+                //user has disarmed the trap
+                System.out.println("You disarmed the trap!");
+
+                tTile.disarm();
             }
+
             else{
-                player.takeDamage(15);
+                //user takes damage
+                System.out.println("You took damage from the trap!");
+
+                player.takeDamage(tTile.getDamage());
             }
+
+        }
+
+        //if the trap is armed and not found the user takes damage
+        if(tTile.isArmed() && tTile.getDiscovered() == false){
+            //user takes damage
+            player.takeDamage(tTile.getDamage());
+
+            //the trap is discovered and unarmed
+            tTile.discover();
+            tTile.disarm();
+
+            //print the damage the user took
+            System.out.println("You took damage from a " + tTile.getName());
         }
     }
 

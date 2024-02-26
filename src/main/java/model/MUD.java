@@ -1,11 +1,15 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Random;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import model.Tiles.CharacterTile;
 import model.Tiles.ConcreteTile;
+import model.Tiles.TrapTile;
 
 /**
  * Main implementation of MUD game
@@ -287,9 +291,26 @@ public class MUD {
             else{
                 closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);
                 closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);
-            }
+            }    
+        }
 
-    
+        for(ConcreteTile tile: closeTiles){
+            if(tile instanceof TrapTile){
+                //random chance the user discovers the trap
+                Random rand = new Random();
+                int chance = rand.nextInt(2);
+
+                //if an undiscovered trap
+                if(((TrapTile) tile).getDiscovered() == false){
+                    
+                    //50/50 chance to discover
+                    if(chance == 1){
+                        ((TrapTile) tile).discover();
+                        System.out.println("You discovered a trap!");
+                    }
+                }
+                
+            }
         }
         return closeTiles;
     }
