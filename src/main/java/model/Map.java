@@ -145,7 +145,7 @@ public class Map {
             }
             
             List<Item> loot_items = createItemList();
-            int item_amount = rand.nextInt(6);
+            int item_amount = rand.nextInt(5) + 1;
             Chest chest = new Chest(null);
 
             for (int x = 0; x < item_amount; x++) {
