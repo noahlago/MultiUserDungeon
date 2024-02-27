@@ -126,7 +126,7 @@ public class PTUI {
      * @return whether or not to exit the game entirely (if not, exits to main menu instead). 
      */
     public boolean playGame() {
-        while(game != null && !(game.gameOver())) {
+        while(game != null && !(game.getGameOver())) {
             System.out.println("Round: " + (game.getNumTurns() / 2)); //add round count from MUD instance
             System.out.println("Current Health: " + game.getHealth());
             System.out.println(this.game.closeTilesString());
@@ -173,7 +173,7 @@ public class PTUI {
         if(game == null){
             System.out.println("GAME IS NULL!");
         }
-        return !game.gameOver();
+        return !game.getGameOver();
     }
 
     public static void main(String[] args) throws IOException {
