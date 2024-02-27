@@ -3,7 +3,7 @@ package model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public abstract class Npc extends Character {
+public class Npc extends Character {
     @JsonProperty("isNocturnal") protected boolean isNocturnal = false;
     @JsonProperty("baseHealth") protected double baseHealth;
     @JsonProperty("baseAttack") protected double baseAttack;

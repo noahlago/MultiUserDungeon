@@ -126,7 +126,7 @@ public class Room {
                 ConcreteTile current = tiles[i][j];
                 String type = current.getType();
                 if(type.equals("CHARACTER")){
-                    tiles[i][j] = new CharacterTile(tiles[i][j].getCharacter());
+                    tiles[i][j] = new CharacterTile(tiles[i][j].getCharacter(), i , j);
                 }else if(type.equals("CHEST")){
                     tiles[i][j] = new ChestTile(tiles[i][j].getChest());
                 }else if(type.equals("EMPTY")){

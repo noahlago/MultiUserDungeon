@@ -10,11 +10,16 @@ import model.Visitor;
 
 public class CharacterTile extends ConcreteTile{
     @JsonProperty("character")private Character character;
+    @JsonProperty("row") private int row;
+    @JsonProperty("col") private int col;
 
     @JsonCreator
-    public CharacterTile(@JsonProperty("character")Character character){
+    public CharacterTile(@JsonProperty("character")Character character, @JsonProperty("row") int row, @JsonProperty("col") int col){
         this.character = character;
         super.setType("CHARACTER");
+
+        this.row = row;
+        this.col = col;
     }
     
     @Override
@@ -36,5 +41,15 @@ public class CharacterTile extends ConcreteTile{
 
     public Character getCharacter(){
         return this.character;
+    }
+
+    @Override
+    public int getRow(){
+        return row;
+    }
+
+    @Override
+    public int getCol(){
+        return col;
     }
 }
