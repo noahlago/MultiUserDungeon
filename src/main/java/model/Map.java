@@ -77,21 +77,21 @@ public class Map {
         return master_list;
     }
 
-    public List<Character> createNPCList() {
-        List<Character> master_list = new ArrayList<>();
-        Character dragon = new Character(150.0, 20.0, "Dragon", 20);
+    public List<Npc> createNPCList() {
+        List<Npc> master_list = new ArrayList<>();
+        Npc dragon = new Npc(150.0, 20.0, "Dragon", 20);
         master_list.add(dragon);
         for (int i = 0; i<4; i++) {
-            Character goblin = new Character(50.0, 5.0, "Goblin", 10);
+            Npc goblin = new Npc(50.0, 5.0, "Goblin", 10);
             master_list.add(goblin);
             master_list.add(goblin);
-            Character troll = new Character(75.0, 10.0, "Troll", 10);
+            Npc troll = new Npc(75.0, 10.0, "Troll", 10);
             master_list.add(troll);
-            Character werewolf = new Character(100.0, 10.0, "Werewolf", 10);
+            Npc werewolf = new Npc(100.0, 10.0, "Werewolf", 10);
             master_list.add(werewolf);
-            Character minotaur = new Character(125.0, 15.0, "Minotaur", 10);
+            Npc minotaur = new Npc(125.0, 15.0, "Minotaur", 10);
             master_list.add(minotaur);
-            Character Golem = new Character(150.0, 5.0, "Golem", 10);
+            Npc Golem = new Npc(150.0, 5.0, "Golem", 10);
             master_list.add(Golem);
         }
 
@@ -107,6 +107,7 @@ public class Map {
         int chest_num = rand.nextInt(4);
         int opp_num = rand.nextInt(5) + 1;
         List<String> occupied_spots = new ArrayList<>();
+        occupied_spots.add("00");
 
         for (int i = 0; i <= opp_num; i++) {
             int random_x = rand.nextInt(x_dimension);
@@ -122,15 +123,20 @@ public class Map {
             }
 
             occupied_spots.add(result);
-            List<Character> enemy_list = createNPCList();
-            Character list = enemy_list.get(0);
-            room[random_x][random_y] = new CharacterTile(list);
+            List<Npc> enemy_list = createNPCList();
+            Npc character = enemy_list.get(0);
+            room[random_x][random_y] = new CharacterTile(character, random_x, random_y);
         }
 
         for (int i = 0; i <= trap_num; i++) {
             int random_x = rand.nextInt(x_dimension);
             int random_y = rand.nextInt(y_dimension);
             if (random_x == x_dimension-1 && random_y == y_dimension-1) {
+                trap_num++;
+                continue;
+            }
+
+            if (random_x == 0 && random_y == 1 || random_x == 1 && random_y == 0) {
                 trap_num++;
                 continue;
             }
@@ -156,6 +162,17 @@ public class Map {
                 continue;
             }
 
+            if (random_x == 0 && random_y == 1) {
+                obstacle_num++;
+                continue;
+            }
+
+            if (random_x == 1 && random_y == 0) {
+                obstacle_num++;
+                continue;
+            }
+
+
             String x_val = String.valueOf(random_x);
             String y_val = String.valueOf(random_y);
             String result = x_val + y_val;
@@ -176,6 +193,17 @@ public class Map {
                 chest_num++;
                 continue;
             }
+
+            if (random_x == 0 && random_y == 1) {
+                chest_num++;
+                continue;
+            }
+
+            if (random_x == 1 && random_y == 0) {
+                chest_num++;
+                continue;
+            }
+
 
             String x_val = String.valueOf(random_x);
             String y_val = String.valueOf(random_y);
@@ -200,7 +228,7 @@ public class Map {
         }
 
         ConcreteTile exit1 = room[9][9];
-        room[0][0] = new CharacterTile(player);
+        room[0][0] = new CharacterTile(player, 0, 0);
 
         while (true) {
             int coin_flip = rand.nextInt(2);
@@ -210,10 +238,31 @@ public class Map {
                 String x_val = String.valueOf(random_x);
                 String y_val = String.valueOf(coin_flip_2);
                 String result = x_val + y_val;
+                if (random_x == 0 && coin_flip_2 == 0) {
+                    continue;
+                }
+
+                if (random_x == 0 && coin_flip_2 == 1) {
+                    continue;
+                }
+
+                if (random_x == 0 && coin_flip_2 == 2) {
+                    continue;
+                }
+
+                if (random_x == 1 && coin_flip_2 == 0) {
+                    continue;
+                }
+
+                if (random_x == 2 && coin_flip_2 == 0) {
+                    continue;
+                }
     
                 if (occupied_spots.contains(result)) {
                     continue;
                 }
+
+                
 
                 if (coin_flip_2 == 1) {
                     if (random_x == 0) {
@@ -269,6 +318,26 @@ public class Map {
                 String x_val = String.valueOf(coin_flip_2);
                 String y_val = String.valueOf(random_y);
                 String result = x_val + y_val;
+
+                if (coin_flip_2 == 0 && random_y == 0) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 0 && random_y == 1) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 0 && random_y == 2) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 1 && random_y == 0) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 2 && random_y == 0) {
+                    continue;
+                }
     
                 if (occupied_spots.contains(result)) {
                     continue;
@@ -338,7 +407,7 @@ public class Map {
         ConcreteTile exit1 = populateRoom(10, 10, tiles1);
         Npc[] npcs1 = {};
         // fully creates the room
-        Room room1 = new Room(10, 10, "Room one: The beggining of the journey", tiles1, true, false, exit1, npcs1);
+        Room room1 = new Room(10, 10, "Room one: The begining of the journey", tiles1, true, false, exit1, npcs1);
 
 
         ConcreteTile[][] tiles2 = createRoom(8,8);

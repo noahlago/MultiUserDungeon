@@ -1,9 +1,13 @@
 package view;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import model.Inventory;
+import model.Item;
+import model.ItemType;
 import model.MUD;
 import model.Map;
 import model.persistence.GameFileDAO;
@@ -38,6 +42,7 @@ public class PTUI {
         System.out.println("'e': exit to main menu");
         System.out.println("'q': quit game completely");
         System.out.println("'i': print inventory");
+        System.out.println("'u': edit inventory");
     }
 
     public void printLegend(){
@@ -56,6 +61,61 @@ public class PTUI {
         return itemNum;
     }
 
+    public void editInventory(){
+        System.out.println("Enter 'd' to delete an item, or 'u' to equip/use an item: ");
+        char command = scanner.next().charAt(0);
+        if(command == 'd'){
+            deleteItem();
+        }else if(command == 'u'){
+            useItem();
+        }else{
+            System.out.println("Invalid command. Try again. ");
+        }
+    }
+
+    public void useItem(){
+        Inventory inv = game.getInventory();
+        ArrayList<Item> items = inv.items();
+        int itemNum = 1;
+        for(Item item : items){
+            System.out.println(itemNum + ": " + item);
+            itemNum++;
+        }
+        System.out.println("Enter the # of the item you wish to use/equip: ");
+        int selection = scanner.nextInt() - 1;
+        try{
+            Item selectedItem = items.get(selection);
+            ItemType type = selectedItem.getType();
+            if(type == ItemType.ARMOR){
+                this.game.equipArmor(selectedItem);
+            }else if(type == ItemType.WEAPON){
+                this.game.equipWeapon(selectedItem);
+            }else{
+                this.game.useItem(selectedItem);
+            }
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("Invalid item number. Try again.");
+        }
+    }
+
+    public void deleteItem(){
+        Inventory inv = game.getInventory();
+        ArrayList<Item> items = inv.items();
+        int itemNum = 1;
+        for(Item item : items){
+            System.out.println(itemNum + ": " + item);
+            itemNum++;
+        }
+        System.out.println("Enter the # of the item you wish to remove: ");
+        int selection = scanner.nextInt() - 1;
+        try{
+            Item selectedItem = items.get(selection);
+            inv.remove(selectedItem);
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("Invalid item number. Try again. ");
+        }
+    }
+
     /**
      * Main implementation of the PTUI, allowing the player to interact with the game, and control their character. 
      * @return whether or not to exit the game entirely (if not, exits to main menu instead). 
@@ -64,6 +124,7 @@ public class PTUI {
         while(game != null && !(game.gameOver())) {
             System.out.println("Round: " + (game.getNumTurns() / 2)); //add round count from MUD instance
             System.out.println("Current Health: " + game.getHealth());
+            System.out.println(this.game.closeTilesString());
             System.out.println("Enter a command or 'h' for a help menu: ");
             char command = scanner.next().charAt(0);
             switch(command){
@@ -90,7 +151,11 @@ public class PTUI {
                     printLegend();
                     break;
                 case 'i':
+                    System.out.println("Gold: $" + this.game.getPlayerGold());
                     System.out.println(this.game.inventoryString());
+                    break;
+                case 'u':
+                    editInventory();
                     break;
                 case 'e':
                     return false;

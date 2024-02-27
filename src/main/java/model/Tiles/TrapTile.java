@@ -51,7 +51,7 @@ public class TrapTile extends ConcreteTile{
             return "[ T ]";
         }
         else{
-            return "[ H ]";
+            return "[   ]";
         }
         
     }
