@@ -142,9 +142,15 @@ public class Interact implements Visitor{
     @Override
     public void visitExitTile(ExitTile eTile) {
         //moves map to the next room in sequence
-        game.nextRoom();
-        player.updateLocation(0, 0);
-        System.out.println("You've entered the next room!");
+        if(currentRoom.getIsGoal()){
+            game.winGame();
+        }
+        else{
+            game.nextRoom();
+            player.updateLocation(0, 0);
+            System.out.println("You've entered the next room!");
+        }
+        
 
     }
 
