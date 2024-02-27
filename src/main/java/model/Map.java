@@ -136,6 +136,11 @@ public class Map {
                 continue;
             }
 
+            if (random_x == 0 && random_y == 1 || random_x == 1 && random_y == 0) {
+                trap_num++;
+                continue;
+            }
+
             String x_val = String.valueOf(random_x);
             String y_val = String.valueOf(random_y);
             String result = x_val + y_val;
@@ -157,6 +162,17 @@ public class Map {
                 continue;
             }
 
+            if (random_x == 0 && random_y == 1) {
+                obstacle_num++;
+                continue;
+            }
+
+            if (random_x == 1 && random_y == 0) {
+                obstacle_num++;
+                continue;
+            }
+
+
             String x_val = String.valueOf(random_x);
             String y_val = String.valueOf(random_y);
             String result = x_val + y_val;
@@ -177,6 +193,17 @@ public class Map {
                 chest_num++;
                 continue;
             }
+
+            if (random_x == 0 && random_y == 1) {
+                chest_num++;
+                continue;
+            }
+
+            if (random_x == 1 && random_y == 0) {
+                chest_num++;
+                continue;
+            }
+
 
             String x_val = String.valueOf(random_x);
             String y_val = String.valueOf(random_y);
@@ -211,10 +238,31 @@ public class Map {
                 String x_val = String.valueOf(random_x);
                 String y_val = String.valueOf(coin_flip_2);
                 String result = x_val + y_val;
+                if (random_x == 0 && coin_flip_2 == 0) {
+                    continue;
+                }
+
+                if (random_x == 0 && coin_flip_2 == 1) {
+                    continue;
+                }
+
+                if (random_x == 0 && coin_flip_2 == 2) {
+                    continue;
+                }
+
+                if (random_x == 1 && coin_flip_2 == 0) {
+                    continue;
+                }
+
+                if (random_x == 2 && coin_flip_2 == 0) {
+                    continue;
+                }
     
                 if (occupied_spots.contains(result)) {
                     continue;
                 }
+
+                
 
                 if (coin_flip_2 == 1) {
                     if (random_x == 0) {
@@ -270,6 +318,26 @@ public class Map {
                 String x_val = String.valueOf(coin_flip_2);
                 String y_val = String.valueOf(random_y);
                 String result = x_val + y_val;
+
+                if (coin_flip_2 == 0 && random_y == 0) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 0 && random_y == 1) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 0 && random_y == 2) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 1 && random_y == 0) {
+                    continue;
+                }
+
+                if (coin_flip_2 == 2 && random_y == 0) {
+                    continue;
+                }
     
                 if (occupied_spots.contains(result)) {
                     continue;

@@ -143,6 +143,7 @@ public class Interact implements Visitor{
     public void visitExitTile(ExitTile eTile) {
         //moves map to the next room in sequence
         game.nextRoom();
+        System.out.println("You've entered the next room!");
     }
 
     @Override
