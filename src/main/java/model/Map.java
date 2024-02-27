@@ -107,6 +107,7 @@ public class Map {
         int chest_num = rand.nextInt(4);
         int opp_num = rand.nextInt(5) + 1;
         List<String> occupied_spots = new ArrayList<>();
+        occupied_spots.add("00");
 
         for (int i = 0; i <= opp_num; i++) {
             int random_x = rand.nextInt(x_dimension);
@@ -338,7 +339,7 @@ public class Map {
         ConcreteTile exit1 = populateRoom(10, 10, tiles1);
         Npc[] npcs1 = {};
         // fully creates the room
-        Room room1 = new Room(10, 10, "Room one: The beggining of the journey", tiles1, true, false, exit1, npcs1);
+        Room room1 = new Room(10, 10, "Room one: The begining of the journey", tiles1, true, false, exit1, npcs1);
 
 
         ConcreteTile[][] tiles2 = createRoom(8,8);
