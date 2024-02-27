@@ -56,11 +56,16 @@ public class PTUI {
     }
 
     public static int chooseItem(){
-        System.out.println("Enter the # of the item you wish to remove from the chest:");
-        int itemNum = scanner.nextInt();
+        String input = scanner.next();
+        int itemNum;
+        try{
+            itemNum = Integer.parseInt(input);
+        }catch(NumberFormatException e){
+            System.out.println("Enter a valid #");
+            return chooseItem();
+        }
         return itemNum;
     }
-
     public void editInventory(){
         System.out.println("Enter 'd' to delete an item, or 'u' to equip/use an item: ");
         char command = scanner.next().charAt(0);
