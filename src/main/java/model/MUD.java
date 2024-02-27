@@ -134,8 +134,6 @@ public class MUD {
      * @param npc the NPC to attack
      */
     public void attackNpc(Npc npc) {
-        System.out.println("You attacked " + npc + " for " + player.getAttack() + " damage\n" + npc.getName()
-                + "'s health is now " + getHealth());
         npc.takeDamage(player.getAttack());
     }
 
@@ -145,7 +143,6 @@ public class MUD {
      * @param amount the amount of damage to take
      */
     public void takeDamage(double amount) {
-        System.out.println("You took " + amount + " damage\n Your health is now " + getHealth());
         player.takeDamage(amount);
     }
 
@@ -156,13 +153,7 @@ public class MUD {
      * @return true if successfully used, false otherwise
      */
     public boolean useItem(Item item) {
-        boolean result = player.useItem(item);
-        if (result == true) {
-            System.out.println("You gained " + item.healthPoints + " health\nYour health is now " + getHealth());
-            return true;
-        }
-        System.out.println("Could not use " + item.getName());
-        return false;
+        return player.useItem(item);
     }
 
     /**
@@ -172,14 +163,7 @@ public class MUD {
      * @return true if successfully equipped, false otherwise
      */
     public boolean equipArmor(Item armor) {
-        boolean result = player.equipArmor(armor);
-        if (result == true) {
-            System.out.println(
-                    "You equipped " + armor.getName() + " and gained " + armor.getDefensePercent() + "% health");
-            return true;
-        }
-        System.out.println("Could not equip " + armor.getName());
-        return false;
+        return player.equipArmor(armor);
     }
 
     /**
@@ -189,14 +173,7 @@ public class MUD {
      * @return true if successfully equipped, false otherwise
      */
     public boolean equipWeapon(Item weapon) {
-        boolean result = player.equipWeapon(weapon);
-        if (result == true) {
-            System.out.println(
-                    "You equipped " + weapon.getName() + " and gained " + weapon.getAttackDamage() + "% attack");
-            return true;
-        }
-        System.out.println("Could not equip " + weapon.getName());
-        return false;
+        return player.equipWeapon(weapon);
     }
 
     /**

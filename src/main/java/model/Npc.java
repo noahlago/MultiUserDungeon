@@ -19,11 +19,13 @@ public class Npc extends Character {
     public double getAttack(){
        return attack;
      }
+     
      @Override
      public void editStats(double factor){
         attack = baseAttack * factor;
         health = baseHealth * factor;
      }
+
      public boolean getIsNocturnal(){
         return isNocturnal;
      }

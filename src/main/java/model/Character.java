@@ -24,6 +24,7 @@ public class Character {
 
     public void takeDamage(double amount){
         health = health - amount;
+        System.out.println(getName() + " took " + amount + " damage. " + getName() + "'s health is now " + getHealth());
     }
 
     public double getAttack() {
