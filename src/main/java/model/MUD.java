@@ -319,15 +319,6 @@ public class MUD {
         return this.currentRoom.toString();
     }
 
-    /*
-     * to do:
-     * 
-     * add visitor functionality (move to another tile)
-     * npcs attack pcs after each round
-     * move to next room (if tile is exit)
-     * win game if tile is exit and room is goal
-     */
-
     public void movePlayer(int x, int y) {
         int[] playerLocation = player.getLocation();
         int xCoord = playerLocation[0] + x;
