@@ -411,7 +411,7 @@ public class MUD {
                     player.takeDamage(npc.getAttack());
                 }
             }
-
+            uptickTurns();
             currentRoom.getTile(xCoord, yCoord).accept(action);
 
         }
