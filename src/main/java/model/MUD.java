@@ -257,40 +257,81 @@ public class MUD {
         int width = currentRoom.getWidth();
         int height = currentRoom.getHeight();
 
+        
         //making sure all adjacent tiles are in bounds
         if((0< xCoord && xCoord < width-1) && (0 < yCoord && yCoord < height-1)){
-            closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);
-            closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);
-            closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);
-            closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);
+            closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);     //DOWN
+            closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);     //RIGHT
+            closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);     //UP
+            closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);     //LEFT
+            closeTiles[4] = currentRoom.getTile(xCoord-1, yCoord-1);    //TOP LEFT
+            closeTiles[5] = currentRoom.getTile(xCoord-1, yCoord+1);    //TOP RIGHT
+            closeTiles[6] = currentRoom.getTile(xCoord+1, yCoord+1);    //BOTTOM RIGHT
+            closeTiles[7] = currentRoom.getTile(xCoord+1, yCoord-1);    //BOTTOM LEFT
+
         }
         else{
-            //x = 0, you can only move right
+            //Row = 0, can move down
             if(xCoord == 0){
-                closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);
-            }
-            //x = width, you can only move left
-            else if(xCoord == width-1){
-                closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);
-            }
-            //otherwise, move left and right
-            else{
-                closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);
-                closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);
+                
+                closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);     //DOWN
+                
+                if(yCoord > 0){
+                    closeTiles[7] = currentRoom.getTile(xCoord+1, yCoord-1);    //BOTTOM LEFT
+                }
+                if(yCoord < height-1){ 
+                    closeTiles[6] = currentRoom.getTile(xCoord+1, yCoord+1);    //BOTTOM RIGHT
+                }
             }
 
-            //y = 0, can only move up
-            if(yCoord == 0){  
-                closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);
+            //row = max, can move up
+            else if(xCoord == width-1){
+                closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);     //UP
+
+                if(yCoord > 0){
+                    closeTiles[4] = currentRoom.getTile(xCoord-1, yCoord-1);    //TOP LEFT
+                }
+                if(yCoord < height-1){ 
+                    closeTiles[5] = currentRoom.getTile(xCoord-1, yCoord+1);    //TOP RIGHT
+                }
             }
-            //y=height, can only move down
-            else if(yCoord == height-1){   
-                closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);
-            }
-            //otherwise, move up and down
+
+            //otherwise, move left and right
             else{
-                closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);
-                closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);
+                closeTiles[2] =  currentRoom.getTile(xCoord-1, yCoord);     //UP
+                closeTiles[0] =  currentRoom.getTile(xCoord+1, yCoord);     //DOWN
+            }
+
+
+
+            //Col = 0, can only move right
+            if(yCoord == 0){  
+                closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);     //RIGHT
+
+                if(xCoord > 0){
+                    closeTiles[5] = currentRoom.getTile(xCoord-1, yCoord+1);    //TOP RIGHT
+                }
+                if(xCoord < width-1){ 
+                    closeTiles[6] = currentRoom.getTile(xCoord+1, yCoord+1);    //BOTTOM RIGHT
+                }
+            }
+
+            //col = max, can only move left
+            else if(yCoord == height-1){   
+                closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);     //LEFT
+
+                if(xCoord > 0){
+                    closeTiles[4] = currentRoom.getTile(xCoord-1, yCoord-1);    //TOP LEFT
+                }
+                if(xCoord < width-1){ 
+                    closeTiles[7] = currentRoom.getTile(xCoord+1, yCoord-1);    //BOTTOM LEFT
+                }
+            }
+
+            //otherwise, move right and left
+            else{
+                closeTiles[1] =  currentRoom.getTile(xCoord, yCoord+1);     //RIGHT
+                closeTiles[3] =  currentRoom.getTile(xCoord, yCoord-1);     //LEFT
             }    
         }
 
