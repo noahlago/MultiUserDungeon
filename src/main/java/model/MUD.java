@@ -2,6 +2,7 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -372,22 +373,15 @@ public class MUD {
         return tiles;
     }
 
-    public CharacterTile[] getCharacterTiles() {
+    public ArrayList<CharacterTile> getCharacterTiles() {
         ConcreteTile[] tiles = getCloseTiles();
-        int size = 0;
+        ArrayList<CharacterTile> characters = new ArrayList<>();
         for (ConcreteTile tile : tiles) {
             if (tile instanceof CharacterTile) {
-                size++;
+                characters.add((CharacterTile)tile);
             }
-            CharacterTile[] charTiles = new CharacterTile[size];
-            for (int i = 0; i < size; i++) {
-                if (tiles[i] instanceof CharacterTile) {
-                    charTiles[i] = (CharacterTile)tiles[i];
-                }
-            }
-            return charTiles;
         }
-        return null;
+        return characters;
     }
 
     public String inventoryString(){
@@ -410,10 +404,10 @@ public class MUD {
         // making sure the tile is in bounds
         if ((0 <= xCoord && xCoord < width) && (0 <= yCoord && yCoord < height)) {
             
-            CharacterTile[] charTiles = getCharacterTiles();
+            ArrayList<CharacterTile> charTiles = getCharacterTiles();
             if(charTiles != null){
-                for(int i = 0;i< charTiles.length;i++){
-                    Npc npc = (Npc)charTiles[i].getCharacter();
+                for(CharacterTile tile : charTiles){
+                    Npc npc = (Npc)tile.getCharacter();
                     player.takeDamage(npc.getAttack());
                 }
             }
