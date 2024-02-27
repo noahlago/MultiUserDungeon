@@ -220,7 +220,7 @@ public class MUD {
         int y = player.getCurrY();
 
         if (getHealth() <= 0) {
-            System.out.println("You lost!");
+            System.out.println("You lost! Womp Womp");
             return true;
         }
         else if ((getCurrentRoom().getTile(x, y) instanceof ExitTile) && getCurrentRoom().getIsGoal()){

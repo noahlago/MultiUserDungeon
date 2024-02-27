@@ -2,6 +2,7 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Random;
 
 public class Npc extends Character {
     @JsonProperty("isNocturnal") protected boolean isNocturnal = false;
