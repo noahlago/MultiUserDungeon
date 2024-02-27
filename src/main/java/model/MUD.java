@@ -356,6 +356,14 @@ public class MUD {
         return closeTiles;
     }
 
+    public String closeTilesString(){
+        ConcreteTile[] close = getCloseTiles();
+        String tiles = "" + close[4] + close[2] + close[5] + "\n";
+        tiles += "" + close[3] + "[ i ]" + close[1] + "\n";
+        tiles += "" + close[7] + close[0] + close[6] + "\n";
+        return tiles;
+    }
+
     public CharacterTile[] getCharacterTiles() {
         ConcreteTile[] tiles = getCloseTiles();
         int size = 0;
