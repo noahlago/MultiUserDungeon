@@ -249,7 +249,7 @@ public class MUD {
     }
 
     public ConcreteTile[] getCloseTiles(){
-        ConcreteTile[] closeTiles = new ConcreteTile[4];
+        ConcreteTile[] closeTiles = new ConcreteTile[8];
         int[] playerLocation = player.getLocation();
         int xCoord = playerLocation[0];
         int yCoord = playerLocation[1];
