@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import model.Tiles.CharacterTile;
 import model.Tiles.ConcreteTile;
+import model.Tiles.ExitTile;
 import model.Tiles.TrapTile;
 
 /**
@@ -189,7 +190,6 @@ public class MUD {
      * @return current state of cycle
      */
     public Cycle getCycle() {
-        System.out.println("It is currently " + cycle.toString());
         return cycle;
     }
 
@@ -215,13 +215,18 @@ public class MUD {
      *         room, false otherwise
      */
     public boolean gameOver() {
+        int x = player.getCurrX();
+        int y = player.getCurrY();
+
         if (getHealth() <= 0) {
             System.out.println("You lost!");
             return true;
         }
-        // else if (/*character on exit tile in goal room*/){
-        // System.out.println("You won!");
-        // }
+        else if ((getCurrentRoom().getTile(x, y) instanceof ExitTile) && getCurrentRoom().getIsGoal()){
+            System.out.println("You won!");
+            return true;
+        }
+        
         return false;
     }
 
@@ -393,15 +398,6 @@ public class MUD {
     public String toString() {
         return this.currentRoom.toString();
     }
-
-    /*
-     * to do:
-     * 
-     * add visitor functionality (move to another tile)
-     * npcs attack pcs after each round
-     * move to next room (if tile is exit)
-     * win game if tile is exit and room is goal
-     */
 
     public void movePlayer(int x, int y) {
         int[] playerLocation = player.getLocation();

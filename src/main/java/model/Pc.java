@@ -50,7 +50,7 @@ public class Pc extends Character {
      * @return true if item used successfully, false otherwise
      */
     public boolean useItem(Item item){
-        if(item.getHealthPoints() > 0){
+        if(item.getType() == ItemType.CONSUMABLE){
             inventory.remove(item);
             gainHealth(item.getHealthPoints());
             System.out.println("You gained " + item.healthPoints + " health\nYour health is now " + getHealth());
@@ -66,7 +66,7 @@ public class Pc extends Character {
      * @return true if armor is successfully equipped, false otherwise
      */
     public boolean equipArmor(Item newArmor){
-        if(inventory.remove(newArmor) == true && newArmor.getDefensePercent() != 0){
+        if(newArmor.getType() == ItemType.ARMOR){
             if(armorSlot != null){
                 if(RemoveArmor()){
                     System.out.println("Unequipped " + armorSlot.getName());
@@ -91,7 +91,7 @@ public class Pc extends Character {
      * @return true if weapon is successfully equipped, false otherwise
      */
     public boolean equipWeapon(Item newWeapon){
-        if(newWeapon.getAttackDamage() != 0 && inventory.remove(newWeapon) == true){
+        if(newWeapon.getType() == ItemType.WEAPON){
             if(weaponSlot != null){
                 if(RemoveWeapon()){
                     System.out.println("Unequipped " + weaponSlot.getName());
