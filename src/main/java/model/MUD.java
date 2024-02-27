@@ -220,12 +220,14 @@ public class MUD {
     public boolean getGameOver() {
         if (getHealth() <= 0) {
             gameOver = true;
+            System.out.println("You lost!");
         }
         return gameOver;
     }
 
     public void winGame(){
         gameOver = true;
+        System.out.println("You won!");
     }
 
     public boolean roomIsGoal(){

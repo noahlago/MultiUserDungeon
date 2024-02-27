@@ -410,10 +410,10 @@ public class Map {
         Room room1 = new Room(10, 10, "Room one: The begining of the journey", tiles1, true, false, exit1, npcs1);
 
 
-        ConcreteTile[][] tiles2 = createRoom(8,8);
-        ConcreteTile exit2 = populateRoom(8,8,tiles2);
+        ConcreteTile[][] tiles2 = createRoom(10,10);
+        ConcreteTile exit2 = populateRoom(10,10,tiles2);
         Npc[] npcs2 = {};
-        Room room2 = new Room(8, 8, "Room two yippee", tiles2, false, true, exit2, npcs2);
+        Room room2 = new Room(10, 10, "Room two yippee", tiles2, false, true, exit2, npcs2);
 
         createdRooms.add(room1);
         createdRooms.add(room2);
