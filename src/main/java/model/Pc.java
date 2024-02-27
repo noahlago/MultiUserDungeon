@@ -72,6 +72,7 @@ public class Pc extends Character {
                 RemoveArmor();
             }
             this.armorSlot = newArmor;
+            inventory.remove(newArmor);
             System.out.println("You equipped " + newArmor.getName() + " and gained " + newArmor.getDefensePercent() + "% health");
             return true;
         }
@@ -91,6 +92,7 @@ public class Pc extends Character {
                 RemoveWeapon();
             }
             this.weaponSlot = newWeapon;
+            inventory.remove(newWeapon);
             System.out.println("You equipped " + newWeapon.getName() + " and gained " + newWeapon.getAttackDamage() + "% attack");
             return true;
         }
@@ -134,7 +136,7 @@ public class Pc extends Character {
      */
     public void destroyItem(Item item){
         System.out.println("Destroyed " + item.getName());
-        this.inventory.remove(item);
+        inventory.remove(item);
     }
     
     public Inventory getInventory(){
