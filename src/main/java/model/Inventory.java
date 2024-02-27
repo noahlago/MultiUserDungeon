@@ -121,11 +121,14 @@ public class Inventory implements Container<Bag>{
     public ArrayList<Item> items() {
         ArrayList<Item> allItems = new ArrayList<>();
         for(Container<Item> bag : this.bags){
-            for(Item item : bag.items()){
-                if(item != null){
-                    allItems.add(item);
+            if(bag != null){
+                for(Item item : bag.items()){
+                    if(item != null){
+                        allItems.add(item);
+                    }
                 }
             }
+
         }
         return allItems;
     }
@@ -164,9 +167,9 @@ public class Inventory implements Container<Bag>{
             if(bag != null){
                 inv += "( ";
                 for(Item item : bag.items()){
-                    inv += "{" + item + "}";
+                    inv += "{" + item + "} ";
                 }
-                inv += " )\n";
+                inv += ")\n";
             }
         }
 

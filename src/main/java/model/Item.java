@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Item  {
-    @JsonProperty("type") protected String type;
+    @JsonProperty("type") protected ItemType type;
     @JsonProperty("name") protected String name;
     @JsonProperty("description") protected String description;
     @JsonProperty("attackDamage") protected double attackDamage;
@@ -12,18 +12,19 @@ public class Item  {
     @JsonProperty("defensePercent") protected double defensePercent;
 
     @JsonCreator 
-    public Item(@JsonProperty("name") String name, @JsonProperty("description") String description) {
+    public Item(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("type") ItemType type) {
         this.name = name;
         this.attackDamage = 0.0;
         this.healthPoints = 0.0;
         this.defensePercent = 0.0;
+        this.type = type;
     }
 
     public double getAttackDamage() {
         return attackDamage;
     }
 
-    public String getType() {
+    public ItemType getType() {
         return type;
     }
 

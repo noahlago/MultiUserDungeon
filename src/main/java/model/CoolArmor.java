@@ -2,7 +2,7 @@ package model;
 
 public class CoolArmor extends Item {
     public CoolArmor(String name, String description){
-        super(name, description);
+        super(name, description, ItemType.ARMOR);
         super.defensePercent += 0.50;
     }
 }

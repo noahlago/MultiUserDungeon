@@ -385,6 +385,14 @@ public class MUD {
         this.currentRoom.specializeTiles();
     }
 
+    public int getPlayerGold(){
+        return this.player.getGoldAmount();
+    }
+
+    public Inventory getInventory(){
+        return this.player.getInventory();
+    }
+
     public static void main(String[] args) {
         Pc play = new Pc(1, 10, "mars", new Inventory(), 100);
         Map map = new Map();
