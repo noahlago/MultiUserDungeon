@@ -358,9 +358,35 @@ public class MUD {
 
     public String closeTilesString(){
         ConcreteTile[] close = getCloseTiles();
-        String tiles = "" + close[4] + close[2] + close[5] + "\n";
-        tiles += "" + close[3] + "[ i ]" + close[1] + "\n";
-        tiles += "" + close[7] + close[0] + close[6] + "\n";
+        String tiles = "";
+        if(close[4] != null){
+            tiles += close[4];
+        }
+        if(close[2] != null){
+            tiles += close[2];
+        }
+        if(close[5] != null){
+            tiles += close[5];
+        }
+        tiles += "\n";
+        if(close[3] != null){
+            tiles += close[3];
+        }
+        tiles += "[ i ]";
+        if(close[1] != null){
+            tiles += close[1];
+        }
+        tiles += "\n";
+        if(close[7] != null){
+            tiles += close[7];
+        }
+        if(close[0] != null){
+            tiles += close[0];
+        }
+        if(close[6] != null){
+            tiles += close[6];
+        }
+        tiles += "\n";
         return tiles;
     }
 
