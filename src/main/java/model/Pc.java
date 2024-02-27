@@ -68,8 +68,13 @@ public class Pc extends Character {
     public boolean equipArmor(Item newArmor){
         if(inventory.remove(newArmor) == true && newArmor.getDefensePercent() != 0){
             if(armorSlot != null){
-                System.out.println("Unequipped " + armorSlot.getName());
-                RemoveArmor();
+                if(RemoveArmor()){
+                    System.out.println("Unequipped " + armorSlot.getName());
+                }
+                else{
+                    System.out.println("Could not unequip current armor");
+                    return false;
+                }
             }
             this.armorSlot = newArmor;
             inventory.remove(newArmor);
@@ -88,8 +93,13 @@ public class Pc extends Character {
     public boolean equipWeapon(Item newWeapon){
         if(newWeapon.getAttackDamage() != 0 && inventory.remove(newWeapon) == true){
             if(weaponSlot != null){
-                System.out.println("Unequipped " + weaponSlot.getName());
-                RemoveWeapon();
+                if(RemoveWeapon()){
+                    System.out.println("Unequipped " + weaponSlot.getName());
+                }
+                else{
+                    System.out.println("Could not unequip current weapon");
+                    return false;
+                }
             }
             this.weaponSlot = newWeapon;
             inventory.remove(newWeapon);
