@@ -416,9 +416,8 @@ public class MUD {
             }
             uptickTurns();
             currentRoom.getTile(xCoord, yCoord).accept(action);
-
+            uptickTurns();
         }
-
         // player tries to move outside of playable area
         else {
             System.out.println("Cannot move out of bounds");
