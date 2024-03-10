@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import model.Tiles.CharacterTile;
 import model.Tiles.ConcreteTile;
-import model.Tiles.ExitTile;
 import model.Tiles.TrapTile;
 
 /**
@@ -37,6 +36,8 @@ public class MUD {
     public int numTurns;
     @JsonProperty("cycle")
     public Cycle cycle;
+    @JsonProperty("gameOver")
+    public boolean gameOver;
 
     /**
      * Instance of a MUD game
@@ -54,6 +55,7 @@ public class MUD {
         this.action = new Interact(this, this.currentRoom, this.player);
 
         this.cycle = new Day();
+        this.gameOver = false;
     }
 
     /**
@@ -215,20 +217,21 @@ public class MUD {
      * @return true if character health is <= 0 or character on exit tile of goal
      *         room, false otherwise
      */
-    public boolean gameOver() {
-        int x = player.getCurrX();
-        int y = player.getCurrY();
-
+    public boolean getGameOver() {
         if (getHealth() <= 0) {
-            System.out.println("You lost! Womp Womp");
-            return true;
+            gameOver = true;
+            System.out.println("You lost!");
         }
-        else if ((getCurrentRoom().getTile(x, y) instanceof ExitTile) && getCurrentRoom().getIsGoal()){
-            System.out.println("You won!");
-            return true;
-        }
-        
-        return false;
+        return gameOver;
+    }
+
+    public void winGame(){
+        gameOver = true;
+        System.out.println("You won!");
+    }
+
+    public boolean roomIsGoal(){
+        return getCurrentRoom().getIsGoal();
     }
 
     public ConcreteTile[] getCloseTiles(){
