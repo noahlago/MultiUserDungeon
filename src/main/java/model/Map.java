@@ -100,7 +100,7 @@ public class Map {
     }
         
        
-    public ConcreteTile populateRoom(int x_dimension, int y_dimension, ConcreteTile[][] room) {
+    public ConcreteTile populateRoom(int x_dimension, int y_dimension, ConcreteTile[][] room, int exitX, int exitY) {
         Random rand = new Random();
         int trap_num = rand.nextInt(6);
         int obstacle_num = rand.nextInt(6);
@@ -227,7 +227,8 @@ public class Map {
             room[random_x][random_y] = new ChestTile(chest);
         }
 
-        ConcreteTile exit1 = room[9][9];
+        room[exitX][exitY] = new ExitTile();
+        ConcreteTile exit1 = room[exitX][exitY];
         room[0][0] = new CharacterTile(player, 0, 0);
 
         while (true) {
@@ -260,56 +261,6 @@ public class Map {
     
                 if (occupied_spots.contains(result)) {
                     continue;
-                }
-
-                
-
-                if (coin_flip_2 == 1) {
-                    if (random_x == 0) {
-                        if (occupied_spots.contains("01") && occupied_spots.contains("10")) {
-                            continue;
-                        }
-                    }
-                    if (random_x == 9) {
-                        if (occupied_spots.contains("89") && occupied_spots.contains("98")) {
-                            continue;
-                        }
-                    }
-
-                    String add = String.valueOf(random_x+1);
-                    String block1 = add + "0";
-
-                    String cord1 = String.valueOf(random_x-1);
-                    String block2 = cord1 + "0";
-
-                    String cord2 = String.valueOf(random_x);
-                    String block3 = cord2 + "1";
-                    
-                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
-                        continue;
-                    }
-
-                    add = String.valueOf(random_x+1);
-                    block1 = add + "9";
-
-                    cord1 = String.valueOf(random_x-1);
-                    block2 = cord1 + "9";
-
-                    cord2 = String.valueOf(random_x);
-                    block3 = cord2 + "8";
-                    
-                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
-                        continue;
-                    }
-                    
-                    room[random_x][0] = new ExitTile();
-                    exit1 = room[random_x][0];
-                    break;
-                }
-                else {
-                    room[random_x][9] = new ExitTile();
-                    exit1 = room[random_x][9];
-                    break;
                 }
             }
             else {
@@ -404,14 +355,14 @@ public class Map {
         // Creates room based on dimensions
         ConcreteTile[][] tiles1 = createRoom(10,10);
         // Randomly populates room with traps, obsticales, and chests. Returns Exit located at random position
-        ConcreteTile exit1 = populateRoom(10, 10, tiles1);
+        ConcreteTile exit1 = populateRoom(10, 10, tiles1, 10, 6);
         Npc[] npcs1 = {};
         // fully creates the room
         Room room1 = new Room(10, 10, "Room one: The begining of the journey", tiles1, true, false, exit1, npcs1);
 
 
         ConcreteTile[][] tiles2 = createRoom(10,10);
-        ConcreteTile exit2 = populateRoom(10,10,tiles2);
+        ConcreteTile exit2 = populateRoom(10,10,tiles2, 0, 8);
         Npc[] npcs2 = {};
         Room room2 = new Room(10, 10, "Room two yippee", tiles2, false, true, exit2, npcs2);
 
