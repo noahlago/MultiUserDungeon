@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,6 +19,7 @@ public class User {
     @JsonProperty("gameInProgress") private MUD gameInProgress;
     @JsonProperty("loggedIn") private boolean loggedIn;
 
+    @JsonCreator
     public User(@JsonProperty("username") String username, @JsonProperty("password") String password){
         this.username = username;
         this.password = password;
