@@ -59,6 +59,14 @@ public class MUD {
     }
 
     /**
+     * Sets map to a premade map option
+     * @param premadeMap the map to play
+     */
+    public void selectPremadeMap(Map premadeMap){
+        this.map = premadeMap;
+    }
+
+    /**
      * @return map toString
      */
     public Map getMap() {
