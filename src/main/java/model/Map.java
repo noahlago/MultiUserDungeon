@@ -26,13 +26,14 @@ public class Map {
     @JsonProperty("rooms") private List<Room> rooms; // list of rooms in the map
     @JsonProperty("player") private Character player;
 
-    /**
-     * Map of rooms the player will go through
-     * Currently hardcoded
-     */
+    @JsonCreator 
+    public Map(@JsonProperty("rooms") List<Room> rooms){
+        this.rooms = rooms;
+    }
+
     @JsonCreator 
     public Map(){
-        this.rooms = createRooms();
+        this.rooms = null;
     }
 
     public void setPlayer(Character player) {
@@ -230,146 +231,12 @@ public class Map {
         room[exitX][exitY] = new ExitTile();
         ConcreteTile exit1 = room[exitX][exitY];
         room[0][0] = new CharacterTile(player, 0, 0);
-
-        while (true) {
-            int coin_flip = rand.nextInt(2);
-            if (coin_flip == 1) {
-                int random_x = rand.nextInt(x_dimension);
-                int coin_flip_2 = rand.nextInt(2);
-                String x_val = String.valueOf(random_x);
-                String y_val = String.valueOf(coin_flip_2);
-                String result = x_val + y_val;
-                if (random_x == 0 && coin_flip_2 == 0) {
-                    continue;
-                }
-
-                if (random_x == 0 && coin_flip_2 == 1) {
-                    continue;
-                }
-
-                if (random_x == 0 && coin_flip_2 == 2) {
-                    continue;
-                }
-
-                if (random_x == 1 && coin_flip_2 == 0) {
-                    continue;
-                }
-
-                if (random_x == 2 && coin_flip_2 == 0) {
-                    continue;
-                }
-    
-                if (occupied_spots.contains(result)) {
-                    continue;
-                }
-            }
-            else {
-                int random_y = rand.nextInt(y_dimension);
-                int coin_flip_2 = rand.nextInt(2);
-                String x_val = String.valueOf(coin_flip_2);
-                String y_val = String.valueOf(random_y);
-                String result = x_val + y_val;
-
-                if (coin_flip_2 == 0 && random_y == 0) {
-                    continue;
-                }
-
-                if (coin_flip_2 == 0 && random_y == 1) {
-                    continue;
-                }
-
-                if (coin_flip_2 == 0 && random_y == 2) {
-                    continue;
-                }
-
-                if (coin_flip_2 == 1 && random_y == 0) {
-                    continue;
-                }
-
-                if (coin_flip_2 == 2 && random_y == 0) {
-                    continue;
-                }
-    
-                if (occupied_spots.contains(result)) {
-                    continue;
-                }
-                
-                if (coin_flip_2 == 1) {
-                    if (random_y == 0) {
-                        if (occupied_spots.contains("01") && occupied_spots.contains("10")) {
-                            continue;
-                        }
-                    }
-                    if (random_y == 9) {
-                        if (occupied_spots.contains("89") && occupied_spots.contains("98")) {
-                            continue;
-                        }
-                    }
-
-                    String add = String.valueOf(random_y+1);
-                    String block1 = "0" + add;
-
-                    String cord1 = String.valueOf(random_y-1);
-                    String block2 = "0" + cord1;
-
-                    String cord2 = String.valueOf(random_y);
-                    String block3 = "1" + cord2;
-                    
-                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
-                        continue;
-                    }
-
-                    add = String.valueOf(random_y+1);
-                    block1 = "9" + add;
-
-                    cord1 = String.valueOf(random_y-1);
-                    block2 = "9" + cord1;
-
-                    cord2 = String.valueOf(random_y);
-                    block3 = "8" + cord2;
-                    
-                    if (occupied_spots.contains(block3) && occupied_spots.contains(block2) && occupied_spots.contains(block1)) {
-                        continue;
-                    }
-
-                    room[0][random_y] = new ExitTile();        
-                    exit1 = room[0][random_y];
-                    break;
-                }
-                else {
-                    room[9][random_y] = new ExitTile();
-                    exit1 = room[9][random_y];
-                    break;
-                }
-            }
-        }
+        
         return exit1;
     }
-    
-    /**
-     * Creates hardcoded rooms for map
-     * @return List of rooms
-     */
-    public List<Room> createRooms(){
-        List<Room> createdRooms = new ArrayList<>();
-        // Creates room based on dimensions
-        ConcreteTile[][] tiles1 = createRoom(10,10);
-        // Randomly populates room with traps, obsticales, and chests. Returns Exit located at random position
-        ConcreteTile exit1 = populateRoom(10, 10, tiles1, 10, 6);
-        Npc[] npcs1 = {};
-        // fully creates the room
-        Room room1 = new Room(10, 10, "Room one: The begining of the journey", tiles1, true, false, exit1, npcs1);
 
-
-        ConcreteTile[][] tiles2 = createRoom(10,10);
-        ConcreteTile exit2 = populateRoom(10,10,tiles2, 0, 8);
-        Npc[] npcs2 = {};
-        Room room2 = new Room(10, 10, "Room two yippee", tiles2, false, true, exit2, npcs2);
-
-        createdRooms.add(room1);
-        createdRooms.add(room2);
-
-        return createdRooms;
+    public int numRooms(){
+        return rooms.size();
     }
 
     /**
