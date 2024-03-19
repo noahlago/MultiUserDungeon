@@ -14,22 +14,60 @@ import model.Tiles.ConcreteTile;
  */
 public class PremadeMaps {
     @JsonProperty("maps") private List<Map> maps;
+    @JsonProperty("index") private int index;
 
     @JsonCreator
     public PremadeMaps(){
         this.maps = createMaps();
+        this.index = 0;
     }
 
+    /**
+     * @return list of premade maps
+     */
     public List<Map> getMaps(){
         return maps;
     }
 
-    public Map getMap(int index){
-        return maps.get(index);
+    /**
+     * Gets map given a specific index
+     * @param ind index of map
+     * @return specific map
+     */
+    public Map getMap(int ind){
+        return maps.get(ind);
+    }
+
+    public void incrementIndex(){
+        if(index < maps.size()){
+            this.index++;
+        }
+    }
+
+    public void decrementIndex(){
+        if(index > 0){
+            this.index--;
+        }
     }
 
     /**
-     * Creates hardcoded premade maps (currently 3 maps)
+     * View next map in list
+     */
+    public void viewNextMap(){
+        incrementIndex();
+        getMap(index);
+    }
+
+    /**
+     * View previous map in list
+     */
+    public void viewPrevMap(){
+        decrementIndex();
+        getMap(index);
+    }
+
+    /**
+     * Creates hard-coded premade maps (currently 3 maps)
      * @return list of premade maps
      */
     public List<Map> createMaps(){
