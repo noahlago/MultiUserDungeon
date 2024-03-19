@@ -39,6 +39,14 @@ public class Interact implements Visitor{
 
             System.out.println("You killed " + npc.getName());
 
+            //get gold from the npc
+            int gold = npc.getGold();
+
+            //add gold to user inventory 
+            player.addGold(gold);
+
+
+            //coordinates of npc
             int row = cTile.getRow();
             int col = cTile.getCol();
 

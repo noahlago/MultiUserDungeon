@@ -148,6 +148,14 @@ public class Pc extends Character {
         System.out.println("Destroyed " + item.getName());
         inventory.remove(item);
     }
+
+    /**
+     * Adds gold to the player's inventory
+     * @param gold gold won
+     */
+    public void addGold(int gold){
+        this.goldAmount +=gold;
+    }
     
     public Inventory getInventory(){
         return inventory;

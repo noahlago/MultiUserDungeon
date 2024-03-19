@@ -39,6 +39,9 @@ public class Character {
     public String getName() {
         return name;
     }
+    public int getGold(){
+        return goldAmount;
+    }
     public void editStats(double factor){
         //Only needs implementation if NPC
     }
