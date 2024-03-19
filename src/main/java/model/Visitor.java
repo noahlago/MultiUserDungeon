@@ -4,6 +4,7 @@ import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
+import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
 
@@ -26,5 +27,14 @@ public interface Visitor {
 
     //Interactions with an obstacle tile (can't move)
     public void visitObstacleTile(ObstacleTile oTile);
+
+    //Interactions with a merchant
+    public void visitMerchantTile(MerchantTile mTile);
+
+    //interactions with an entrance (brings you to the previous exit)
+    public void visitEntranceTile();
+
+    //interactions with a shrine for respawning
+    public void visitShrineTile();
     
 }

@@ -5,6 +5,7 @@ import model.Tiles.ChestTile;
 import model.Tiles.ConcreteTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
+import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
 import view.PTUI;
@@ -160,6 +161,24 @@ public class Interact implements Visitor{
         String name = oTile.getName();
         System.out.println("A " + name + " blocks your path");
 
+    }
+
+    @Override
+    public void visitMerchantTile(MerchantTile mTile) {
+        // TODO Add interaction for character to buy items from the merchant
+        throw new UnsupportedOperationException("Unimplemented method 'visitMerchantTile'");
+    }
+
+    @Override
+    public void visitEntranceTile() {
+        // TODO moves character to the previous exit tile/ previous room in the map
+        throw new UnsupportedOperationException("Unimplemented method 'visitEntranceTile'");
+    }
+
+    @Override
+    public void visitShrineTile() {
+        // TODO Save user position so they respawn at the shrine
+        throw new UnsupportedOperationException("Unimplemented method 'visitShrineTile'");
     }
     
 }
