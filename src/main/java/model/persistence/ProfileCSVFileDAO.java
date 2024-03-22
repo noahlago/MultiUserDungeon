@@ -1,6 +1,7 @@
 package model.persistence;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,8 +50,21 @@ public class ProfileCSVFileDAO implements ProfileDAO{
         scanner.close();
     }
 
-    public void save(){
-        //TODO
+    /**
+     * 
+     * @throws IOException
+     */
+    public void save() throws IOException{
+        File file = new File(filename);
+        FileWriter writer = new FileWriter(file);
+        writer.append("username,password,gamesPlayed,livesLost,totalGold,itemsFound\n");
+        for(String username : profiles.keySet()){
+            User user = profiles.get(username);
+            writer.append(username + "," + user.getPassword() + "," + user.getGamesPlayed() + "," + user.getLivesLost() + "," + user.getMonstersKilled() + "," + user.getTotalGold() + "," + user.getItemsFound() + "\n");
+        }
+
+        writer.flush();
+        writer.close();
     }
 
     /**
