@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import model.User;
 
 public class ExportProfile {
@@ -24,12 +26,15 @@ public class ExportProfile {
         writer.close();
     }
     
-    public void exportXML(String filename, String username){
-        //TODO
+    public void exportXML(String filename, String username) throws IOException{
+        //File exportFile = makeFile(filename);
     }
 
-    public void exportJSON(String filename, String username){
-        //TODO
+    public void exportJSON(String filename, String username) throws IOException{
+        File exportFile = makeFile(filename);
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = profileManager.getUser(username);
+        objectMapper.writeValue(exportFile, user);
     }
 
     private File makeFile(String filename) throws IOException{
