@@ -224,6 +224,19 @@ public class MUD {
     }
 
     /**
+     * Sells item for half its value in gold
+     * Item is destroyed after sold
+     * @param item item to sell
+     */
+    public void sellItemToMerchant(Item item){
+        int value = (item.getGoldValue() / 2);
+        player.increaseGold(value);
+        player.destroyItem(item);
+    }
+
+    
+
+    /**
      * Checks if the game is over
      * Tells user if they won or lost if game over
      * 
