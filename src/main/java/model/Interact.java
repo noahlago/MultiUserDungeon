@@ -168,6 +168,8 @@ public class Interact implements Visitor{
     public void visitShrineTile(ShrineTile sTile) {
         Npc[] npcs = currentRoom.getNpcs();
         boolean canPray = true;
+
+        // checks to see if enemies in room are defeated
         for(Npc npc : npcs){
             if(npc.getHealth() > 0){
                 canPray = false;

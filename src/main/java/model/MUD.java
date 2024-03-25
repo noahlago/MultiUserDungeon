@@ -131,11 +131,18 @@ public class MUD {
         return shrineRoom;
     }
 
+    /**
+     * Saves a snapshot of current room and character stats when praying at a shrine
+     * @param room current room to save
+     */
     public void setShrineRoom(Room room){
         this.shrineRoom = room;
         this.shrineCharacter = getPlayer();
     }
 
+    /**
+     * Resets game to last shrine
+     */
     public void resetShrine(){
         this.currentRoom = this.shrineRoom;
         this.player = this.shrineCharacter;
