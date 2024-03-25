@@ -101,8 +101,8 @@ public class mudGUI extends Application {
         ConcreteTile[][] tiles = room.getTiles();
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
-                Rectangle rect = createTileRectangle(tiles[i][j]);
-                gridPane.add(rect, j, i); // Note: (columnIndex, rowIndex)
+                // Rectangle rect = createTileRectangle(tiles[i][j]);
+                // gridPane.add(rect, j, i); // Note: (columnIndex, rowIndex)
             }
         }
         return null;
