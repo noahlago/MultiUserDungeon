@@ -214,13 +214,13 @@ confirmButton.setOnAction(new EventHandler<ActionEvent>() {
         Stage newGameStage = new Stage();
         VBox layout = new VBox(10); 
         Button startEndlessGameButton = new Button("Start New Endless Game");
-        startEndlessGameButton.setOnAction(e -> startEndlessGame());
+        startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
     
         Button startRegularGameButton = new Button("Start New Regular Game");
-        startRegularGameButton.setOnAction(e -> startRegularGame());
+        startRegularGameButton.setOnAction(e -> startRegularGame(newGameStage));
     
         Button joinEndlessGameButton = new Button("Join Current Endless Game");
-        joinEndlessGameButton.setOnAction(e -> joinEndlessGame());
+        joinEndlessGameButton.setOnAction(e -> joinEndlessGame(newGameStage));
     
         layout.getChildren().addAll(startEndlessGameButton, startRegularGameButton, joinEndlessGameButton);
     
@@ -230,24 +230,90 @@ confirmButton.setOnAction(new EventHandler<ActionEvent>() {
         newGameStage.show();
     }
     
-    private void startEndlessGame() {
-        System.out.println("Starting a new endless game...");
+    private void startEndlessGame(Stage stage) {
+        stage.close();
+        Stage newGameStage = new Stage();
+        VBox layout = new VBox(10); 
+        
+        Scene scene = new Scene(layout, 300, 200);
+        newGameStage.setScene(scene);
+        newGameStage.setTitle("Start New Game");
+        newGameStage.show();
     }
     
-    private void startRegularGame() {
-        System.out.println("Starting a new regular game...");
+    private void startRegularGame(Stage stage) {
+        stage.close();
+        Stage regularGameStage = new Stage();
+        VBox layout = new VBox(10); // Vertical layout with spacing of 10
+    
+        // Create a text field for the player to input a name
+        
+        TextField playerNameField = new TextField();
+        playerNameField.setPromptText("Enter your name");
+    
+        // Create a button to start the game, initially disabled
+        Button startGameButton = new Button("Start Game");
+        startGameButton.setDisable(true);
+    
+        playerNameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            startGameButton.setDisable(newValue.trim().isEmpty());
+        });
+    
+        startGameButton.setOnAction(e -> {
+            String playerName = playerNameField.getText().trim();
+            if (!playerName.isEmpty()) {
+                startGame(playerName,regularGameStage); 
+            }
+        });
+    
+        layout.getChildren().addAll(new Label("Character Name"),playerNameField, startGameButton);
+    
+        Scene scene = new Scene(layout, 300, 150); // Adjust size as needed
+        regularGameStage.setScene(scene);
+        regularGameStage.setTitle("Start Regular Game");
+        regularGameStage.show();
     }
     
-    private void joinEndlessGame() {
-        System.out.println("Joining a current endless game...");
+    private void startGame(String playerName, Stage gameStage) {
+        // Prepare the game environment as before
+        MUD mud = new MUD(new Map(), playerName);
+        currentProf.startGame(mud);
+        GridPane grid = new GridPane();
+        displayTiles(grid, mud.getCurrentRoom());
+        VBox box = new VBox();
+    
+        // Create the "Back to Profile" button
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            // Close the current game window
+            gameStage.close();
+            
+            // Call a method to show the profile again. You may need to pass necessary references or recreate the stage.
+            showLoggedIn(new Stage()); // Assuming you can recreate the profile stage like this or modify as needed
+        });
+    
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(grid, backToProfileButton);
+        
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box, 600, 400); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + playerName); // Set a title for the window
+        gameStage.show();
+    }
+    
+    
+    
+    private void joinEndlessGame(Stage stage) {
+        stage.close();
     }
     
     private Node[] displayTiles(GridPane gridPane, Room room) {
         ConcreteTile[][] tiles = room.getTiles();
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
-                // Rectangle rect = createTileRectangle(tiles[i][j]);
-                // gridPane.add(rect, j, i); // Note: (columnIndex, rowIndex)
+                Rectangle rect = createTileRectangle(tiles[i][j]);
+                gridPane.add(rect, j, i); // Note: (columnIndex, rowIndex)
             }
         }
         return null;
@@ -259,7 +325,12 @@ confirmButton.setOnAction(new EventHandler<ActionEvent>() {
         // Customize the fill color based on the tile type
         switch (tile.getType()) {
             case "CHARACTER":
-                rect.setFill(Color.RED);
+            if(tile.getType() == "NPC"){
+                rect.setFill(Color.RED);   
+            }else{
+                rect.setFill(Color.AQUAMARINE);
+            }
+                
                 break;
             case "CHEST":
                 rect.setFill(Color.GOLD);
@@ -273,8 +344,11 @@ confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             case "TRAP":
                 rect.setFill(Color.ORANGE);
                 break;
+            case "OBSTACLE":
+                rect.setFill(Color.BLACK);
+                break;
             default:
-                rect.setFill(Color.GRAY);
+                rect.setFill(Color.WHITE);
                 break;
         }
         return rect;
