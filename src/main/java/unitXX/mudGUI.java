@@ -25,14 +25,29 @@ import javafx.event.ActionEvent;
 import model.MUD;
 import model.Map;
 import model.Room;
+import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
 import model.persistence.GameFileDAO;
+import model.persistence.ProfileDAO;
+import model.persistence.ProfileCSVFileDAO;
 
 public class mudGUI extends Application {
     GameFileDAO saveManager = new GameFileDAO();
-    MUD mud = new MUD(new Map(),"NEw Game");
-
+    ProfileCSVFileDAO profileDAO;
+    
+    MUD mud = new MUD(new Map(),"New Game");
+    
+    VBox accountContent = new VBox(10);
+   
+   
+    Label newUsernameLabel = new Label("New Username:");
+    TextField newUsernameTextField = new TextField();
+    
+    Label newPasswordLabel = new Label("New Password:");
+    PasswordField newPasswordField = new PasswordField();
+    
+    Button confirmAccountButton = new Button("Confirm Account");
     @Override
     public void start(Stage stage) {
         try{
@@ -59,8 +74,26 @@ public class mudGUI extends Application {
         popupContent.setStyle("-fx-background-color: #FFFFFF;");
         popupContent.setPadding(new Insets(10)); // Set some padding around the elements
 
+        
         // Add the username and password fields to the VBox
-        popupContent.getChildren().addAll(usernameLabel, usernameTextField, passwordLabel, passwordField);
+        Button confirmButton = new Button("Confirm");
+confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+    @Override
+    public void handle(ActionEvent event) {
+        String username = usernameTextField.getText();
+        String password = passwordField.getText();
+
+            try{
+             profileDAO = new ProfileCSVFileDAO();
+             System.out.println("ERer");
+             profileDAO.logIn(username, password);
+            }catch(IOException io){
+                    System.out.println("aaaaaaaqaaaaaaaaAAAAAA");
+            }
+            popup.hide(); 
+    }
+});
+        popupContent.getChildren().addAll(usernameLabel, usernameTextField, passwordLabel, passwordField,confirmButton);
 
        
         popup.getContent().clear(); 
@@ -87,14 +120,58 @@ public class mudGUI extends Application {
                 }
             }
         };
+        Button createAccountButton = new Button("Create Account");
+        createAccountButton.setOnAction(e -> showCreateAccountPopup(stage));
         login.setOnAction(event);
         viewMaps.setOnAction(mapEvent);
         vbox.getChildren().add(t);
         vbox.getChildren().add(login);
         vbox.getChildren().add(viewMaps);
+        vbox.getChildren().add(createAccountButton);
         stage.setScene(new Scene(vbox));
         stage.setTitle("MUD Game");
         stage.show();
+    }
+    private void showCreateAccountPopup(Stage stage) {
+        accountContent.setStyle("-fx-background-color: #FFFFFF;");
+        accountContent.setPadding(new Insets(10));
+        Popup accountPopup = new Popup();
+        if (!accountPopup.isShowing()){
+                accountPopup.show(stage);
+                        
+                accountPopup.getContent().clear();
+                accountContent.getChildren().addAll(newUsernameLabel, newUsernameTextField, newPasswordLabel, newPasswordField, confirmAccountButton);
+
+                accountPopup.getContent().add(accountContent);
+        }
+            else{
+                accountPopup.hide();
+            }
+   
+        
+        confirmAccountButton.setOnAction(event -> {
+            String newUsername = newUsernameTextField.getText();
+            String newPassword = newPasswordField.getText();
+            
+            // Assuming ProfileCSVFileDAO has a method to create a new account
+            try {
+                profileDAO = new ProfileCSVFileDAO();
+                for( User user : profileDAO.getAllUsers()){
+                    if(user.getUsername() == newUsername){
+                        throw new IOException("Already used");
+                    }
+                }
+                profileDAO.newUser(new User(newUsername, newPassword));
+                accountPopup.hide();
+                
+               
+            } catch(IOException io) {
+                io.printStackTrace();
+            }
+        });
+
+      
+        accountPopup.show(stage);
     }
 
     private Node[] displayTiles(GridPane gridPane, Room room) {
