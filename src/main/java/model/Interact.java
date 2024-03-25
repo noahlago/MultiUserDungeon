@@ -6,6 +6,8 @@ import model.Tiles.ConcreteTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
+import model.Tiles.ShrineTile;
+import model.Tiles.Tile;
 import model.Tiles.TrapTile;
 import view.PTUI;
 
@@ -160,6 +162,26 @@ public class Interact implements Visitor{
         String name = oTile.getName();
         System.out.println("A " + name + " blocks your path");
 
+    }
+
+    @Override
+    public void visitShrineTile(ShrineTile sTile) {
+        Npc[] npcs = currentRoom.getNpcs();
+        boolean canPray = true;
+        for(Npc npc : npcs){
+            if(npc.getHealth() > 0){
+                canPray = false;
+            }
+        }
+
+        if(canPray == true){
+            sTile.setCanPray();
+            game.setShrineRoom(currentRoom);
+            System.out.println("You prayed at a shrine! You will now respawn here if you die.");
+        }
+        else{
+            System.out.println("You cannot pray here yet, there are undefeated enemies.");
+        }
     }
     
 }

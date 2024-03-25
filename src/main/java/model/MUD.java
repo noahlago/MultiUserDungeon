@@ -38,6 +38,8 @@ public class MUD {
     public Cycle cycle;
     @JsonProperty("gameOver")
     public boolean gameOver;
+    public Room shrineRoom;
+    public Pc shrineCharacter;
 
     /**
      * Instance of a MUD game
@@ -56,6 +58,8 @@ public class MUD {
 
         this.cycle = new Day();
         this.gameOver = false;
+        this.shrineRoom = null;
+        this.shrineCharacter = null;
     }
 
     /**
@@ -77,7 +81,7 @@ public class MUD {
         this.action = new Interact(this, this.currentRoom, this.player);
     }
 
-    public Character getPlayer() {
+    public Pc getPlayer() {
         return this.player;
     }
 
@@ -121,6 +125,20 @@ public class MUD {
      */
     public void uptickTurns() {
         numTurns += 1;
+    }
+
+    public Room getShrineRoom(){
+        return shrineRoom;
+    }
+
+    public void setShrineRoom(Room room){
+        this.shrineRoom = room;
+        this.shrineCharacter = getPlayer();
+    }
+
+    public void resetShrine(){
+        this.currentRoom = this.shrineRoom;
+        this.player = this.shrineCharacter;
     }
 
     /**
@@ -221,6 +239,11 @@ public class MUD {
         if (getHealth() <= 0) {
             gameOver = true;
             System.out.println("You lost!");
+            
+            if(getShrineRoom() != null){
+                resetShrine();
+                System.out.println("You reset at the shrine");
+            }
         }
         return gameOver;
     }

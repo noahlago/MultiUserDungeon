@@ -5,6 +5,7 @@ import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
 import model.Tiles.ObstacleTile;
+import model.Tiles.ShrineTile;
 import model.Tiles.TrapTile;
 
 public interface Visitor {
@@ -26,5 +27,8 @@ public interface Visitor {
 
     //Interactions with an obstacle tile (can't move)
     public void visitObstacleTile(ObstacleTile oTile);
+
+    //Interactions with an shrine tile
+    public void visitShrineTile(ShrineTile sTile);
     
 }
