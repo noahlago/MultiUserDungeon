@@ -170,10 +170,8 @@ public class Interact implements Visitor{
         boolean canPray = true;
 
         // checks to see if enemies in room are defeated
-        for(Npc npc : npcs){
-            if(npc.getHealth() > 0){
-                canPray = false;
-            }
+        if(npcs.length == 0){
+            canPray = false;
         }
 
         if(canPray == true){
