@@ -16,9 +16,11 @@ public class MerchantTile extends ConcreteTile{
 
     @JsonCreator
     public MerchantTile(){
+        //declares new item generator
         this.generator = new ItemGeneration();
+        
+        //item generator gives 3 random items
         this.goods = generator.getSpecificNumberItems(3);
-
     }
 
     public void accept(Visitor visitor){

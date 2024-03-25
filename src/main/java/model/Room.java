@@ -42,6 +42,30 @@ public class Room {
         this.npcs = npcs;
     }
 
+    public boolean isSafe(){
+        //checks tile in each row
+        for(ConcreteTile[] rTiles: tiles){
+            //checks tile in each column in the row
+            for(ConcreteTile cTiles: rTiles){
+
+                //if the tile is a character tile
+                if(cTiles instanceof CharacterTile){
+                    //casts the tile to a character tile
+                    CharacterTile tile = (CharacterTile)cTiles;
+
+                    //if the character is an NPC then the room is NOT SAFE
+                    if(tile.getCharacter() instanceof Npc){
+                        return false;
+                    }
+                }
+            }
+            
+        }
+
+        //no enemies found, room is safe :)
+        return true;
+    }
+
     /**
      * @return width of room
      */

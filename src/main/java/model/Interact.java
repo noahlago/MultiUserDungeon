@@ -11,6 +11,7 @@ import model.Tiles.TrapTile;
 import view.PTUI;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import model.Character;
@@ -166,7 +167,21 @@ public class Interact implements Visitor{
     @Override
     public void visitMerchantTile(MerchantTile mTile) {
         // TODO Add interaction for character to buy items from the merchant
-        throw new UnsupportedOperationException("Unimplemented method 'visitMerchantTile'");
+        //throw new UnsupportedOperationException("Unimplemented method 'visitMerchantTile'");
+        List<Item> goods = mTile.getGoods();
+
+        if(currentRoom.isSafe()){
+            System.out.println("The room is safe and you talk with the merchant");
+            for(Item i: goods){
+                System.out.println(i.getName());
+            }
+        }
+        else{
+            System.out.println("The room is not safe! kill all the monsters if you want to talk!");
+        }
+        
+        
+
     }
 
     @Override
