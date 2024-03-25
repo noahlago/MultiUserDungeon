@@ -38,8 +38,10 @@ public class MUD {
     public Cycle cycle;
     @JsonProperty("gameOver")
     public boolean gameOver;
+
     public Room shrineRoom;
     public Pc shrineCharacter;
+    public Cycle shrineCycle;
 
     /**
      * Instance of a MUD game
@@ -138,6 +140,7 @@ public class MUD {
     public void setShrineRoom(Room room){
         this.shrineRoom = room;
         this.shrineCharacter = getPlayer();
+        this.shrineCycle = getCycle();
     }
 
     /**
@@ -146,6 +149,7 @@ public class MUD {
     public void resetShrine(){
         this.currentRoom = this.shrineRoom;
         this.player = this.shrineCharacter;
+        this.cycle = this.shrineCycle;
     }
 
     /**
@@ -238,6 +242,7 @@ public class MUD {
     /**
      * Checks if the game is over
      * Tells user if they won or lost if game over
+     * If there is a shrine saved, player will reset at shrine after they die
      * 
      * @return true if character health is <= 0 or character on exit tile of goal
      *         room, false otherwise
