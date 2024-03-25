@@ -1,18 +1,24 @@
 package model.Tiles;
 
 import model.Item;
+import model.ItemGeneration;
 import model.Visitor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class MerchantTile extends ConcreteTile{
-    @JsonProperty("goods") private Item[] goods;
+    @JsonProperty("goods") private List<Item> goods;
+    private ItemGeneration generator;
 
     @JsonCreator
     public MerchantTile(){
-        this.goods = new Item[3];
-        //TODO add random items to merchants goods
+        this.generator = new ItemGeneration();
+        this.goods = generator.getSpecificNumberItems(3);
+
     }
 
     public void accept(Visitor visitor){
@@ -20,11 +26,11 @@ public class MerchantTile extends ConcreteTile{
         visitor.visitMerchantTile(this);
     }
 
-    public Item[] getGoods(){
+    public List<Item> getGoods(){
         return goods;
     }
 
-    public void setGoods(Item[] items){
+    public void setGoods(List<Item> items){
         this.goods = items;
     }
 
