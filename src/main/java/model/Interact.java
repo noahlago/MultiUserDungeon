@@ -173,13 +173,12 @@ public class Interact implements Visitor{
         if(currentRoom.isSafe()){
             System.out.println("The room is safe and you talk with the merchant");
             for(Item i: goods){
-                System.out.println(i.getName());
+                System.out.println(i.getName()+ ": $" + i.getGoldValue());
             }
         }
         else{
             System.out.println("The room is not safe! kill all the monsters if you want to talk!");
         }
-        
         
 
     }
