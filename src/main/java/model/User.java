@@ -25,6 +25,18 @@ public class User {
         this.loggedIn = true;
     }
 
+    public User(String username, String password, int gamesPlayed, int livesLost, int monstersKilled, int totalGold, int itemsFound){
+        this.username = username;
+        this.password = password;
+        this.gamesPlayed = gamesPlayed;
+        this.livesLost = livesLost;
+        this.monstersKilled = monstersKilled;
+        this.totalGold = totalGold;
+        this.itemsFound = itemsFound;
+        this.gameInProgress = null;
+        this.loggedIn = false;
+    }
+
     public String getUsername(){
         return username;
     }
