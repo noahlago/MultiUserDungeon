@@ -31,8 +31,10 @@ import model.Tiles.ConcreteTile;
 import model.persistence.GameFileDAO;
 import model.persistence.ProfileDAO;
 import model.persistence.ProfileCSVFileDAO;
+import model.User;
 
 public class mudGUI extends Application {
+    User currentProf = new User("a","A");
     GameFileDAO saveManager = new GameFileDAO();
     ProfileCSVFileDAO profileDAO;
     
@@ -85,12 +87,16 @@ confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
             try{
              profileDAO = new ProfileCSVFileDAO();
-             System.out.println("ERer");
              profileDAO.logIn(username, password);
+             currentProf = profileDAO.getUser(username);
+             System.out.println(currentProf.getUsername());
+             showLoggedIn(stage);
+             popup.hide(); 
+
             }catch(IOException io){
-                    System.out.println("aaaaaaaqaaaaaaaaAAAAAA");
+                Label errorLabel = new Label("Incorrect username or Password");
+                popupContent.getChildren().add(errorLabel);
             }
-            popup.hide(); 
     }
 });
         popupContent.getChildren().addAll(usernameLabel, usernameTextField, passwordLabel, passwordField,confirmButton);
@@ -158,9 +164,12 @@ confirmButton.setOnAction(new EventHandler<ActionEvent>() {
                 profileDAO = new ProfileCSVFileDAO();
                 for( User user : profileDAO.getAllUsers()){
                     if(user.getUsername() == newUsername){
+                        Label error = new Label("Username already in use");
+                        accountPopup.getContent().add(error);
                         throw new IOException("Already used");
                     }
                 }
+                
                 profileDAO.newUser(new User(newUsername, newPassword));
                 accountPopup.hide();
                 
@@ -174,6 +183,65 @@ confirmButton.setOnAction(new EventHandler<ActionEvent>() {
         accountPopup.show(stage);
     }
 
+    private void showLoggedIn(Stage stage){
+        stage.close();
+        Stage profileStage = new Stage();
+        VBox vbox = new VBox(10); // Added spacing between elements for better layout
+        Label goldLabel = new Label("Total Gold: " + currentProf.getTotalGold());
+        Label gamesPlayed = new Label("Games Played: " + currentProf.getGamesPlayed());
+        Label livesLost = new Label("Lives Lost: " + currentProf.getLivesLost());
+        Label monstersKilled = new Label("Monsters Killed: " + currentProf.getMonstersKilled());
+        Label itemsFound = new Label("Items Found: " + currentProf.getItemsFound());
+    
+        Button viewCurrentGamesButton = new Button("View Current Games");
+        viewCurrentGamesButton.setOnAction(e -> viewCurrentGames());
+
+        Button startNewGameButton = new Button("Start New Game");
+        startNewGameButton.setOnAction(e -> startNewGame(profileStage));
+
+        vbox.getChildren().addAll(new Label(currentProf.getUsername()), gamesPlayed, livesLost, monstersKilled, goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton);
+    
+        profileStage.setScene(new Scene(vbox));
+        profileStage.show();
+    }
+    
+    private void viewCurrentGames() {
+        System.out.println("Viewing current games");
+    }
+    
+    private void startNewGame(Stage stage) {
+        stage.close();
+        Stage newGameStage = new Stage();
+        VBox layout = new VBox(10); 
+        Button startEndlessGameButton = new Button("Start New Endless Game");
+        startEndlessGameButton.setOnAction(e -> startEndlessGame());
+    
+        Button startRegularGameButton = new Button("Start New Regular Game");
+        startRegularGameButton.setOnAction(e -> startRegularGame());
+    
+        Button joinEndlessGameButton = new Button("Join Current Endless Game");
+        joinEndlessGameButton.setOnAction(e -> joinEndlessGame());
+    
+        layout.getChildren().addAll(startEndlessGameButton, startRegularGameButton, joinEndlessGameButton);
+    
+        Scene scene = new Scene(layout, 300, 200);
+        newGameStage.setScene(scene);
+        newGameStage.setTitle("Start New Game");
+        newGameStage.show();
+    }
+    
+    private void startEndlessGame() {
+        System.out.println("Starting a new endless game...");
+    }
+    
+    private void startRegularGame() {
+        System.out.println("Starting a new regular game...");
+    }
+    
+    private void joinEndlessGame() {
+        System.out.println("Joining a current endless game...");
+    }
+    
     private Node[] displayTiles(GridPane gridPane, Room room) {
         ConcreteTile[][] tiles = room.getTiles();
         for (int i = 0; i < tiles.length; i++) {

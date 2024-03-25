@@ -93,13 +93,15 @@ public class ProfileCSVFileDAO implements ProfileDAO{
      * Adds a new User profile to the HashMap
      * @param newUser the user instance to be added
      * @return false if the username is already used, true otherwise
+     * @throws IOException 
      */
     @Override
-    public boolean newUser(User newUser) {
+    public boolean newUser(User newUser) throws IOException{
         if(profiles.containsKey(newUser.getUsername())){
             return false;
         }else{
             this.profiles.put(newUser.getUsername(), newUser);
+            this.save();
             return true;
         }
     }
@@ -110,11 +112,14 @@ public class ProfileCSVFileDAO implements ProfileDAO{
      * @return whether the user was found and removed
      */
     @Override
-    public boolean deleteUser(String username) {
+    public boolean deleteUser(String username) throws IOException {
         if(!profiles.containsKey(username)){
+            this.save();
             return false;
+            
         }else{
             profiles.remove(username);
+            this.save();
             return true;
         }
     }
@@ -128,6 +133,7 @@ public class ProfileCSVFileDAO implements ProfileDAO{
     public User logIn(String username, String password) throws IOException {
         User user = this.getUser(username);
         if(user.getPassword().equals(password)){
+            this.save();
             return user;
         }else{
             throw new IOException("Incorrect password.");

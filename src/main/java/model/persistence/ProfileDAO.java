@@ -13,7 +13,7 @@ import model.User;
 public interface ProfileDAO {
     public Collection<User> getAllUsers();
     public User getUser(String username) throws IOException;
-    public boolean newUser(User newUser);
-    public boolean deleteUser(String username);
+    public boolean newUser(User newUser) throws IOException;
+    public boolean deleteUser(String username)  throws IOException;
     public User logIn(String username, String password) throws IOException;
 }
