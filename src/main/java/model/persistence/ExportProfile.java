@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.User;
@@ -26,8 +30,8 @@ public class ExportProfile {
         writer.close();
     }
     
-    public void exportXML(String filename, String username) throws IOException{
-        //File exportFile = makeFile(filename);
+    public void exportXML(String filename, String username) throws IOException, ParserConfigurationException, SAXException{
+        File exportFile = makeFile(filename);
     }
 
     public void exportJSON(String filename, String username) throws IOException{
