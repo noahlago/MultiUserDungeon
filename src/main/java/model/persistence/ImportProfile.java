@@ -42,9 +42,10 @@ public class ImportProfile {
         File importFile = new File(filename);
         Scanner scanner = new Scanner(importFile);
         String userInfo = scanner.nextLine();
-        String[] stats = userInfo.split(",");
+        String[] stats = userInfo.split(","); //Splits the values of the csv file
+
         User user = new User(stats[0], stats[1], Integer.parseInt(stats[2]), Integer.parseInt(stats[3]), Integer.parseInt(stats[4]), Integer.parseInt(stats[5]), Integer.parseInt(stats[6]));
-        profileManager.newUser(user);
+        profileManager.newUser(user); //adds the new user to the ProfileCSVFileDAO instance
 
         scanner.close();
     }
@@ -71,7 +72,7 @@ public class ImportProfile {
         int itemsFound = Integer.parseInt(getValue(element, "itemsFound"));
 
         User user = new User(username, password, gamesPlayed, livesLost, monstersKilled, totalGold, itemsFound);
-        profileManager.newUser(user);
+        profileManager.newUser(user); //adds the new user to the ProfileCSVFileDAO instance
     }
 
     /**
@@ -86,7 +87,7 @@ public class ImportProfile {
         File importFile = new File(filename);
         ObjectMapper objectMapper = new ObjectMapper(); 
         User user = objectMapper.readValue(importFile, User.class);
-        profileManager.newUser(user);
+        profileManager.newUser(user); //adds the new user to the ProfileCSVFileDAO instance
     }
 
     /**
