@@ -32,6 +32,14 @@ public class MerchantTile extends ConcreteTile{
         return goods;
     }
 
+    public Item getGood(int index){
+        return goods.get(index);
+    }
+
+    public void removeItem(int index){
+        goods.remove(index);
+    }
+
     public void setGoods(List<Item> items){
         this.goods = items;
     }

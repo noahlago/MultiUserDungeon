@@ -121,6 +121,12 @@ public class PTUI {
         }
     }
 
+    public static char visitMerchant(){
+        System.out.println("What would you like to do?\n\'s\': sell item\n\'b\': buy item\n\'e\': exit");
+        char selection = scanner.next().charAt(0);
+        return selection;
+    }
+
     /**
      * Main implementation of the PTUI, allowing the player to interact with the game, and control their character. 
      * @return whether or not to exit the game entirely (if not, exits to main menu instead). 

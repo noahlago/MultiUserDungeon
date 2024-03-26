@@ -13,6 +13,7 @@ import view.PTUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 import model.Character;
 
@@ -166,14 +167,65 @@ public class Interact implements Visitor{
 
     @Override
     public void visitMerchantTile(MerchantTile mTile) {
-        // TODO Add interaction for character to buy items from the merchant
-        //throw new UnsupportedOperationException("Unimplemented method 'visitMerchantTile'");
         List<Item> goods = mTile.getGoods();
 
         if(currentRoom.isSafe()){
             System.out.println("The room is safe and you talk with the merchant");
+            int num = 0;
             for(Item i: goods){
-                System.out.println(i.getName()+ ": $" + i.getGoldValue());
+                System.out.println(num + ": " + i.getName()+ ": $" + i.getGoldValue());
+                num++;
+            }
+
+            char selection = PTUI.visitMerchant();
+
+            switch(selection){
+                case 's':
+                    // sell item to merchant
+                    Inventory inv = game.getInventory();
+                    ArrayList<Item> items = inv.items();
+                    
+                    int itemNum = 1;
+                    for(Item item : items){
+                        System.out.println(itemNum + ": " + item);
+                        itemNum++;
+                    }
+
+                    System.out.println("Select item number:");
+                    itemNum = PTUI.chooseItem() -1;
+
+                    if(itemNum < 0 || itemNum > items.size()){
+                        System.out.println("Invalid item #. Try again.");
+                    }else{
+                        Item selectedItem = items.get(itemNum);
+                        game.sellItemToMerchant(selectedItem);
+                        break;
+                    }
+
+                case 'b':
+                    // buy item from merchant
+                    System.out.println("Select item number:");
+                    itemNum = PTUI.chooseItem() -1;
+
+                    if(itemNum < 0 || itemNum > goods.size()){
+                        System.out.println("Invalid item #. Try again.");
+                        break;
+                    }
+
+                    Item item = mTile.getGood(itemNum);
+
+                    if(player.getGoldAmount() >= item.getGoldValue()){
+                        player.addItem(item);
+                        mTile.removeItem(itemNum);
+                        player.decreaseGold(item.getGoldValue());
+                    }
+                    else{
+                        System.out.println("You do not have enough gold for that");
+                    }
+
+                case 'e':
+                    // exit
+                    break;
             }
         }
         else{
