@@ -51,7 +51,8 @@ public class ProfileCSVFileDAO implements ProfileDAO{
     }
 
     /**
-     * 
+     * Saves all current user profiles to the profiles.csv file, to update it. 
+     * This method is called whenever an update is made to the user profiles, internally or externally. 
      * @throws IOException
      */
     public void save() throws IOException{
@@ -131,6 +132,24 @@ public class ProfileCSVFileDAO implements ProfileDAO{
             return user;
         }else{
             throw new IOException("Incorrect password.");
+        }
+    }
+
+    /**
+     * This method allows for a user's stats to be updated when they complete a game in the premade map mode, or leave a game in the endless map mode
+     * Increments the count of games played by one. 
+     * Updates the remaining stats by the specified quantities, which were tracked by the game and sent when the game ended. 
+     */
+    @Override
+    public boolean updateStats(String username, int livesLost, int monstersKilled, int totalGold, int itemsFound) {
+        if(this.profiles.containsKey(username)){ //checks that a user with the given username exists 
+            User user = profiles.get(username); //gets the user with the specified username 
+            user.incrementGamesPlayed(); //increments gamesPlayed count
+            user.updateStats(livesLost, monstersKilled, totalGold, itemsFound); //updates remaining stats
+            return true;
+        }else{
+            System.out.println("Username not found. ");
+            return false;
         }
     }
     
