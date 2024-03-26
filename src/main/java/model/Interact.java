@@ -173,7 +173,7 @@ public class Interact implements Visitor{
             System.out.println("The room is safe and you talk with the merchant");
             int num = 0;
             for(Item i: goods){
-                System.out.println(num + ": " + i.getName()+ ": $" + i.getGoldValue());
+                System.out.println(num + ": " + i.getName()+ ", $" + i.getGoldValue());
                 num++;
             }
 
@@ -187,7 +187,7 @@ public class Interact implements Visitor{
                     
                     int itemNum = 1;
                     for(Item item : items){
-                        System.out.println(itemNum + ": " + item);
+                        System.out.println(itemNum + ": " + item + ", $" + item.getGoldValue() / 2);
                         itemNum++;
                     }
 
@@ -197,9 +197,9 @@ public class Interact implements Visitor{
                     if(itemNum < 0 || itemNum > items.size()){
                         System.out.println("Invalid item #. Try again.");
                     }else{
-                        Item selectedItem = items.get(itemNum);
-                        game.sellItemToMerchant(selectedItem);
-                        break;
+                        Item item = items.get(itemNum);
+                        game.sellItemToMerchant(item);
+                        System.out.println("You sold " + item.getName() + " for " + item.getGoldValue() /2 + " gold.");
                     }
 
                 case 'b':
@@ -218,6 +218,7 @@ public class Interact implements Visitor{
                         player.addItem(item);
                         mTile.removeItem(itemNum);
                         player.decreaseGold(item.getGoldValue());
+                        System.out.println("You bought " + item.getName() + " for " + item.getGoldValue() + " gold.");
                     }
                     else{
                         System.out.println("You do not have enough gold for that");
