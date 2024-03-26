@@ -51,7 +51,8 @@ public class ProfileCSVFileDAO implements ProfileDAO{
     }
 
     /**
-     * 
+     * Saves all current user profiles to the profiles.csv file, to update it. 
+     * This method is called whenever an update is made to the user profiles, internally or externally. 
      * @throws IOException
      */
     public void save() throws IOException{
