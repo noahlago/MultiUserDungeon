@@ -3,6 +3,7 @@ package model;
 import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
+import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
 import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
@@ -32,7 +33,7 @@ public interface Visitor {
     public void visitMerchantTile(MerchantTile mTile);
 
     //interactions with an entrance (brings you to the previous exit)
-    public void visitEntranceTile();
+    public void visitEntranceTile(EntranceTile eTile);
 
     //interactions with a shrine for respawning
     public void visitShrineTile();

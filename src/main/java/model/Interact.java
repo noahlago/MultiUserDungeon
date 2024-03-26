@@ -4,6 +4,7 @@ import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.ConcreteTile;
 import model.Tiles.EmptyTile;
+import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
 import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
@@ -237,9 +238,13 @@ public class Interact implements Visitor{
     }
 
     @Override
-    public void visitEntranceTile() {
-        // TODO moves character to the previous exit tile/ previous room in the map
-        throw new UnsupportedOperationException("Unimplemented method 'visitEntranceTile'");
+    public void visitEntranceTile(EntranceTile eTile) {
+        if(currentRoom.getIsStart()){
+            System.out.println("You cannot exit the dungeon");
+        }
+        else{
+            game.prevRoom();
+        }
     }
 
     @Override
