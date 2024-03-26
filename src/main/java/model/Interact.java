@@ -191,7 +191,7 @@ public class Interact implements Visitor{
                         itemNum++;
                     }
 
-                    System.out.println("Select item number:");
+                    System.out.println("Select item number: ");
                     itemNum = PTUI.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > items.size()){
@@ -199,12 +199,12 @@ public class Interact implements Visitor{
                     }else{
                         Item item = items.get(itemNum);
                         game.sellItemToMerchant(item);
-                        System.out.println("You sold " + item.getName() + " for " + item.getGoldValue() /2 + " gold.");
+                        System.out.println("You sold " + item.getName() + " for $" + item.getGoldValue() /2);
                     }
 
                 case 'b':
                     // buy item from merchant
-                    System.out.println("Select item number:");
+                    System.out.println("Select item number: ");
                     itemNum = PTUI.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > goods.size()){
