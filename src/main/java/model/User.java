@@ -144,4 +144,11 @@ public class User {
 
         return false;
     }
+
+    public void updateStats(int livesLost, int monstersKilled, int totalGold, int itemsFound){
+        this.livesLost += livesLost;
+        this.monstersKilled += monstersKilled;
+        this.totalGold += totalGold;
+        this.itemsFound += itemsFound;
+    }
 }

@@ -134,5 +134,18 @@ public class ProfileCSVFileDAO implements ProfileDAO{
             throw new IOException("Incorrect password.");
         }
     }
+
+    @Override
+    public boolean updateStats(String username, int livesLost, int monstersKilled, int totalGold, int itemsFound) {
+        if(this.profiles.containsKey(username)){
+            User user = profiles.get(username);
+            user.incrementGamesPlayed();
+            //TODO
+            return true;
+        }else{
+            System.out.println("Username not found. ");
+            return false;
+        }
+    }
     
 }
