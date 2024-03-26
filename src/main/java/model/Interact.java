@@ -37,8 +37,17 @@ public class Interact implements Visitor{
         //if the npc health is reduced to 0 or below they die
         if(npc.getHealth() <=0){
 
-            System.out.println("You killed " + npc.getName());
+            //get gold from the npc
+            int gold = npc.getGold();
 
+            //add gold to user inventory 
+            player.addGold(gold);
+
+            
+            System.out.println("You killed " + npc.getName() +"\nYou won " + gold + " gold");
+
+
+            //coordinates of npc
             int row = cTile.getRow();
             int col = cTile.getCol();
 
