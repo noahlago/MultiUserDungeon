@@ -53,6 +53,7 @@ public class mudGUI extends Application implements mudObserver {
     Button confirmAccountButton = new Button("Confirm Account");
     Popup accountPopup = new Popup();
     Stage currentStage;
+    Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 45);
 
     @Override
     public void start(Stage stage) {
@@ -65,12 +66,16 @@ public class mudGUI extends Application implements mudObserver {
         }
         mud.setOnUpdate(this);
         VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(5);
         Text t = new Text();
         t.setText("Multi User Dungeon");
+        t.setFont(dungeon);
+
         Button login = new Button("Log In");
+
         Button createAccountButton = new Button("Create Account");
         Button viewMaps = new Button("View Maps");
-        t.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
         Label usernameLabel = new Label("Username:");
         TextField usernameTextField = new TextField();
 
@@ -274,6 +279,7 @@ public class mudGUI extends Application implements mudObserver {
             showLoggedIn(new Stage());
         });
         VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
         Button startEndlessGameButton = new Button("Start New Endless Game");
         startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
 
@@ -286,7 +292,7 @@ public class mudGUI extends Application implements mudObserver {
         layout.getChildren().addAll(backToProfileButton, startEndlessGameButton, startRegularGameButton,
                 joinEndlessGameButton);
 
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout);
         newGameStage.setScene(scene);
         newGameStage.setTitle("Start New Game");
         newGameStage.show();
@@ -298,7 +304,7 @@ public class mudGUI extends Application implements mudObserver {
         currentStage = newGameStage;
         VBox layout = new VBox(10);
 
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout);
         newGameStage.setScene(scene);
         newGameStage.setTitle("Start New Game");
         newGameStage.show();
@@ -332,7 +338,7 @@ public class mudGUI extends Application implements mudObserver {
 
         layout.getChildren().addAll(new Label("Character Name"), playerNameField, startGameButton);
 
-        Scene scene = new Scene(layout, 300, 150); // Adjust size as needed
+        Scene scene = new Scene(layout); // Adjust size as needed
         regularGameStage.setScene(scene);
         regularGameStage.setTitle("Start Regular Game");
         regularGameStage.show();
@@ -345,7 +351,8 @@ public class mudGUI extends Application implements mudObserver {
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
-
+        VBox keyDisplay = createKeyDisplay();
+        
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             gameStage.close();
@@ -354,8 +361,9 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,grid);
+        box.getChildren().addAll(backToProfileButton, grid);
         addMovementControls(box, mud);
+        box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box); // Adjust the size according to your needs
         gameStage.setScene(gameScene);
@@ -375,13 +383,15 @@ public class mudGUI extends Application implements mudObserver {
 
             showLoggedIn(new Stage());
         });
+        VBox keyDisplay = createKeyDisplay();
+ 
 
         // Add the grid (game environment) and the button to the VBox
         box.getChildren().addAll(grid, backToProfileButton);
         addMovementControls(box, currentProf.getGameInProgress());
-
+        box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
-        Scene gameScene = new Scene(box, 600, 400); // Adjust the size according to your needs
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
         gameStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
         gameStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
@@ -401,6 +411,32 @@ public class mudGUI extends Application implements mudObserver {
             }
         }
         return null;
+    }
+    private VBox createKeyDisplay() {
+        VBox keyDisplay = new VBox(5); // Vertical box with spacing of 5
+        keyDisplay.setPadding(new Insets(10, 0, 10, 0)); // Add some padding for aesthetics
+    
+        Label title = new Label("Key:");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+    
+        // Each entry in the key
+        Label characterLabel = new Label("Character");
+        characterLabel.setGraphic(new Rectangle(10, 10, Color.AQUAMARINE));
+        Label npcLabel = new Label("NPC");
+        npcLabel.setGraphic(new Rectangle(10, 10, Color.RED));
+        Label chestLabel = new Label("Chest");
+        chestLabel.setGraphic(new Rectangle(10, 10, Color.GOLD));
+        Label exitLabel = new Label("Exit");
+        exitLabel.setGraphic(new Rectangle(10, 10, Color.GREEN));
+        Label trapLabel = new Label("Trap");
+        trapLabel.setGraphic(new Rectangle(10, 10, Color.ORANGE));
+        Label obstacleLabel = new Label("Obstacle");
+        obstacleLabel.setGraphic(new Rectangle(10, 10, Color.BLACK));
+    
+        // Add all labels to the VBox
+        keyDisplay.getChildren().addAll(title, characterLabel, npcLabel, chestLabel,exitLabel, trapLabel, obstacleLabel);
+    
+        return keyDisplay;
     }
 
     private void addMovementControls(VBox mainLayout, MUD game) {
@@ -435,8 +471,7 @@ public class mudGUI extends Application implements mudObserver {
         upButton.setOnAction(e -> {
             game.movePlayer(-1, 0);
             mudUpdated(mud);
-        }
-            );
+        });
         downButton.setOnAction(e -> {
             game.movePlayer(1, 0);
             mudUpdated(mud);
@@ -492,6 +527,7 @@ public class mudGUI extends Application implements mudObserver {
     public void handle(ActionEvent event) {
 
     }
+
     @Override
     public void mudUpdated(MUD board) {
         System.out.println("called");
@@ -507,24 +543,18 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,grid);
+        box.getChildren().addAll(backToProfileButton, grid);
         addMovementControls(box, currentProf.getGameInProgress());
-
+        VBox keyDisplay = createKeyDisplay();
+        box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box); // Adjust the size according to your needs
         currentStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
         currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
     }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
-
-// class GUIupdater implements mudObserver{
-// private mudGUI gui;
-
-// public GUIupdater(MUD game){
-// gui.moveCharacter(mud.)
-// }
-// }
