@@ -31,6 +31,7 @@ import model.User;
  * @author Noah Lago ndl3389@rit.edu
  */
 public class ExportProfile {
+    /**The instance of ProfileCSVFileDAO that us being used by the curreng game session to manage all user profiles. */
     private ProfileCSVFileDAO profileManager;
 
     public ExportProfile(ProfileCSVFileDAO profileManager){
