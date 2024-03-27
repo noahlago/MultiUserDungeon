@@ -151,4 +151,9 @@ public class User {
         this.totalGold += totalGold;
         this.itemsFound += itemsFound;
     }
+
+    public void setHashedPassword(String newPassword){
+        this.password = newPassword;
+    }
+
 }

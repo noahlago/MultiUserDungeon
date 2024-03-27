@@ -3,6 +3,7 @@ package model.persistence;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -20,6 +21,8 @@ public class ProfileCSVFileDAO implements ProfileDAO{
     private HashMap<String, User> profiles;
     /**File where all user profiles have been stored */
     private String filename;
+    /**Used to handle password hashing using different algorithms */
+    private PasswordManagement passwordHandler;
 
     /**
      * Creates a new instance of the class, and loads all pre-existing profiles frome the profiles.csv file
@@ -100,6 +103,7 @@ public class ProfileCSVFileDAO implements ProfileDAO{
         if(profiles.containsKey(newUser.getUsername())){
             return false;
         }else{
+            newUser.setHashedPassword(newUser.getPassword());
             this.profiles.put(newUser.getUsername(), newUser);
             return true;
         }
@@ -128,11 +132,16 @@ public class ProfileCSVFileDAO implements ProfileDAO{
     @Override
     public User logIn(String username, String password) throws IOException {
         User user = this.getUser(username);
-        if(user.getPassword().equals(password)){
-            return user;
-        }else{
-            throw new IOException("Incorrect password.");
-        }
+        try {
+            if(user.getPassword().equals(passwordHandler.hashPassword(password))){
+                return user;
+            }else{
+                throw new IOException("Incorrect password.");
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        } 
     }
 
     /**
