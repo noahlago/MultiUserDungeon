@@ -35,33 +35,35 @@ import model.persistence.ProfileCSVFileDAO;
 import model.User;
 import model.Npc;
 
-public class mudGUI extends Application {
-    User currentProf = new User("a","A");
+public class mudGUI extends Application implements mudObserver {
+    User currentProf = new User("a", "A");
     GameFileDAO saveManager = new GameFileDAO();
     ProfileCSVFileDAO profileDAO;
-    
-    MUD mud = new MUD(new Map(),"New Game");
-    
+
+    MUD mud = new MUD(new Map(), "New Game");
+
     VBox accountContent = new VBox(10);
-   
-   
+
     Label newUsernameLabel = new Label("New Username:");
     TextField newUsernameTextField = new TextField();
-    
+
     Label newPasswordLabel = new Label("New Password:");
     PasswordField newPasswordField = new PasswordField();
-    
+
     Button confirmAccountButton = new Button("Confirm Account");
     Popup accountPopup = new Popup();
+    Stage currentStage;
+
     @Override
     public void start(Stage stage) {
-        try{
-        saveManager.newSaveGame(mud);
-        saveManager.updateSaveGame(mud);
-        saveManager.save();
-        }catch(IOException io){
+        try {
+            saveManager.newSaveGame(mud);
+            saveManager.updateSaveGame(mud);
+            saveManager.save();
+        } catch (IOException io) {
 
         }
+        mud.setOnUpdate(this);
         VBox vbox = new VBox();
         Text t = new Text();
         t.setText("Multi User Dungeon");
@@ -76,44 +78,43 @@ public class mudGUI extends Application {
         PasswordField passwordField = new PasswordField();
 
         Popup popup = new Popup();
-        VBox popupContent = new VBox(10); 
+        VBox popupContent = new VBox(10);
         popupContent.setStyle("-fx-background-color: #FFFFFF;");
         popupContent.setPadding(new Insets(10)); // Set some padding around the elements
 
-        
         // Add the username and password fields to the VBox
         Button confirmButton = new Button("Confirm");
-        
+
         Label errorLabel = new Label("Incorrect username or Password");
-confirmButton.setOnAction(new EventHandler<ActionEvent>() {
-    @Override
-    public void handle(ActionEvent event) {
-        String username = usernameTextField.getText();
-        String password = passwordField.getText();
+        confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String username = usernameTextField.getText();
+                String password = passwordField.getText();
 
-            try{
-             profileDAO = new ProfileCSVFileDAO();
-             profileDAO.logIn(username, password);
-             currentProf = profileDAO.getUser(username);
-             System.out.println(currentProf.getUsername());
-             showLoggedIn(stage);
-             popup.hide(); 
+                try {
+                    profileDAO = new ProfileCSVFileDAO();
+                    profileDAO.logIn(username, password);
+                    currentProf = profileDAO.getUser(username);
+                    System.out.println(currentProf.getUsername());
+                    showLoggedIn(stage);
+                    currentStage = stage;
+                    popup.hide();
 
-            }catch(IOException io){
+                } catch (IOException io) {
 
-                if(popupContent.getChildren().contains(errorLabel) != true){
-                popupContent.getChildren().add(errorLabel);
+                    if (popupContent.getChildren().contains(errorLabel) != true) {
+                        popupContent.getChildren().add(errorLabel);
+                    }
                 }
             }
-    }
-});
-popupContent.getChildren().clear(); // Clear before adding new children
-popupContent.getChildren().addAll(usernameLabel, usernameTextField, passwordLabel, passwordField, confirmButton);
+        });
+        popupContent.getChildren().clear(); // Clear before adding new children
+        popupContent.getChildren().addAll(usernameLabel, usernameTextField, passwordLabel, passwordField,
+                confirmButton);
 
-
-       
-        popup.getContent().clear(); 
-        popup.getContent().add(popupContent); 
+        popup.getContent().clear();
+        popup.getContent().add(popupContent);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent e) {
@@ -126,18 +127,15 @@ popupContent.getChildren().addAll(usernameLabel, usernameTextField, passwordLabe
         EventHandler<ActionEvent> mapEvent = new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent e) {
-                if (!popup.isShowing()){
-                popup.getContent().clear(); 
-                popup.getContent().addAll(displayTiles(new GridPane(),mud.getCurrentRoom())); 
+                if (!popup.isShowing()) {
+                    popup.getContent().clear();
+                    popup.getContent().addAll(displayTiles(new GridPane(), mud.getCurrentRoom()));
                     popup.show(stage);
-                }
-                else{
+                } else {
                     popup.hide();
                 }
             }
         };
-
-
 
         Label newUsernameLabel = new Label("New Username:");
         TextField newUsernameTextField = new TextField();
@@ -146,47 +144,46 @@ popupContent.getChildren().addAll(usernameLabel, usernameTextField, passwordLabe
         PasswordField newPasswordField = new PasswordField();
 
         Popup accountPopup = new Popup();
-        VBox accountPopupContent = new VBox(10); 
+        VBox accountPopupContent = new VBox(10);
         accountPopupContent.setStyle("-fx-background-color: #FFFFFF;");
         accountPopupContent.setPadding(new Insets(10)); // Set some padding around the elements
 
         // Add the username and password fields to the VBox
         Button confirmAccountButton = new Button("Create");
-        
-        Label error = new Label("Already in Use");
-confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
-    @Override
-    public void handle(ActionEvent event) {
-        String username = newUsernameTextField.getText();
-        String password = newPasswordField.getText();
-            try {
-                profileDAO = new ProfileCSVFileDAO();
-                for( User user : profileDAO.getAllUsers()){
-                    if(user.getUsername() == username){
-                        Label error = new Label("Username already in use");
-                        accountPopup.getContent().remove(error);
-                        accountPopup.getContent().add(error);
-                        throw new IOException("Already used");
-                    }
-                }
-                
-                profileDAO.newUser(new User(username, password));
-                profileDAO.logIn(username, password);
-                currentProf = profileDAO.getUser(username);
-                showLoggedIn(stage);
-                accountPopup.hide();
-                
-               
-            } catch(IOException io) {
-                io.printStackTrace();
-            }
-    }
-});
-        accountPopupContent.getChildren().addAll(newUsernameLabel, newUsernameTextField, newPasswordLabel, newPasswordField,confirmAccountButton);
 
-       
-        accountPopup.getContent().clear(); 
-        accountPopup.getContent().add(accountPopupContent); 
+        Label error = new Label("Already in Use");
+        confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String username = newUsernameTextField.getText();
+                String password = newPasswordField.getText();
+                try {
+                    profileDAO = new ProfileCSVFileDAO();
+                    for (User user : profileDAO.getAllUsers()) {
+                        if (user.getUsername() == username) {
+                            Label error = new Label("Username already in use");
+                            accountPopup.getContent().remove(error);
+                            accountPopup.getContent().add(error);
+                            throw new IOException("Already used");
+                        }
+                    }
+
+                    profileDAO.newUser(new User(username, password));
+                    profileDAO.logIn(username, password);
+                    currentProf = profileDAO.getUser(username);
+                    showLoggedIn(stage);
+                    accountPopup.hide();
+
+                } catch (IOException io) {
+                    io.printStackTrace();
+                }
+            }
+        });
+        accountPopupContent.getChildren().addAll(newUsernameLabel, newUsernameTextField, newPasswordLabel,
+                newPasswordField, confirmAccountButton);
+
+        accountPopup.getContent().clear();
+        accountPopup.getContent().add(accountPopupContent);
         EventHandler<ActionEvent> newEvent = new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent e) {
@@ -196,7 +193,6 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
                     accountPopup.hide();
             }
         };
-
 
         createAccountButton.setOnAction(newEvent);
         login.setOnAction(event);
@@ -209,44 +205,47 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
         stage.setTitle("MUD Game");
         stage.show();
     }
-    private void confirmCreate(){
+
+    private void confirmCreate() {
         confirmAccountButton.setOnAction(event -> {
             String newUsername = newUsernameTextField.getText();
             String newPassword = newPasswordField.getText();
-            
+
             // Assuming ProfileCSVFileDAO has a method to create a new account
             try {
                 profileDAO = new ProfileCSVFileDAO();
-                for( User user : profileDAO.getAllUsers()){
-                    if(user.getUsername() == newUsername){
+                for (User user : profileDAO.getAllUsers()) {
+                    if (user.getUsername() == newUsername) {
                         Label error = new Label("Username already in use");
                         accountPopup.getContent().remove(error);
                         accountPopup.getContent().add(error);
                         throw new IOException("Already used");
                     }
                 }
-                
+
                 profileDAO.newUser(new User(newUsername, newPassword));
                 Label success = new Label("Account Created Successfully!");
                 accountPopup.getContent().remove(success);
                 accountPopup.getContent().add(success);
                 accountPopup.hide();
-                
-               
-            } catch(IOException io) {
+
+            } catch (IOException io) {
                 io.printStackTrace();
             }
-        });}
-    private void showLoggedIn(Stage stage){
+        });
+    }
+
+    private void showLoggedIn(Stage stage) {
         stage.close();
         Stage profileStage = new Stage();
+        currentStage = profileStage;
         VBox vbox = new VBox(10); // Added spacing between elements for better layout
         Label goldLabel = new Label("Total Gold: " + currentProf.getTotalGold());
         Label gamesPlayed = new Label("Games Played: " + currentProf.getGamesPlayed());
         Label livesLost = new Label("Lives Lost: " + currentProf.getLivesLost());
         Label monstersKilled = new Label("Monsters Killed: " + currentProf.getMonstersKilled());
         Label itemsFound = new Label("Items Found: " + currentProf.getItemsFound());
-    
+
         Button viewCurrentGamesButton = new Button("Continue Current Game");
         System.out.println(currentProf.getGameInProgress());
         viewCurrentGamesButton.setDisable(currentProf.getGameInProgress() == null);
@@ -257,86 +256,91 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
         Button logout = new Button("Logout");
         logout.setOnAction(e -> start(profileStage));
 
-        vbox.getChildren().addAll(logout,new Label(currentProf.getUsername()), gamesPlayed, livesLost, monstersKilled, goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton);
-    
+        vbox.getChildren().addAll(logout, new Label(currentProf.getUsername()), gamesPlayed, livesLost, monstersKilled,
+                goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton);
+
         profileStage.setScene(new Scene(vbox));
         profileStage.show();
     }
-    
+
     private void startNewGame(Stage stage) {
         stage.close();
         Stage newGameStage = new Stage();
+        currentStage = newGameStage;
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             newGameStage.close();
-            
-            showLoggedIn(new Stage()); 
+
+            showLoggedIn(new Stage());
         });
-        VBox layout = new VBox(10); 
+        VBox layout = new VBox(10);
         Button startEndlessGameButton = new Button("Start New Endless Game");
         startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
-    
+
         Button startRegularGameButton = new Button("Start New Regular Game");
         startRegularGameButton.setOnAction(e -> startRegularGame(newGameStage));
-    
+
         Button joinEndlessGameButton = new Button("Join Current Endless Game");
         joinEndlessGameButton.setOnAction(e -> joinEndlessGame(newGameStage));
-    
-        layout.getChildren().addAll(backToProfileButton,startEndlessGameButton, startRegularGameButton, joinEndlessGameButton);
-    
+
+        layout.getChildren().addAll(backToProfileButton, startEndlessGameButton, startRegularGameButton,
+                joinEndlessGameButton);
+
         Scene scene = new Scene(layout, 300, 200);
         newGameStage.setScene(scene);
         newGameStage.setTitle("Start New Game");
         newGameStage.show();
     }
-    
+
     private void startEndlessGame(Stage stage) {
         stage.close();
         Stage newGameStage = new Stage();
-        VBox layout = new VBox(10); 
-        
+        currentStage = newGameStage;
+        VBox layout = new VBox(10);
+
         Scene scene = new Scene(layout, 300, 200);
         newGameStage.setScene(scene);
         newGameStage.setTitle("Start New Game");
         newGameStage.show();
     }
-    
+
     private void startRegularGame(Stage stage) {
         stage.close();
         Stage regularGameStage = new Stage();
+        currentStage = regularGameStage;
         VBox layout = new VBox(10); // Vertical layout with spacing of 10
-    
+
         // Create a text field for the player to input a name
-        
+
         TextField playerNameField = new TextField();
         playerNameField.setPromptText("Enter your name");
-    
+
         // Create a button to start the game, initially disabled
         Button startGameButton = new Button("Start Game");
         startGameButton.setDisable(true);
-    
+
         playerNameField.textProperty().addListener((observable, oldValue, newValue) -> {
             startGameButton.setDisable(newValue.trim().isEmpty());
         });
-    
+
         startGameButton.setOnAction(e -> {
             String playerName = playerNameField.getText().trim();
             if (!playerName.isEmpty()) {
-                startGame(playerName,regularGameStage); 
+                startGame(playerName, regularGameStage);
             }
         });
-    
-        layout.getChildren().addAll(new Label("Character Name"),playerNameField, startGameButton);
-    
+
+        layout.getChildren().addAll(new Label("Character Name"), playerNameField, startGameButton);
+
         Scene scene = new Scene(layout, 300, 150); // Adjust size as needed
         regularGameStage.setScene(scene);
         regularGameStage.setTitle("Start Regular Game");
         regularGameStage.show();
     }
-    
+
     private void startGame(String playerName, Stage gameStage) {
         // Prepare the game environment as before
-        MUD mud = new MUD(new Map(), playerName);
+        mud = new MUD(new Map(), playerName);
         currentProf.startGame(mud);
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
@@ -345,20 +349,21 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             gameStage.close();
-            
-            showLoggedIn(new Stage()); 
+
+            showLoggedIn(new Stage());
         });
-    
+
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(grid, backToProfileButton);
-        addMovementControls(box,mud);
+        box.getChildren().addAll(backToProfileButton,grid);
+        addMovementControls(box, mud);
         // Adjust the scene and stage as before
-        Scene gameScene = new Scene(box, 600, 400); // Adjust the size according to your needs
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
         gameStage.setScene(gameScene);
         gameStage.setTitle("Game: " + playerName); // Set a title for the window
         gameStage.show();
     }
-    private void startCurrentGame( Stage gameStage) {
+
+    private void startCurrentGame(Stage gameStage) {
 
         GridPane grid = new GridPane();
         displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
@@ -367,26 +372,26 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             gameStage.close();
-            
-            showLoggedIn(new Stage()); 
+
+            showLoggedIn(new Stage());
         });
-    
+
         // Add the grid (game environment) and the button to the VBox
         box.getChildren().addAll(grid, backToProfileButton);
-        addMovementControls(box,currentProf.getGameInProgress());
-        
+        addMovementControls(box, currentProf.getGameInProgress());
+
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box, 600, 400); // Adjust the size according to your needs
         gameStage.setScene(gameScene);
+        mud = currentProf.getGameInProgress();
         gameStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
         gameStage.show();
     }
-    
-    
+
     private void joinEndlessGame(Stage stage) {
         stage.close();
     }
-    
+
     private Node[] displayTiles(GridPane gridPane, Room room) {
         ConcreteTile[][] tiles = room.getTiles();
         for (int i = 0; i < tiles.length; i++) {
@@ -397,45 +402,57 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
         }
         return null;
     }
+
     private void addMovementControls(VBox mainLayout, MUD game) {
-    // Create a new GridPane for the movement controls
-    GridPane movementControls = new GridPane();
-    movementControls.setPadding(new Insets(10)); // Add some padding for aesthetics
-    movementControls.setVgap(5); // Vertical gap between buttons
-    movementControls.setHgap(5); // Horizontal gap between buttons
+        // Create a new GridPane for the movement controls
+        GridPane movementControls = new GridPane();
+        movementControls.setPadding(new Insets(10)); // Add some padding for aesthetics
+        movementControls.setVgap(5); // Vertical gap between buttons
+        movementControls.setHgap(5); // Horizontal gap between buttons
 
-    // Create the movement buttons
-    Button upButton = new Button("Up");
-    Button downButton = new Button("Down");
-    Button leftButton = new Button("Left");
-    Button rightButton = new Button("Right");
+        // Create the movement buttons
+        Button upButton = new Button("Up");
+        Button downButton = new Button("Down");
+        Button leftButton = new Button("Left");
+        Button rightButton = new Button("Right");
 
-    // Add the buttons to the GridPane
-    movementControls.add(leftButton, 0, 1); // Column 0, Row 1
-    movementControls.add(upButton, 1, 0); // Column 1, Row 0
-    movementControls.add(downButton, 1, 2); // Column 1, Row 2
-    movementControls.add(rightButton, 2, 1); // Column 2, Row 1
+        // Add the buttons to the GridPane
+        movementControls.add(leftButton, 0, 1); // Column 0, Row 1
+        movementControls.add(upButton, 1, 0); // Column 1, Row 0
+        movementControls.add(downButton, 1, 2); // Column 1, Row 2
+        movementControls.add(rightButton, 2, 1); // Column 2, Row 1
 
-    // Align the GridPane to the center
-    movementControls.setAlignment(Pos.CENTER);
+        // Align the GridPane to the center
+        movementControls.setAlignment(Pos.CENTER);
 
-    // Optionally set the maximum width of the buttons for a uniform look
-    upButton.setMaxWidth(Double.MAX_VALUE);
-    downButton.setMaxWidth(Double.MAX_VALUE);
-    leftButton.setMaxWidth(Double.MAX_VALUE);
-    rightButton.setMaxWidth(Double.MAX_VALUE);
+        // Optionally set the maximum width of the buttons for a uniform look
+        upButton.setMaxWidth(Double.MAX_VALUE);
+        downButton.setMaxWidth(Double.MAX_VALUE);
+        leftButton.setMaxWidth(Double.MAX_VALUE);
+        rightButton.setMaxWidth(Double.MAX_VALUE);
 
-    // Optionally set click event handlers for the buttons
-    upButton.setOnAction(e -> game.movePlayer(-1, 0));
-    downButton.setOnAction(e -> game.movePlayer(1, 0));
-    leftButton.setOnAction(e -> game.movePlayer(0, -1));
-    rightButton.setOnAction(e -> game.movePlayer(0,1));
+        // Optionally set click event handlers for the buttons
+        upButton.setOnAction(e -> {
+            game.movePlayer(-1, 0);
+            mudUpdated(mud);
+        }
+            );
+        downButton.setOnAction(e -> {
+            game.movePlayer(1, 0);
+            mudUpdated(mud);
+        });
+        leftButton.setOnAction(e -> {
+            game.movePlayer(0, -1);
+            mudUpdated(mud);
+        });
+        rightButton.setOnAction(e -> {
+            game.movePlayer(0, 1);
+            mudUpdated(mud);
+        });
 
-    // Add the movement controls GridPane to the bottom of the main layout
-    mainLayout.getChildren().add(movementControls);
-}
-
-
+        // Add the movement controls GridPane to the bottom of the main layout
+        mainLayout.getChildren().add(movementControls);
+    }
 
     private Rectangle createTileRectangle(ConcreteTile tile) {
         Rectangle rect = new Rectangle(20, 20); // Size of the square
@@ -443,12 +460,12 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
         // Customize the fill color based on the tile type
         switch (tile.getType()) {
             case "CHARACTER":
-            if(tile.getCharacter() instanceof Npc){
-                rect.setFill(Color.RED);   
-            }else{
-                rect.setFill(Color.AQUAMARINE);
-            }
-                
+                if (tile.getCharacter() instanceof Npc) {
+                    rect.setFill(Color.RED);
+                } else {
+                    rect.setFill(Color.AQUAMARINE);
+                }
+
                 break;
             case "CHEST":
                 rect.setFill(Color.GOLD);
@@ -475,7 +492,30 @@ confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
     public void handle(ActionEvent event) {
 
     }
+    @Override
+    public void mudUpdated(MUD board) {
+        System.out.println("called");
+        GridPane grid = new GridPane();
+        displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
+        VBox box = new VBox();
 
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            currentStage.close();
+
+            showLoggedIn(new Stage());
+        });
+
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(backToProfileButton,grid);
+        addMovementControls(box, currentProf.getGameInProgress());
+
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        currentStage.setScene(gameScene);
+        mud = currentProf.getGameInProgress();
+        currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
+    }
     public static void main(String[] args) {
         launch(args);
     }

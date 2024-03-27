@@ -38,6 +38,8 @@ public class MUD {
     public Cycle cycle;
     @JsonProperty("gameOver")
     public boolean gameOver;
+    @JsonProperty("observer")
+    public mudObserver observer;
 
     /**
      * Instance of a MUD game
@@ -56,6 +58,14 @@ public class MUD {
 
         this.cycle = new Day();
         this.gameOver = false;
+    }
+    public void setOnUpdate(mudObserver observer) {
+        this.observer = observer;
+    }
+    private void mudUpdated() {
+        if(observer != null) {
+            observer.mudUpdated(this);
+        }
     }
 
     /**
@@ -422,6 +432,7 @@ public class MUD {
         else {
             System.out.println("Cannot move out of bounds");
         }
+        mudUpdated();
     }
 
     public void renderRooms(){
