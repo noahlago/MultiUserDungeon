@@ -172,7 +172,7 @@ public class Interact implements Visitor{
 
         if(currentRoom.isSafe()){
             System.out.println("The room is safe and you talk with the merchant");
-            int num = 0;
+            int num = 1;
             for(Item i: goods){
                 System.out.println(num + ": " + i.getName()+ ", $" + i.getGoldValue());
                 num++;

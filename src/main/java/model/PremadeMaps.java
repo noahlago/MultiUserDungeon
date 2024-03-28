@@ -79,7 +79,7 @@ public class PremadeMaps {
 
         // Room 1A
         ConcreteTile[][] tiles1A = map1.createRoom(10, 10);
-        ConcreteTile exit1A = map1.populateRoom(10, 10, tiles1A, 10, 6);
+        ConcreteTile exit1A = map1.populateRoom(10, 10, tiles1A, 9, 6);
         Npc[] npcs1A = {};
         Room room1A = new Room(10, 10, "Room one", tiles1A, true, false, exit1A, npcs1A);
         roomsMap1.add(room1A);
@@ -93,7 +93,7 @@ public class PremadeMaps {
 
         // Room 1C
         ConcreteTile[][] tiles1C = map1.createRoom(10, 10);
-        ConcreteTile exit1C = map1.populateRoom(10, 10, tiles1C, 5, 10);
+        ConcreteTile exit1C = map1.populateRoom(10, 10, tiles1C, 5, 9);
         Npc[] npcs1C = {};
         Room room1C = new Room(10, 10, "Room three", tiles1C, false, true, exit1C, npcs1C);
         roomsMap1.add(room1C);
@@ -114,14 +114,14 @@ public class PremadeMaps {
 
         // Room 2B
         ConcreteTile[][] tiles2B = map2.createRoom(10, 10);
-        ConcreteTile exit2B = map2.populateRoom(10, 10, tiles2B, 10, 8);
+        ConcreteTile exit2B = map2.populateRoom(10, 10, tiles2B, 9, 8);
         Npc[] npcs2B = {};
         Room room2B = new Room(10, 10, "Room two", tiles2B, false, false, exit2B, npcs2B);
         roomsMap2.add(room2B);
 
         // Room 2C
         ConcreteTile[][] tiles2C = map2.createRoom(10, 10);
-        ConcreteTile exit2C = map2.populateRoom(10, 10, tiles2C, 3, 10);
+        ConcreteTile exit2C = map2.populateRoom(10, 10, tiles2C, 3, 9);
         Npc[] npcs2C = {};
         Room room2C = new Room(10, 10, "Room three", tiles2C, false, false, exit2C, npcs2C);
         roomsMap2.add(room2C);
@@ -142,7 +142,7 @@ public class PremadeMaps {
 
         // Room 3A
         ConcreteTile[][] tiles3A = map3.createRoom(10, 10);
-        ConcreteTile exit3A = map3.populateRoom(10, 10, tiles3A, 10, 10);
+        ConcreteTile exit3A = map3.populateRoom(10, 10, tiles3A, 9, 0);
         Npc[] npcs3A = {};
         Room room3A = new Room(10, 10, "Room one", tiles3A, true, false, exit3A, npcs3A);
         roomsMap3.add(room3A);

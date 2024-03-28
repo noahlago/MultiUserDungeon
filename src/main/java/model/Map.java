@@ -12,6 +12,7 @@ import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
+import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
 import model.Tiles.ConcreteTile;
@@ -231,6 +232,10 @@ public class Map {
         room[exitX][exitY] = new ExitTile();
         ConcreteTile exit1 = room[exitX][exitY];
         room[0][0] = new CharacterTile(player, 0, 0);
+
+        //TODO delete this line, for testing purposes only
+        room[3][3] = new MerchantTile();
+
         
         return exit1;
     }
