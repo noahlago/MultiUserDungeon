@@ -131,6 +131,8 @@ public class Interact implements Visitor{
 
         //get the players location
         int[] loco = player.getLocation();
+        System.out.println(player);
+        System.out.println(loco[0] + " " + loco[1]);
 
         //copy of the current room
         ConcreteTile[][] tiles = currentRoom.getTiles();

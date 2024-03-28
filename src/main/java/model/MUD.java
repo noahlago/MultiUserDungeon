@@ -427,6 +427,8 @@ public class MUD {
     public void renderRooms(){
         this.map.renderRooms();
         this.currentRoom.specializeTiles();
+        this.currentRoom.setPlayer(player);
+        this.action = new Interact(this, currentRoom, player);
     }
 
     public int getPlayerGold(){

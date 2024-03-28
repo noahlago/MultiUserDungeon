@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import model.Character;
-import model.Npc;
+import model.Pc;
 import model.Visitor;
 
 
@@ -32,11 +32,11 @@ public class CharacterTile extends ConcreteTile{
     @Override
     public String toString() {
         //If the character is an NPC display it as !
-        if(this.character instanceof Npc){
-            return "[ ! ]";
+        if(this.character instanceof Pc){
+            return "[ i ]";
         }
         //if playable character display as i
-        return "[ i ]";
+        return "[ ! ]";
     }
 
     public Character getCharacter(){

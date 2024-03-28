@@ -228,7 +228,7 @@ public class Map {
         }
 
         ConcreteTile exit1 = room[9][9];
-        room[0][0] = new CharacterTile(player, 0, 0);
+        //room[0][0] = new CharacterTile(player, 0, 0);
 
         while (true) {
             int coin_flip = rand.nextInt(2);

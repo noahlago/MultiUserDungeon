@@ -120,6 +120,10 @@ public class Room {
         return grid;
     }
 
+    public void setPlayer(Pc player){
+        tiles[player.currX][player.currY] = new CharacterTile(player, player.currX, player.currY);
+    }
+
     public void specializeTiles(){
         for(int i = 0; i < tiles.length; i++){
             for(int j = 0; j < tiles[i].length; j++){
@@ -130,7 +134,7 @@ public class Room {
                 }else if(type.equals("CHEST")){
                     tiles[i][j] = new ChestTile(tiles[i][j].getChest());
                 }else if(type.equals("EMPTY")){
-                    tiles[i][j] = new EmptyTile(tiles[i][j].getRow(), tiles[i][j].getCol());
+                    tiles[i][j] = new EmptyTile(i, j);
                 }else if(type.equals("EXIT")){
                     tiles[i][j] = new ExitTile();
                 }else if(type.equals("TRAP")){
