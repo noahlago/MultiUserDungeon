@@ -43,29 +43,8 @@ public class Room {
     }
 
     public boolean isSafe(){
-        // //checks tile in each row
-        // for(ConcreteTile[] rTiles: tiles){
-        //     //checks tile in each column in the row
-        //     for(ConcreteTile cTiles: rTiles){
 
-        //         //if the tile is a character tile
-        //         if(cTiles instanceof CharacterTile){
-        //             //casts the tile to a character tile
-        //             CharacterTile tile = (CharacterTile)cTiles;
-
-        //             //if the character is an NPC then the room is NOT SAFE
-        //             if(tile.getCharacter() instanceof Npc){
-        //                 return false;
-        //             }
-        //         }
-        //     }
-            
-        // }
-
-        // //no enemies found, room is safe :)
-        // return true;
-
-
+        //if there are no npcs around, room is safe
         if(npcs == null || npcs.length == 0){
             return true;
         }
