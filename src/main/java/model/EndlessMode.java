@@ -16,21 +16,16 @@ import model.Tiles.ConcreteTile;
 
 public class EndlessMode {
     // Dictionary Format: Original Room : [Index of Room : Edited Room]
-    @JsonProperty("mapHistory") private Dictionary<Room, ArrayList<Object>> mapHistory= new Hashtable<>();
+    @JsonProperty("mapHistory") private Dictionary<Room, Room> mapHistory= new Hashtable<>();
     @JsonProperty("endlessMap") private Map endlessMap;
     @JsonProperty("index") private int index;
 
     public Room generateRandomRoom(){ 
-        
         ConcreteTile[][] tiles1A = endlessMap.createRoom(10, 10);
         ConcreteTile exit1A = endlessMap.populateRoom(10, 10, tiles1A);
         Npc[] npcs = {};
         Room newRoom = new Room(10, 10, "Room one", tiles1A, true, false, exit1A, npcs);
-        ArrayList<Object> data_list = new ArrayList<>();
-        int index = mapHistory.size() + 1;
-        data_list.add(index);
-        data_list.add(newRoom);
-        mapHistory.put(newRoom, data_list);
+        mapHistory.put(newRoom, newRoom);
         index = mapHistory.size();
         return newRoom;
     }
@@ -47,9 +42,9 @@ public class EndlessMode {
     }
 
     // returns the values of the mapHistory dictionary
-    public List<ArrayList<Object>> getEditedRoomList() {
-        List<ArrayList<Object>> valuesList = new ArrayList<>();
-        Enumeration<ArrayList<Object>> valuesEnumeration = mapHistory.elements();
+    public List<Room> getEditedRoomList() {
+        List<Room> valuesList = new ArrayList<>();
+        Enumeration<Room> valuesEnumeration = mapHistory.elements();
         while(valuesEnumeration.hasMoreElements()) {
             valuesList.add(valuesEnumeration.nextElement());
         }
@@ -59,9 +54,9 @@ public class EndlessMode {
     public Room getPreviousRoom() {
         List<Room> keysList = getOriginalRoomList();
         if (mapHistory.size() - index > 5) {
-            List<ArrayList<Object>> objects = getEditedRoomList();
+            List<Room> objects = getEditedRoomList();
             int position = index - 1;
-            Object res = objects.get(position).get(1);
+            Room res = objects.get(position);
             return res;
         }
         Room res = keysList.get(index - 1);
@@ -77,5 +72,10 @@ public class EndlessMode {
         Room res = keysList.get(index + 1);
         index++;
         return res;
+    }
+
+    public void updateRoom(Room originalRoom, Room editedRoom) {
+        mapHistory.put(originalRoom,editedRoom);
+        return;
     }
 }
