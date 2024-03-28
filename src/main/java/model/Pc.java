@@ -20,14 +20,16 @@ public class Pc extends Character {
      * @param amount the amount of damage to take
      */
     @Override
-    public void takeDamage(double amount){
+    public String takeDamage(double amount){
         if(armorSlot == null || armorSlot.getDefensePercent() == 0){
             health -= amount;
             System.out.println("You took " + amount + " damage\n Your health is now " + getHealth());
+            return("You took " + amount + " damage\n Your health is now " + getHealth());
         }else{
             double damage = (amount * (1- armorSlot.getDefensePercent()));
             health = health - damage;
             System.out.println("You took " + damage + " damage\n Your health is now " + getHealth());
+            return("You took " + damage + " damage\n Your health is now " + getHealth());
         }
     }
 
