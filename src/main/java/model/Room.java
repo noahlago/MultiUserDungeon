@@ -135,6 +135,8 @@ public class Room {
                     tiles[i][j] = new ExitTile();
                 }else if(type.equals("TRAP")){
                     tiles[i][j] = new TrapTile(tiles[i][j].getName(), tiles[i][j].getDescription());
+                }else if(type.equals("OBSTACLE")){
+                    tiles[i][j] = new ObstacleTile(tiles[i][j].getName());
                 }else{
                     tiles[i][j] = new EmptyTile(i, j);
                 }
