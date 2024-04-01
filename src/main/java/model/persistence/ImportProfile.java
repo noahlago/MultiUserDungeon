@@ -64,8 +64,10 @@ public class ImportProfile {
         Document doc = builder.parse(filename);
         Element element = doc.getDocumentElement();
 
+        //Gets each value from the file using the root element and the element tags of each value
         String username = getValue(element, "username");
         String password = getValue(element, "password");
+        //Uses Integer.parseInt to convert from String to int
         int gamesPlayed = Integer.parseInt(getValue(element, "gamesPlayed"));
         int livesLost = Integer.parseInt(getValue(element, "livesLost"));
         int monstersKilled = Integer.parseInt(getValue(element, "monstersKilled"));
