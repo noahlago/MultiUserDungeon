@@ -104,7 +104,11 @@ public class ProfileCSVFileDAO implements ProfileDAO{
         if(profiles.containsKey(newUser.getUsername())){
             return false;
         }else{
-            newUser.setHashedPassword(newUser.getPassword());
+            try {
+                newUser.setHashedPassword(passwordHandler.hashPassword(newUser.getPassword()));
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
             this.profiles.put(newUser.getUsername(), newUser);
             return true;
         }
