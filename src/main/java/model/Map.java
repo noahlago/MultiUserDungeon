@@ -39,6 +39,10 @@ public class Map {
         this.player = player;
     }
 
+    public int[] getStats(){
+        return player.getStats();
+    }
+
     public ConcreteTile[][] createRoom(int x_dimension,int y_dimension) {
         ConcreteTile[][] tiles1 = new ConcreteTile[10][10];
         for(int row = 0; row < 10; row++){

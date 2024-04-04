@@ -7,6 +7,11 @@ public class Pc extends Character {
     @JsonProperty("weaponSlot") protected Item weaponSlot;
     @JsonProperty("armorSlot") protected Item armorSlot;
 
+    private int livesLost;
+    private int monstersKilled;
+    private int totalGold;
+    private int itemsFound;
+
     @JsonCreator
     public Pc(@JsonProperty("health") double health, @JsonProperty("attack") double attack, @JsonProperty("name") String name,@JsonProperty("inventory") Inventory inventory, @JsonProperty("goldAmount") int goldAmount){
         super(health,attack,name,goldAmount);
@@ -14,7 +19,18 @@ public class Pc extends Character {
         if(inventory.getBags()[0] == null){
             inventory.addBag(new Bag(5));
         }
+
+        this.livesLost = 0;
+        this.monstersKilled = 0;
+        this.totalGold = 0;
+        this.itemsFound = 0;
     }
+
+    public int[] getStats(){
+        int[] stats = {livesLost, monstersKilled, totalGold, itemsFound};
+        return stats;
+    }
+
     /**
      * Calculates the amount of damage to take based on armor and defense
      * @param amount the amount of damage to take

@@ -75,4 +75,8 @@ public class Character {
     public String toString(){
         return "[name = " + getName() + ", health = " + getHealth() + ", attack = " + getAttack() + "]";
     }
+
+    public int[] getStats(){
+        return null;
+    }
 }
