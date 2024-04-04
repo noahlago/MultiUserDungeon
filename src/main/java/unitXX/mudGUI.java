@@ -50,7 +50,7 @@ public class mudGUI extends Application implements mudObserver {
     Button confirmAccountButton = new Button("Confirm Account");
     Popup accountPopup = new Popup();
     Stage currentStage;
-    Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 45);
+    Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 85);
     TextField field = new TextField();
 
     @Override
@@ -64,7 +64,6 @@ public class mudGUI extends Application implements mudObserver {
         }
         mud.setOnUpdate(this);
         VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(5);
         Text t = new Text();
         t.setText("Multi User Dungeon");
@@ -204,7 +203,7 @@ public class mudGUI extends Application implements mudObserver {
         vbox.getChildren().add(login);
         vbox.getChildren().add(viewMaps);
         vbox.getChildren().add(createAccountButton);
-        stage.setScene(new Scene(vbox));
+        stage.setScene(new Scene(vbox,500,300));
         stage.setTitle("MUD Game");
         stage.show();
     }
@@ -512,7 +511,10 @@ public class mudGUI extends Application implements mudObserver {
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             currentStage.close();
-
+            try{
+            profileDAO.save();
+            saveManager.save();
+            }catch(IOException a){};
             showLoggedIn(new Stage());
         });
         box.getChildren().addAll(backToProfileButton, grid);
