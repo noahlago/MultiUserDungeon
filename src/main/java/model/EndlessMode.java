@@ -15,7 +15,7 @@ import model.Tiles.ConcreteTile;
  */
 
 public class EndlessMode {
-    // Dictionary Format: Original Room : [Index of Room : Edited Room]
+    // Dictionary Format: Original Room : [Original Room : Edited Room]
     @JsonProperty("mapHistory") private Dictionary<Room, Room> mapHistory= new Hashtable<>();
     @JsonProperty("endlessMap") private Map endlessMap;
     @JsonProperty("index") private int index;
@@ -24,7 +24,7 @@ public class EndlessMode {
         ConcreteTile[][] tiles1A = endlessMap.createRoom(10, 10);
         ConcreteTile exit1A = endlessMap.populateRoom(10, 10, tiles1A);
         Npc[] npcs = {};
-        Room newRoom = new Room(10, 10, "Room one", tiles1A, true, false, exit1A, npcs);
+        Room newRoom = new Room(10, 10, "Endless room", tiles1A, true, false, exit1A, npcs);
         mapHistory.put(newRoom, newRoom);
         index = mapHistory.size();
         return newRoom;
