@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -25,6 +22,7 @@ public class Map {
 
     @JsonProperty("rooms") private List<Room> rooms; // list of rooms in the map
     @JsonProperty("player") private Character player;
+    public Dictionary<Room, Room> mapHistory= new Hashtable<>();
 
     /**
      * Map of rooms the player will go through
@@ -37,6 +35,16 @@ public class Map {
 
     public void setPlayer(Character player) {
         this.player = player;
+    }
+
+    public Dictionary<Room, Room> getMapDictionary() {
+        Dictionary<Room, Room> mapHistory= new Hashtable<>();
+
+        for (int i = 0; i < rooms.size(); i++) {
+            mapHistory.put(rooms.get(i),rooms.get(i));
+        }
+
+        return mapHistory;
     }
 
     public ConcreteTile[][] createRoom(int x_dimension,int y_dimension) {
@@ -444,6 +452,10 @@ public class Map {
         }
 
         return retVal;
+    }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
     }
 
     public void renderRooms(){

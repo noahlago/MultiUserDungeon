@@ -64,6 +64,12 @@ public class EndlessMode {
         return res;
     }
 
+    public Room getCurrentRoom() {
+        List<Room> keysList = getEditedRoomList();
+        Room res = keysList.get(index);
+        return res;
+    }
+
     public Room getNextRoom() {
         List<Room> keysList = getOriginalRoomList();
         if (index + 1 > mapHistory.size()) {
