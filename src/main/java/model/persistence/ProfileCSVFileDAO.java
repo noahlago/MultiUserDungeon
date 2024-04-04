@@ -110,6 +110,11 @@ public class ProfileCSVFileDAO implements ProfileDAO{
                 e.printStackTrace();
             }
             this.profiles.put(newUser.getUsername(), newUser);
+            try {
+                this.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return true;
         }
     }
