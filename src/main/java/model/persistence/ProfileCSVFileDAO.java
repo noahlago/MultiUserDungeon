@@ -31,6 +31,7 @@ public class ProfileCSVFileDAO implements ProfileDAO{
     public ProfileCSVFileDAO() throws IOException{
         this.filename = "data/profiles.csv";
         this.profiles = new HashMap<>();
+        this.passwordHandler = new PasswordManagement();
 
         load();
     }
