@@ -37,6 +37,9 @@ public class Interact implements Visitor{
         //if the npc health is reduced to 0 or below they die
         if(npc.getHealth() <=0){
 
+            //increments the player's kill count
+            player.killedMonster();
+
             //get gold from the npc
             int gold = npc.getGold();
 

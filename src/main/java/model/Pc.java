@@ -40,11 +40,13 @@ public class Pc extends Character {
         if(armorSlot == null || armorSlot.getDefensePercent() == 0){
             health -= amount;
             System.out.println("You took " + amount + " damage\n Your health is now " + getHealth());
+            if(health <= 0){this.livesLost++;}
             return("You took " + amount + " damage\n Your health is now " + getHealth());
         }else{
             double damage = (amount * (1- armorSlot.getDefensePercent()));
             health = health - damage;
             System.out.println("You took " + damage + " damage\n Your health is now " + getHealth());
+            if(health <= 0){this.livesLost++;}
             return("You took " + damage + " damage\n Your health is now " + getHealth());
         }
     }
@@ -173,6 +175,7 @@ public class Pc extends Character {
      */
     public void addGold(int gold){
         this.goldAmount +=gold;
+        this.totalGold += gold;
     }
     
     public Inventory getInventory(){
@@ -208,6 +211,11 @@ public class Pc extends Character {
 
     public void addItem(Item item){
         this.inventory.add(item);
+        this.itemsFound++;
+    }
+
+    public void killedMonster(){
+        this.monstersKilled++;
     }
     
 }
