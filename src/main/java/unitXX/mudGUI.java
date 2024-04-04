@@ -22,7 +22,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 import model.MUD;
 import model.Map;
 import model.Room;
@@ -30,9 +29,7 @@ import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
 import model.persistence.GameFileDAO;
-import model.persistence.ProfileDAO;
 import model.persistence.ProfileCSVFileDAO;
-import model.User;
 import model.Npc;
 
 public class mudGUI extends Application implements mudObserver {
@@ -54,6 +51,7 @@ public class mudGUI extends Application implements mudObserver {
     Popup accountPopup = new Popup();
     Stage currentStage;
     Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 45);
+    TextField field = new TextField();
 
     @Override
     public void start(Stage stage) {
@@ -151,12 +149,12 @@ public class mudGUI extends Application implements mudObserver {
         Popup accountPopup = new Popup();
         VBox accountPopupContent = new VBox(10);
         accountPopupContent.setStyle("-fx-background-color: #FFFFFF;");
-        accountPopupContent.setPadding(new Insets(10)); // Set some padding around the elements
+        accountPopupContent.setPadding(new Insets(10));
 
         // Add the username and password fields to the VBox
         Button confirmAccountButton = new Button("Create");
 
-        Label error = new Label("Already in Use");
+
         confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -211,34 +209,6 @@ public class mudGUI extends Application implements mudObserver {
         stage.show();
     }
 
-    private void confirmCreate() {
-        confirmAccountButton.setOnAction(event -> {
-            String newUsername = newUsernameTextField.getText();
-            String newPassword = newPasswordField.getText();
-
-            // Assuming ProfileCSVFileDAO has a method to create a new account
-            try {
-                profileDAO = new ProfileCSVFileDAO();
-                for (User user : profileDAO.getAllUsers()) {
-                    if (user.getUsername() == newUsername) {
-                        Label error = new Label("Username already in use");
-                        accountPopup.getContent().remove(error);
-                        accountPopup.getContent().add(error);
-                        throw new IOException("Already used");
-                    }
-                }
-
-                profileDAO.newUser(new User(newUsername, newPassword));
-                Label success = new Label("Account Created Successfully!");
-                accountPopup.getContent().remove(success);
-                accountPopup.getContent().add(success);
-                accountPopup.hide();
-
-            } catch (IOException io) {
-                io.printStackTrace();
-            }
-        });
-    }
 
     private void showLoggedIn(Stage stage) {
         stage.close();
@@ -413,13 +383,11 @@ public class mudGUI extends Application implements mudObserver {
         return null;
     }
     private VBox createKeyDisplay() {
-        VBox keyDisplay = new VBox(5); // Vertical box with spacing of 5
-        keyDisplay.setPadding(new Insets(10, 0, 10, 0)); // Add some padding for aesthetics
+        VBox keyDisplay = new VBox(5); 
+        keyDisplay.setPadding(new Insets(10, 0, 10, 0));
     
         Label title = new Label("Key:");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-    
-        // Each entry in the key
         Label characterLabel = new Label("Character");
         characterLabel.setGraphic(new Rectangle(10, 10, Color.AQUAMARINE));
         Label npcLabel = new Label("NPC");
@@ -432,9 +400,16 @@ public class mudGUI extends Application implements mudObserver {
         trapLabel.setGraphic(new Rectangle(10, 10, Color.ORANGE));
         Label obstacleLabel = new Label("Obstacle");
         obstacleLabel.setGraphic(new Rectangle(10, 10, Color.BLACK));
-    
-        // Add all labels to the VBox
         keyDisplay.getChildren().addAll(title, characterLabel, npcLabel, chestLabel,exitLabel, trapLabel, obstacleLabel);
+    
+        return keyDisplay;
+    }
+    private VBox createTextBox() {
+        VBox keyDisplay = new VBox(5); 
+        TextField field = new TextField();
+
+    
+        keyDisplay.getChildren().addAll();
     
         return keyDisplay;
     }
@@ -530,7 +505,6 @@ public class mudGUI extends Application implements mudObserver {
 
     @Override
     public void mudUpdated(MUD board) {
-        System.out.println("called");
         GridPane grid = new GridPane();
         displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
         VBox box = new VBox();
@@ -541,17 +515,22 @@ public class mudGUI extends Application implements mudObserver {
 
             showLoggedIn(new Stage());
         });
-
-        // Add the grid (game environment) and the button to the VBox
         box.getChildren().addAll(backToProfileButton, grid);
         addMovementControls(box, currentProf.getGameInProgress());
         VBox keyDisplay = createKeyDisplay();
         box.getChildren().add(keyDisplay);
-        // Adjust the scene and stage as before
-        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        box.getChildren().add(field);
+        Scene gameScene = new Scene(box); 
         currentStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
         currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
+    }
+    @Override
+    public void textUpdated(String newText){
+        field.appendText(newText);
+        System.out.println("adsfs");
+        mudUpdated(mud);
+        
     }
 
     public static void main(String[] args) {

@@ -67,6 +67,11 @@ public class MUD {
             observer.mudUpdated(this);
         }
     }
+    private void textUpdated(String string){
+        if(observer != null){
+            observer.textUpdated(string);
+        }
+    }
 
     /**
      * @return map toString
@@ -157,7 +162,7 @@ public class MUD {
      * @param amount the amount of damage to take
      */
     public void takeDamage(double amount) {
-        player.takeDamage(amount);
+        textUpdated(player.takeDamage(amount));
     }
 
     /**
@@ -217,6 +222,7 @@ public class MUD {
             cycle.modifyNocturnalEnemies(getNpcs());
 
             System.out.println("It switched to " + cycle.toString());
+            textUpdated("It switched to " + cycle.toString());
         }
     }
 
@@ -231,6 +237,7 @@ public class MUD {
         if (getHealth() <= 0) {
             gameOver = true;
             System.out.println("You lost!");
+            textUpdated("You Lost!");
         }
         return gameOver;
     }
@@ -238,6 +245,7 @@ public class MUD {
     public void winGame(){
         gameOver = true;
         System.out.println("You won!");
+        textUpdated("You Won!");
     }
 
     public boolean roomIsGoal(){
@@ -344,6 +352,7 @@ public class MUD {
                     if(chance == 1){
                         ((TrapTile) tile).discover();
                         System.out.println("You discovered a trap!");
+                        textUpdated("You Discovered A Trap!");
                     }
                 }
                 
@@ -431,6 +440,7 @@ public class MUD {
         // player tries to move outside of playable area
         else {
             System.out.println("Cannot move out of bounds");
+            textUpdated("You cannot move out of bounds!");
         }
         mudUpdated();
     }
