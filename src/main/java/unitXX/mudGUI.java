@@ -301,7 +301,11 @@ public class mudGUI extends Application implements mudObserver {
         startGameButton.setOnAction(e -> {
             String playerName = playerNameField.getText().trim();
             if (!playerName.isEmpty()) {
-                startGame(playerName, regularGameStage);
+                try {
+                    startGame(playerName, regularGameStage);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 

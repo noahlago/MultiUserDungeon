@@ -22,7 +22,7 @@ import model.Tiles.ConcreteTile;
 public class Map {
 
     @JsonProperty("rooms") private List<Room> rooms; // list of rooms in the map
-    @JsonProperty("player") private Character player;
+    @JsonProperty("player") private Pc player;
     public Dictionary<Room, Room> mapHistory= new Hashtable<>();
 
     /**
@@ -34,11 +34,14 @@ public class Map {
         this.rooms = createRooms();
     }
 
-    public void setPlayer(Character player) {
+    public void setPlayer(Pc player) {
         this.player = player;
     }
 
     public int[] getStats(){
+        if(player == null){
+            return null;
+        }
         return player.getStats();
     }
 
