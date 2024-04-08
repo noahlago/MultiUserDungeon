@@ -108,7 +108,7 @@ public class MUD {
         
     }
 
-    public Character getPlayer() {
+    public Pc getPlayer() {
         return this.player;
     }
 
