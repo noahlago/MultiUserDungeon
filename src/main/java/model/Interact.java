@@ -8,6 +8,8 @@ import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
 import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
+import model.Tiles.ShrineTile;
+import model.Tiles.Tile;
 import model.Tiles.TrapTile;
 import view.PTUI;
 
@@ -265,6 +267,26 @@ public class Interact implements Visitor{
     public void visitShrineTile() {
         // TODO Save user position so they respawn at the shrine
         throw new UnsupportedOperationException("Unimplemented method 'visitShrineTile'");
+    }
+
+    @Override
+    public void visitShrineTile(ShrineTile sTile) {
+        Npc[] npcs = currentRoom.getNpcs();
+        boolean canPray = true;
+
+        // checks to see if enemies in room are defeated
+        if(npcs.length == 0){
+            canPray = false;
+        }
+
+        if(canPray == true){
+            sTile.setCanPray();
+            game.setShrineRoom(currentRoom);
+            System.out.println("You prayed at a shrine! You will now respawn here if you die.");
+        }
+        else{
+            System.out.println("You cannot pray here yet, there are undefeated enemies.");
+        }
     }
     
 }

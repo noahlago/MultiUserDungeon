@@ -7,6 +7,7 @@ import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
 import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
+import model.Tiles.ShrineTile;
 import model.Tiles.TrapTile;
 
 public interface Visitor {
@@ -37,5 +38,8 @@ public interface Visitor {
 
     //interactions with a shrine for respawning
     public void visitShrineTile();
+
+    //Interactions with an shrine tile
+    public void visitShrineTile(ShrineTile sTile);
     
 }

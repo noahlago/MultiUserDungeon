@@ -44,6 +44,10 @@ public class MUD {
     @JsonProperty("roomIndex")
     private int roomIndex;
 
+    public Room shrineRoom;
+    public Pc shrineCharacter;
+    public Cycle shrineCycle;
+
     /**
      * Instance of a MUD game
      * 
@@ -62,6 +66,8 @@ public class MUD {
         
         this.cycle = new Day();
         this.gameOver = false;
+        this.shrineRoom = null;
+        this.shrineCharacter = null;
     }
     public void setOnUpdate(mudObserver observer) {
         this.observer = observer;
@@ -117,7 +123,7 @@ public class MUD {
         
     }
 
-    public Character getPlayer() {
+    public Pc getPlayer() {
         return this.player;
     }
 
@@ -161,6 +167,29 @@ public class MUD {
      */
     public void uptickTurns() {
         numTurns += 1;
+    }
+
+    public Room getShrineRoom(){
+        return shrineRoom;
+    }
+
+    /**
+     * Saves a snapshot of current room and character stats when praying at a shrine
+     * @param room current room to save
+     */
+    public void setShrineRoom(Room room){
+        this.shrineRoom = room;
+        this.shrineCharacter = getPlayer();
+        this.shrineCycle = getCycle();
+    }
+
+    /**
+     * Resets game to last shrine
+     */
+    public void resetShrine(){
+        this.currentRoom = this.shrineRoom;
+        this.player = this.shrineCharacter;
+        this.cycle = this.shrineCycle;
     }
 
     /**
@@ -267,6 +296,7 @@ public class MUD {
     /**
      * Checks if the game is over
      * Tells user if they won or lost if game over
+     * If there is a shrine saved, player will reset at shrine after they die
      * 
      * @return true if character health is <= 0 or character on exit tile of goal
      *         room, false otherwise
@@ -275,6 +305,11 @@ public class MUD {
         if (getHealth() <= 0) {
             gameOver = true;
             System.out.println("You lost!");
+            
+            if(getShrineRoom() != null){
+                resetShrine();
+                System.out.println("You reset at the shrine");
+            }
             textUpdated("You Lost!");
         }
         return gameOver;
