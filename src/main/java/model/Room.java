@@ -42,6 +42,20 @@ public class Room {
         this.npcs = npcs;
     }
 
+    public boolean isSafe(){
+
+        System.out.println(npcs);
+
+        //if there are no npcs around, room is safe
+        if(npcs == null || npcs.length == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
     /**
      * @return width of room
      */

@@ -10,14 +10,20 @@ public class Item  {
     @JsonProperty("attackDamage") protected double attackDamage;
     @JsonProperty("healthPoints") protected double healthPoints;
     @JsonProperty("defensePercent") protected double defensePercent;
+    @JsonProperty("goldValue") protected int goldValue;
 
     @JsonCreator 
-    public Item(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("type") ItemType type) {
+    public Item(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("type") ItemType type, @JsonProperty("goldValue") int goldValue) {
         this.name = name;
         this.attackDamage = 0.0;
         this.healthPoints = 0.0;
         this.defensePercent = 0.0;
         this.type = type;
+        this.goldValue = goldValue;
+    }
+
+    public int getGoldValue(){
+        return goldValue;
     }
 
     public double getAttackDamage() {

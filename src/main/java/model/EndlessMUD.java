@@ -3,6 +3,8 @@ package model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -11,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import model.Tiles.CharacterTile;
 import model.Tiles.ConcreteTile;
 import model.Tiles.TrapTile;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Main implementation of MUD game
@@ -20,12 +26,13 @@ import model.Tiles.TrapTile;
  * 
  * @author Zoe Rizzo (zjr1377@rit.edu)
  */
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MUD {
+public class EndlessMUD {
 
-    private Interact action;
+    private EndlessInteract action;
     @JsonProperty("map")
-    public Map map;
+    public Map endlessMap;
     @JsonProperty("name")
     public String name;
     @JsonProperty("player")
@@ -38,13 +45,12 @@ public class MUD {
     public Cycle cycle;
     @JsonProperty("gameOver")
     public boolean gameOver;
+    @JsonProperty("index")
+    public int index;
+    @JsonProperty("mapHistory") 
+    public Dictionary<Room, Room>
+    mapHistory= new Hashtable<>();
 
-    public Room shrineRoom;
-    public Pc shrineCharacter;
-    public Cycle shrineCycle;
-  
-    @JsonProperty("roomIndex")
-    private int roomIndex;
 
     /**
      * Instance of a MUD game
@@ -53,59 +59,62 @@ public class MUD {
      * @param name -- name of users
      */
     @JsonCreator
-    public MUD(@JsonProperty("map") Map map, @JsonProperty("name") String name) {
-        this.map = map;
+    public EndlessMUD(@JsonProperty("map") Map endlessMap, @JsonProperty("name") String name) {
+        this.endlessMap = endlessMap;
         this.name = name;
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
-        currentRoom = this.map.getRooms().get(0);
-        this.roomIndex = 0;
-        this.action = new Interact(this, this.currentRoom, this.player);
-        
+        currentRoom = this.endlessMap.getRooms().get(index);
+        this.action = new EndlessInteract(this, this.currentRoom, this.player);
+        this.index = 0;
         this.cycle = new Day();
         this.gameOver = false;
-        this.shrineRoom = null;
-        this.shrineCharacter = null;
-    }
-
-    /**
-     * Sets map to a premade map option
-     * @param premadeMap the map to play
-     */
-    public void selectPremadeMap(Map premadeMap){
-        this.map = premadeMap;
+        this.mapHistory = this.endlessMap.getMapDictionary();
     }
 
     /**
      * @return map toString
      */
     public Map getMap() {
-        return map;
+        return endlessMap;
     }
 
     public Room getCurrentRoom() {
         return this.currentRoom;
     }
 
-    /**
-     * moves the game to the next room in the sequence
-     */
-    public void nextRoom(){
-        this.currentRoom = this.map.getRooms().get(this.roomIndex+1);
-        this.roomIndex++;
-        this.action = new Interact(this, this.currentRoom, this.player);
+    public Room generateRandomRoom(){ 
+        ConcreteTile[][] tiles1A = endlessMap.createRoom(10, 10);
+        ConcreteTile exit1A = endlessMap.populateRoom(10, 10, tiles1A);
+        Npc[] npcs = {};
+        Room newRoom = new Room(10, 10, "Endless room", tiles1A, true, false, exit1A, npcs);
+        mapHistory.put(newRoom, newRoom);
+        index = mapHistory.size();
+        return newRoom;
     }
 
     /**
      * moves the game to the next room in the sequence
      */
-    public void prevRoom(){
-        if(this.roomIndex > 0){
-            this.currentRoom = this.map.getRooms().get(this.roomIndex-1);
-            this.roomIndex--;
-            this.action = new Interact(this, this.currentRoom, this.player);
+    public void nextRoom(){
+        if (index + 2 > endlessMap.getRooms().size()) {
+            index += 1;
+            Room room = generateRandomRoom();
+            endlessMap.addRoom(room);
+        } 
+        index += 1;
+        this.currentRoom = this.endlessMap.getRooms().get(index);
+        this.action = new EndlessInteract(this, this.currentRoom, this.player);
+    }
+
+    public void previousRoom() {
+        if (mapHistory.size() == 1) {
+            return;
         }
+        index -= 1;
         
+        this.currentRoom = this.endlessMap.getRooms().get(index);
+        this.action = new EndlessInteract(this, this.currentRoom, this.player);
     }
 
     public Character getPlayer() {
@@ -137,7 +146,7 @@ public class MUD {
      * Prints description of map
      */
     public void printMap() {
-        System.out.println(this.map);
+        System.out.println(this.endlessMap);
     }
 
     /**
@@ -152,29 +161,6 @@ public class MUD {
      */
     public void uptickTurns() {
         numTurns += 1;
-    }
-
-    public Room getShrineRoom(){
-        return shrineRoom;
-    }
-
-    /**
-     * Saves a snapshot of current room and character stats when praying at a shrine
-     * @param room current room to save
-     */
-    public void setShrineRoom(Room room){
-        this.shrineRoom = room;
-        this.shrineCharacter = getPlayer();
-        this.shrineCycle = getCycle();
-    }
-
-    /**
-     * Resets game to last shrine
-     */
-    public void resetShrine(){
-        this.currentRoom = this.shrineRoom;
-        this.player = this.shrineCharacter;
-        this.cycle = this.shrineCycle;
     }
 
     /**
@@ -265,22 +251,8 @@ public class MUD {
     }
 
     /**
-     * Sells item for half its value in gold
-     * Item is destroyed after sold
-     * @param item item to sell
-     */
-    public void sellItemToMerchant(Item item){
-        int value = (item.getGoldValue() / 2);
-        player.increaseGold(value);
-        player.destroyItem(item);
-    }
-
-    
-
-    /**
      * Checks if the game is over
      * Tells user if they won or lost if game over
-     * If there is a shrine saved, player will reset at shrine after they die
      * 
      * @return true if character health is <= 0 or character on exit tile of goal
      *         room, false otherwise
@@ -289,11 +261,6 @@ public class MUD {
         if (getHealth() <= 0) {
             gameOver = true;
             System.out.println("You lost!");
-            
-            if(getShrineRoom() != null){
-                resetShrine();
-                System.out.println("You reset at the shrine");
-            }
         }
         return gameOver;
     }
@@ -498,7 +465,7 @@ public class MUD {
     }
 
     public void renderRooms(){
-        this.map.renderRooms();
+        this.endlessMap.renderRooms();
         this.currentRoom.specializeTiles();
     }
 
@@ -508,6 +475,16 @@ public class MUD {
 
     public Inventory getInventory(){
         return this.player.getInventory();
+    }
+
+    public void sellItemToMerchant(Item item){
+        int value = (item.getGoldValue() / 2);
+        player.increaseGold(value);
+        player.destroyItem(item);
+    }
+
+    public void prayToShrine() {
+        
     }
 
     public static void main(String[] args) {

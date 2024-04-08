@@ -8,27 +8,24 @@ import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
 import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
-import model.Tiles.ShrineTile;
-import model.Tiles.Tile;
 import model.Tiles.TrapTile;
 import view.PTUI;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 import model.Character;
 
 @SuppressWarnings("unused")
-public class Interact implements Visitor{
+public class EndlessInteract implements Visitor{
 
-    private MUD game;
+    private EndlessMUD endlessMUD;
     private Room currentRoom;
     private Pc player;
 
-    public Interact(MUD game, Room room, Pc player){
-        this.game = game;
+    public EndlessInteract(EndlessMUD endlessMUD, Room room, Pc player){
+        this.endlessMUD = endlessMUD;
         this.currentRoom = room;
         this.player = player;
     }
@@ -41,7 +38,7 @@ public class Interact implements Visitor{
         System.out.println("You hit " + npc.getName() + "\t Health: " + npc.getHealth());
 
         //if the npc health is reduced to 0 or below they die
-        if(npc.getHealth() <=0){
+        if(npc.getHealth() <= 0){
 
             System.out.println("You killed " + npc.getName());
 
@@ -149,15 +146,24 @@ public class Interact implements Visitor{
     public void visitExitTile(ExitTile eTile) {
         //moves map to the next room in sequence
         if(currentRoom.getIsGoal()){
-            game.winGame();
+            endlessMUD.winGame();
         }
         else{
-            game.nextRoom();
+            endlessMUD.nextRoom();
             player.updateLocation(0, 0);
             System.out.println("You've entered the next room!");
         }
         
+    }
 
+    @Override
+    public void visitEntranceTile(EntranceTile eTile) {
+        if (currentRoom.getIsStart()) {
+            System.out.println("You cannot exit the dungeon!");
+            return;
+        }
+        endlessMUD.previousRoom();
+        System.out.println("You've entered the previous room!");
     }
 
     @Override
@@ -169,26 +175,6 @@ public class Interact implements Visitor{
     }
 
     @Override
-    public void visitShrineTile(ShrineTile sTile) {
-        Npc[] npcs = currentRoom.getNpcs();
-        boolean canPray = true;
-
-        // checks to see if enemies in room are defeated
-        if(npcs.length == 0){
-            canPray = false;
-        }
-
-        if(canPray == true){
-            sTile.setCanPray();
-            game.setShrineRoom(currentRoom);
-            System.out.println("You prayed at a shrine! You will now respawn here if you die.");
-        }
-        else{
-            System.out.println("You cannot pray here yet, there are undefeated enemies.");
-        }
-    }
-  
-  
     public void visitMerchantTile(MerchantTile mTile) {
         List<Item> goods = mTile.getGoods();
 
@@ -205,7 +191,7 @@ public class Interact implements Visitor{
             switch(selection){
                 case 's':
                     // sell item to merchant
-                    Inventory inv = game.getInventory();
+                    Inventory inv = endlessMUD.getInventory();
                     ArrayList<Item> items = inv.items();
                     
                     int itemNum = 1;
@@ -221,7 +207,7 @@ public class Interact implements Visitor{
                         System.out.println("Invalid item #. Try again.");
                     }else{
                         Item item = items.get(itemNum);
-                        game.sellItemToMerchant(item);
+                        endlessMUD.sellItemToMerchant(item);
                         System.out.println("You sold " + item.getName() + " for $" + item.getGoldValue() /2);
                     }
 
@@ -260,14 +246,13 @@ public class Interact implements Visitor{
     }
 
     @Override
-    public void visitEntranceTile(EntranceTile eTile) {
-        if(currentRoom.getIsStart()){
-            System.out.println("You cannot exit the dungeon");
+    public void visitShrineTile() {
+        if (!currentRoom.isSafe()) {
+            System.out.println("Destroy all monsters on the map to pray.");
         }
-        else{
-            game.prevRoom();
+        else {
+            System.out.println("The gods bless you.");
         }
     }
-
     
 }
