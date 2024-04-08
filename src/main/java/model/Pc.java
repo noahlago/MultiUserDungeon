@@ -217,5 +217,13 @@ public class Pc extends Character {
     public void killedMonster(){
         this.monstersKilled++;
     }
+
+    public void increaseGold(int amount){
+        this.goldAmount += amount;
+    }
+
+    public void decreaseGold(int amount){
+        this.goldAmount -= amount;
+    }
     
 }

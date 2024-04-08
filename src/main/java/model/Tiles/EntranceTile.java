@@ -2,23 +2,24 @@ package model.Tiles;
 
 import model.Visitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
-public class ExitTile extends ConcreteTile{
+
+public class EntranceTile extends ConcreteTile{
 
     @JsonCreator
-    public ExitTile(){
-        super.setType("EXIT");
+    public EntranceTile(){
+        super.setType("ENTRANCE");
     }
     
     @Override
     public void accept(Visitor visitor) {
         //Double dispatch, object calls visitors proper method
-        visitor.visitExitTile(this);
+        visitor.visitEntranceTile(this);
         
     }
 
     @Override
     public String toString() {
-        return "[ E ]";
+        return "[ e ]";
     }
 
 }
