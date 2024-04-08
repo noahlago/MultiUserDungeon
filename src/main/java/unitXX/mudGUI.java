@@ -313,9 +313,10 @@ public class mudGUI extends Application implements mudObserver {
         regularGameStage.show();
     }
 
-    private void startGame(String playerName, Stage gameStage) {
+    private void startGame(String playerName, Stage gameStage) throws IOException {
         // Prepare the game environment as before
         mud = new MUD(new Map(), playerName);
+        saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
@@ -513,6 +514,7 @@ public class mudGUI extends Application implements mudObserver {
             currentStage.close();
             try{
             profileDAO.save();
+            saveManager.updateSaveGame(board);
             saveManager.save();
             }catch(IOException a){};
             showLoggedIn(new Stage());
