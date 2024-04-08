@@ -94,9 +94,12 @@ public class MUD {
      * moves the game to the next room in the sequence
      */
     public void prevRoom(){
-        this.currentRoom = this.map.getRooms().get(this.roomIndex-1);
-        this.roomIndex--;
-        this.action = new Interact(this, this.currentRoom, this.player);
+        if(this.roomIndex > 0){
+            this.currentRoom = this.map.getRooms().get(this.roomIndex-1);
+            this.roomIndex--;
+            this.action = new Interact(this, this.currentRoom, this.player);
+        }
+        
     }
 
     public Character getPlayer() {
