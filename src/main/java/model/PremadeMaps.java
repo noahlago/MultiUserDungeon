@@ -79,26 +79,26 @@ public class PremadeMaps {
 
         // Room 1A
         ConcreteTile[][] tiles1A = map1.createRoom(10, 10);
-        ConcreteTile exit1A = map1.populateRoom(10, 10, tiles1A, 9, 6);
+        ConcreteTile exit1A = map1.populateRoom(10, 10, tiles1A);
         Npc[] npcs1A = {};
         Room room1A = new Room(10, 10, "Room one", tiles1A, true, false, exit1A, npcs1A);
         roomsMap1.add(room1A);
 
         // Room 1B
         ConcreteTile[][] tiles1B = map1.createRoom(10, 10);
-        ConcreteTile exit1B = map1.populateRoom(10, 10, tiles1B, 0, 8);
+        ConcreteTile exit1B = map1.populateRoom(10, 10, tiles1B);
         Npc[] npcs1B = {};
         Room room1B = new Room(10, 10, "Room two", tiles1B, false, false, exit1B, npcs1B);
         roomsMap1.add(room1B);
 
         // Room 1C
         ConcreteTile[][] tiles1C = map1.createRoom(10, 10);
-        ConcreteTile exit1C = map1.populateRoom(10, 10, tiles1C, 5, 9);
+        ConcreteTile exit1C = map1.populateRoom(10, 10, tiles1C);
         Npc[] npcs1C = {};
         Room room1C = new Room(10, 10, "Room three", tiles1C, false, true, exit1C, npcs1C);
         roomsMap1.add(room1C);
 
-        map1 = new Map(roomsMap1);
+        map1 = new Map();
 
 
         // Map 2
@@ -107,30 +107,30 @@ public class PremadeMaps {
 
         // Room 2A
         ConcreteTile[][] tiles2A = map2.createRoom(10, 10);
-        ConcreteTile exit2A = map2.populateRoom(10, 10, tiles2A, 0, 2);
+        ConcreteTile exit2A = map2.populateRoom(10, 10, tiles2A);
         Npc[] npcs2A = {};
         Room room2A = new Room(10, 10, "Room one", tiles2A, true, false, exit2A, npcs2A);
         roomsMap2.add(room2A);
 
         // Room 2B
         ConcreteTile[][] tiles2B = map2.createRoom(10, 10);
-        ConcreteTile exit2B = map2.populateRoom(10, 10, tiles2B, 9, 8);
+        ConcreteTile exit2B = map2.populateRoom(10, 10, tiles2B);
         Npc[] npcs2B = {};
         Room room2B = new Room(10, 10, "Room two", tiles2B, false, false, exit2B, npcs2B);
         roomsMap2.add(room2B);
 
         // Room 2C
         ConcreteTile[][] tiles2C = map2.createRoom(10, 10);
-        ConcreteTile exit2C = map2.populateRoom(10, 10, tiles2C, 3, 9);
+        ConcreteTile exit2C = map2.populateRoom(10, 10, tiles2C);
         Npc[] npcs2C = {};
         Room room2C = new Room(10, 10, "Room three", tiles2C, false, false, exit2C, npcs2C);
         roomsMap2.add(room2C);
 
-        map2 = new Map(roomsMap2);
+        map2 = new Map();
 
         // Room 2D
         ConcreteTile[][] tiles2D = map2.createRoom(10, 10);
-        ConcreteTile exit2D = map2.populateRoom(10, 10, tiles2D, 9, 0);
+        ConcreteTile exit2D = map2.populateRoom(10, 10, tiles2D);
         Npc[] npcs2D = {};
         Room room2D = new Room(10, 10, "Room four", tiles2D, false, true, exit2D, npcs2D);
         roomsMap2.add(room2D);
@@ -142,19 +142,19 @@ public class PremadeMaps {
 
         // Room 3A
         ConcreteTile[][] tiles3A = map3.createRoom(10, 10);
-        ConcreteTile exit3A = map3.populateRoom(10, 10, tiles3A, 9, 0);
+        ConcreteTile exit3A = map3.populateRoom(10, 10, tiles3A);
         Npc[] npcs3A = {};
         Room room3A = new Room(10, 10, "Room one", tiles3A, true, false, exit3A, npcs3A);
         roomsMap3.add(room3A);
 
         // Room 3B
         ConcreteTile[][] tiles3B = map3.createRoom(10, 10);
-        ConcreteTile exit3B = map3.populateRoom(10, 10, tiles3B, 0, 3);
+        ConcreteTile exit3B = map3.populateRoom(10, 10, tiles3B);
         Npc[] npcs3B = {};
         Room room3B = new Room(10, 10, "Room two", tiles3B, false, true, exit3B, npcs3B);
         roomsMap3.add(room3B);
 
-        map3 = new Map(roomsMap3);
+        map3 = new Map();
 
         mapsList.add(map1);
         mapsList.add(map2);
@@ -168,7 +168,7 @@ public class PremadeMaps {
 
         int i = 1;
         for(Map map : maps){
-            retVal += "Map " + i + ": " + map.numRooms() + " rooms";
+            retVal += "Map " + i + ": " + map.toString() + " rooms";
             i++;
         }
 

@@ -156,7 +156,7 @@ public class Map {
 
             if (generation == "Merchant") {
                 List<Boolean> chance = new ArrayList<>();
-                chance.add(true)
+                chance.add(true);
                 for (int k = 0; k <=4; k++) {
                     chance.add(false);
                 }

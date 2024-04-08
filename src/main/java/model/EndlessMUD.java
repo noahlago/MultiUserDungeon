@@ -98,11 +98,21 @@ public class EndlessMUD {
      */
     public void nextRoom(){
         if (index + 2 > endlessMap.getRooms().size()) {
+            index += 1;
             Room room = generateRandomRoom();
             endlessMap.addRoom(room);
-
         } 
         index += 1;
+        this.currentRoom = this.endlessMap.getRooms().get(index);
+        this.action = new EndlessInteract(this, this.currentRoom, this.player);
+    }
+
+    public void previousRoom() {
+        if (mapHistory.size() == 1) {
+            return;
+        }
+        index -= 1;
+        
         this.currentRoom = this.endlessMap.getRooms().get(index);
         this.action = new EndlessInteract(this, this.currentRoom, this.player);
     }
@@ -465,6 +475,16 @@ public class EndlessMUD {
 
     public Inventory getInventory(){
         return this.player.getInventory();
+    }
+
+    public void sellItemToMerchant(Item item){
+        int value = (item.getGoldValue() / 2);
+        player.increaseGold(value);
+        player.destroyItem(item);
+    }
+
+    public void prayToShrine() {
+        
     }
 
     public static void main(String[] args) {
