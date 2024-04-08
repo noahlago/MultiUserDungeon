@@ -9,6 +9,7 @@ import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
 import model.Tiles.ExitTile;
+import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
 import model.Tiles.ConcreteTile;
@@ -106,6 +107,72 @@ public class Map {
         Collections.shuffle(master_list);
         return master_list;
     }
+
+    public void randomlyGenerate(int x_dimension, int y_dimension, int item_num, String generation, List<String> occupied_spots, ConcreteTile[][] room) {
+        Random rand = new Random();
+        for (int i = 0; i <= item_num; i++) {
+            int random_x = rand.nextInt(x_dimension);
+            int random_y = rand.nextInt(y_dimension);
+
+            String x_val = String.valueOf(random_x);
+            String y_val = String.valueOf(random_y);
+            String result = x_val + y_val;
+
+            if (occupied_spots.contains(result)) {
+                item_num++;
+                continue;
+            }
+
+            if (generation == "NPC") {
+                occupied_spots.add(result);
+                List<Npc> enemy_list = createNPCList();
+                Npc character = enemy_list.get(0);
+                room[random_x][random_y] = new CharacterTile(character, random_x, random_y);
+            }
+
+            if (generation == "Trap") { 
+                occupied_spots.add(result);
+                room[random_x][random_y] = new TrapTile("Spike Trap", "Deadly Spikes, ouch!");
+            }
+
+            if (generation == "Obstacle") {
+                occupied_spots.add(result);
+                room[random_x][random_y] = new ObstacleTile("Big #@!%$ Boulder");
+            }
+
+            if (generation == "Chest") {
+                List<Item> loot_items = createItemList();
+                int item_amount = rand.nextInt(5) + 1;
+                Chest chest = new Chest(null);
+    
+                for (int x = 0; x < item_amount; x++) {
+                    Item item = loot_items.get(x);
+                    chest.add(item);
+                }
+    
+                occupied_spots.add(result);
+                room[random_x][random_y] = new ChestTile(chest);
+            }
+
+            if (generation == "Merchant") {
+                List<Boolean> chance = new ArrayList<>();
+                chance.add(true)
+                for (int k = 0; k <=4; k++) {
+                    chance.add(false);
+                }
+                Collections.shuffle(chance);
+                Boolean condition = chance.get(0);
+
+                if (condition) {
+                    occupied_spots.add(result);
+                    room[random_x][random_y] = new MerchantTile();
+                }
+            }
+
+
+        }
+
+    }
         
        
     public ConcreteTile populateRoom(int x_dimension, int y_dimension, ConcreteTile[][] room) {
@@ -117,124 +184,16 @@ public class Map {
         List<String> occupied_spots = new ArrayList<>();
         occupied_spots.add("00");
 
-        for (int i = 0; i <= opp_num; i++) {
-            int random_x = rand.nextInt(x_dimension);
-            int random_y = rand.nextInt(y_dimension);
-
-            String x_val = String.valueOf(random_x);
-            String y_val = String.valueOf(random_y);
-            String result = x_val + y_val;
-
-            if (occupied_spots.contains(result)) {
-                opp_num++;
-                continue;
-            }
-
-            occupied_spots.add(result);
-            List<Npc> enemy_list = createNPCList();
-            Npc character = enemy_list.get(0);
-            room[random_x][random_y] = new CharacterTile(character, random_x, random_y);
-        }
-
-        for (int i = 0; i <= trap_num; i++) {
-            int random_x = rand.nextInt(x_dimension);
-            int random_y = rand.nextInt(y_dimension);
-            if (random_x == x_dimension-1 && random_y == y_dimension-1) {
-                trap_num++;
-                continue;
-            }
-
-            if (random_x == 0 && random_y == 1 || random_x == 1 && random_y == 0) {
-                trap_num++;
-                continue;
-            }
-
-            String x_val = String.valueOf(random_x);
-            String y_val = String.valueOf(random_y);
-            String result = x_val + y_val;
-
-            if (occupied_spots.contains(result)) {
-                trap_num++;
-                continue;
-            }
-            
-            occupied_spots.add(result);
-            room[random_x][random_y] = new TrapTile("Spike Trap", "Deadly Spikes, ouch!");
-        }
-
-        for (int i = 0; i <= obstacle_num; i++) {
-            int random_x = rand.nextInt(x_dimension-1);
-            int random_y = rand.nextInt(y_dimension-1);
-            if (random_x == x_dimension-1 && random_y == y_dimension-1) {
-                obstacle_num++;
-                continue;
-            }
-
-            if (random_x == 0 && random_y == 1) {
-                obstacle_num++;
-                continue;
-            }
-
-            if (random_x == 1 && random_y == 0) {
-                obstacle_num++;
-                continue;
-            }
-
-
-            String x_val = String.valueOf(random_x);
-            String y_val = String.valueOf(random_y);
-            String result = x_val + y_val;
-
-            if (occupied_spots.contains(result)) {
-                obstacle_num++;
-                continue;
-            }
-            
-            occupied_spots.add(result);
-            room[random_x][random_y] = new ObstacleTile("Big #@!%$ Boulder");
-        }
-
-        for (int i = 0; i <= chest_num; i++) {
-            int random_x = rand.nextInt(x_dimension);
-            int random_y = rand.nextInt(y_dimension);
-            if (random_x == x_dimension-1 && random_y == y_dimension-1) {
-                chest_num++;
-                continue;
-            }
-
-            if (random_x == 0 && random_y == 1) {
-                chest_num++;
-                continue;
-            }
-
-            if (random_x == 1 && random_y == 0) {
-                chest_num++;
-                continue;
-            }
-
-
-            String x_val = String.valueOf(random_x);
-            String y_val = String.valueOf(random_y);
-            String result = x_val + y_val;
-
-            if (occupied_spots.contains(result)) {
-                chest_num++;
-                continue;
-            }
-            
-            List<Item> loot_items = createItemList();
-            int item_amount = rand.nextInt(5) + 1;
-            Chest chest = new Chest(null);
-
-            for (int x = 0; x < item_amount; x++) {
-                Item item = loot_items.get(x);
-                chest.add(item);
-            }
-
-            occupied_spots.add(result);
-            room[random_x][random_y] = new ChestTile(chest);
-        }
-
+        // Adds npcs to a room using a helper function
+        randomlyGenerate(x_dimension, y_dimension, opp_num, "NPC", occupied_spots, room);
+        // Adds Traps to a room using a helper function
+        randomlyGenerate(x_dimension, y_dimension, trap_num, "Trap", occupied_spots, room);
+        // Adds Obstacles to a room using a helper function
+        randomlyGenerate(x_dimension, y_dimension, obstacle_num, "Obstacle", occupied_spots, room);
+        // Adds Chest to a room using a helper function
+        randomlyGenerate(x_dimension, y_dimension, chest_num, "Chest", occupied_spots, room);
+        // Adds a randomly generated merchant
+        randomlyGenerate(x_dimension, y_dimension, 1, "Merchant", occupied_spots, room);
         ConcreteTile exit1 = room[9][9];
         room[0][0] = new CharacterTile(player, 0, 0);
 

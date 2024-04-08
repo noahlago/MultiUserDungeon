@@ -39,6 +39,9 @@ public class MUD {
     @JsonProperty("gameOver")
     public boolean gameOver;
 
+    @JsonProperty("roomIndex")
+    private int roomIndex;
+
     /**
      * Instance of a MUD game
      * 
@@ -52,10 +55,19 @@ public class MUD {
         this.player = new Pc(100, 10, name, new Inventory(), 0);
         this.numTurns = 0;
         currentRoom = this.map.getRooms().get(0);
+        this.roomIndex = 0;
         this.action = new Interact(this, this.currentRoom, this.player);
-
+        
         this.cycle = new Day();
         this.gameOver = false;
+    }
+
+    /**
+     * Sets map to a premade map option
+     * @param premadeMap the map to play
+     */
+    public void selectPremadeMap(Map premadeMap){
+        this.map = premadeMap;
     }
 
     /**
@@ -73,8 +85,21 @@ public class MUD {
      * moves the game to the next room in the sequence
      */
     public void nextRoom(){
-        this.currentRoom = this.map.getRooms().get(1);
+        this.currentRoom = this.map.getRooms().get(this.roomIndex+1);
+        this.roomIndex++;
         this.action = new Interact(this, this.currentRoom, this.player);
+    }
+
+    /**
+     * moves the game to the next room in the sequence
+     */
+    public void prevRoom(){
+        if(this.roomIndex > 0){
+            this.currentRoom = this.map.getRooms().get(this.roomIndex-1);
+            this.roomIndex--;
+            this.action = new Interact(this, this.currentRoom, this.player);
+        }
+        
     }
 
     public Character getPlayer() {
@@ -209,6 +234,19 @@ public class MUD {
             System.out.println("It switched to " + cycle.toString());
         }
     }
+
+    /**
+     * Sells item for half its value in gold
+     * Item is destroyed after sold
+     * @param item item to sell
+     */
+    public void sellItemToMerchant(Item item){
+        int value = (item.getGoldValue() / 2);
+        player.increaseGold(value);
+        player.destroyItem(item);
+    }
+
+    
 
     /**
      * Checks if the game is over

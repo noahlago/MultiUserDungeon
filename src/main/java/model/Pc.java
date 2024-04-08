@@ -183,5 +183,13 @@ public class Pc extends Character {
     public void addItem(Item item){
         this.inventory.add(item);
     }
+
+    public void increaseGold(int amount){
+        this.goldAmount += amount;
+    }
+
+    public void decreaseGold(int amount){
+        this.goldAmount -= amount;
+    }
     
 }

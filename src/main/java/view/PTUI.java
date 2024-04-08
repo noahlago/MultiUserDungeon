@@ -10,6 +10,7 @@ import model.Item;
 import model.ItemType;
 import model.MUD;
 import model.Map;
+import model.PremadeMaps;
 import model.persistence.GameFileDAO;
 
 public class PTUI {
@@ -121,6 +122,12 @@ public class PTUI {
         }
     }
 
+    public static char visitMerchant(){
+        System.out.println("What would you like to do?\n\'s\': sell item\n\'b\': buy item\n\'e\': exit");
+        char selection = scanner.next().charAt(0);
+        return selection;
+    }
+
     /**
      * Main implementation of the PTUI, allowing the player to interact with the game, and control their character. 
      * @return whether or not to exit the game entirely (if not, exits to main menu instead). 
@@ -197,7 +204,8 @@ public class PTUI {
                     System.out.println("Enter your character's name for the new game:");
                     System.out.println("(Note: entering a previously used name will overwrite that save)");
                     gameName = scanner.nextLine();
-                    Map map = new Map();
+                    PremadeMaps maps = new PremadeMaps();
+                    Map map = maps.getMap(1);
                     MUD game = new MUD(map,gameName);
                     map.setPlayer(game.getPlayer());
                     currentGame = new PTUI(game);

@@ -4,13 +4,17 @@ import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.ConcreteTile;
 import model.Tiles.EmptyTile;
+import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
+import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.TrapTile;
 import view.PTUI;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 import model.Character;
 
@@ -160,6 +164,93 @@ public class Interact implements Visitor{
         String name = oTile.getName();
         System.out.println("A " + name + " blocks your path");
 
+    }
+
+    @Override
+    public void visitMerchantTile(MerchantTile mTile) {
+        List<Item> goods = mTile.getGoods();
+
+        if(currentRoom.isSafe()){
+            System.out.println("The room is safe and you talk with the merchant");
+            int num = 1;
+            for(Item i: goods){
+                System.out.println(num + ": " + i.getName()+ ", $" + i.getGoldValue());
+                num++;
+            }
+
+            char selection = PTUI.visitMerchant();
+
+            switch(selection){
+                case 's':
+                    // sell item to merchant
+                    Inventory inv = game.getInventory();
+                    ArrayList<Item> items = inv.items();
+                    
+                    int itemNum = 1;
+                    for(Item item : items){
+                        System.out.println(itemNum + ": " + item + ", $" + item.getGoldValue() / 2);
+                        itemNum++;
+                    }
+
+                    System.out.println("Select item number: ");
+                    itemNum = PTUI.chooseItem() -1;
+
+                    if(itemNum < 0 || itemNum > items.size()){
+                        System.out.println("Invalid item #. Try again.");
+                    }else{
+                        Item item = items.get(itemNum);
+                        game.sellItemToMerchant(item);
+                        System.out.println("You sold " + item.getName() + " for $" + item.getGoldValue() /2);
+                    }
+
+                case 'b':
+                    // buy item from merchant
+                    System.out.println("Select item number: ");
+                    itemNum = PTUI.chooseItem() -1;
+
+                    if(itemNum < 0 || itemNum > goods.size()){
+                        System.out.println("Invalid item #. Try again.");
+                        break;
+                    }
+
+                    Item item = mTile.getGood(itemNum);
+
+                    if(player.getGoldAmount() >= item.getGoldValue()){
+                        player.addItem(item);
+                        mTile.removeItem(itemNum);
+                        player.decreaseGold(item.getGoldValue());
+                        System.out.println("You bought " + item.getName() + " for " + item.getGoldValue() + " gold.");
+                    }
+                    else{
+                        System.out.println("You do not have enough gold for that");
+                    }
+
+                case 'e':
+                    // exit
+                    break;
+            }
+        }
+        else{
+            System.out.println("The room is not safe! kill all the monsters if you want to talk!");
+        }
+        
+
+    }
+
+    @Override
+    public void visitEntranceTile(EntranceTile eTile) {
+        if(currentRoom.getIsStart()){
+            System.out.println("You cannot exit the dungeon");
+        }
+        else{
+            game.prevRoom();
+        }
+    }
+
+    @Override
+    public void visitShrineTile() {
+        // TODO Save user position so they respawn at the shrine
+        throw new UnsupportedOperationException("Unimplemented method 'visitShrineTile'");
     }
     
 }
