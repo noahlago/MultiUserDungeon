@@ -461,11 +461,16 @@ public class mudGUI extends Application implements mudObserver {
             }
             ;
         });
+        Button startPremadeGameButton = new Button("Start on a premade Map");
+        startPremadeGameButton.setOnAction(e -> {
+                displayPremadeLoggedin(newGameStage);
+            
+        });
 
         Button joinEndlessGameButton = new Button("Join Current Endless Game");
         joinEndlessGameButton.setOnAction(e -> joinEndlessGame(newGameStage));
 
-        layout.getChildren().addAll(backToProfileButton, startEndlessGameButton, startRegularGameButton,
+        layout.getChildren().addAll(backToProfileButton, startEndlessGameButton, startRegularGameButton,startPremadeGameButton,
                 joinEndlessGameButton);
 
         Scene scene = new Scene(layout);
@@ -477,6 +482,33 @@ public class mudGUI extends Application implements mudObserver {
     private void startGame(String playerName, Stage gameStage) throws IOException {
         // Prepare the game environment as before
         mud = new MUD(new Map(), playerName);
+        saveManager.newSaveGame(mud);
+        currentProf.startGame(mud);
+        GridPane grid = new GridPane();
+        displayTiles(grid, mud.getCurrentRoom());
+        VBox box = new VBox();
+        VBox keyDisplay = createKeyDisplay();
+
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            gameStage.close();
+
+            showLoggedIn(new Stage());
+        });
+
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(backToProfileButton, grid);
+        addMovementControls(box, mud);
+        box.getChildren().add(keyDisplay);
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + playerName); // Set a title for the window
+        gameStage.show();
+    }
+    private void startPremadeGame(String playerName, Stage gameStage,Map map) throws IOException {
+        // Prepare the game environment as before
+        mud = new MUD(map, playerName);
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
         GridPane grid = new GridPane();
@@ -557,6 +589,46 @@ public class mudGUI extends Application implements mudObserver {
 
         // Add the grid (game environment) and the button to the VBox
         box.getChildren().addAll(backToProfileButton, grid,nextButton);
+        box.getChildren().add(keyDisplay);
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
+        gameStage.show();
+    }
+    private void displayPremadeLoggedin(Stage gameStage) {
+        GridPane grid = new GridPane();
+        displayTiles(grid, maps.getMap(mapNum).getRooms().get(0));
+        displayTilesRight(grid, maps.getMap(mapNum).getRooms().get(1));
+        VBox box = new VBox();
+        VBox keyDisplay = createKeyDisplay();
+        int thisNum = mapNum;
+
+        Button backToProfileButton = new Button("Back to Start");
+        Button nextButton = new Button("View Next Map");
+        Button playButton = new Button("Play This Map");
+        if(mapNum < 2){
+            mapNum+=1;
+        }else{
+            mapNum = 0;
+        }
+        nextButton.setOnAction(e ->{
+            displayPremade(gameStage);
+        });
+        backToProfileButton.setOnAction(e -> {
+            gameStage.close();
+
+            start(new Stage());
+        });
+
+        playButton.setOnAction(e ->{
+            try {
+                startPremadeGame(currentProf.getUsername(),gameStage,maps.getMap(thisNum));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+        box.getChildren().addAll(backToProfileButton, grid,nextButton,playButton);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box); // Adjust the size according to your needs
