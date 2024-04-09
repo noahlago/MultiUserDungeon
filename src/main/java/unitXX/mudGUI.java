@@ -748,6 +748,7 @@ public class mudGUI extends Application implements mudObserver {
         mainLayout.getChildren().add(movementControls);
     }
 
+
     private Rectangle createTileRectangle(ConcreteTile tile) {
         Rectangle rect = new Rectangle(20, 20); // Size of the square
         rect.setStroke(Color.BLACK); // Border color

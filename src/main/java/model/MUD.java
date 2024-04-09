@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -549,6 +550,19 @@ public class MUD {
 
     public Inventory getInventory(){
         return this.player.getInventory();
+    }
+
+    public static int chooseItem(){
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.next();
+        int itemNum;
+        try{
+            itemNum = Integer.parseInt(input);
+        }catch(NumberFormatException e){
+            System.out.println("Enter a valid #");
+            return chooseItem();
+        }
+        return itemNum;
     }
 
     public static void main(String[] args) {

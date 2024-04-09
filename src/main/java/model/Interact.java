@@ -82,7 +82,7 @@ public class Interact implements Visitor{
             x++;
         }
 
-        int itemNum = PTUI.chooseItem();
+        int itemNum = MUD.chooseItem();
         if(itemNum < 0 || itemNum > items.size()){
             System.out.println("Invalid item #. Try again. ");
         }else{
