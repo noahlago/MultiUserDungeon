@@ -141,7 +141,7 @@ public class ExportProfile {
      * @throws IOException if a file of the specified filename already exists
      */
     private File makeFile(String filename) throws IOException{
-        File exportFile = new File(filename);
+        File exportFile = new File("data/" + filename);
         if(exportFile.createNewFile()){ //creates a new file with the specified name
             System.out.println("File: '" + filename + "' successfully created.");
         }else{
