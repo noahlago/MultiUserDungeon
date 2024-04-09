@@ -45,7 +45,7 @@ public class ExportProfile {
      * @throws IOException if there is an issue opening or writing to the file
      */
     public void exportCSV(String filename, String username) throws IOException{
-        File exportFile = makeFile(filename); //creates a file with the specified filename (if the filename is not being used)
+        File exportFile = makeFile(filename + ".csv"); //creates a file with the specified filename (if the filename is not being used)
         FileWriter writer = new FileWriter(exportFile);
         User user = profileManager.getUser(username); //gets the specified user from the ProfileCSVFileDAO
 
@@ -66,7 +66,7 @@ public class ExportProfile {
      * @throws TransformerException if there is an error with the transformer instance, or while it tries to transform the elements to an xml file
      */
     public void exportXML(String filename, String username) throws IOException, ParserConfigurationException, SAXException, TransformerFactoryConfigurationError, TransformerException{
-        File exportFile = makeFile(filename); //creates a file with the specified filename (if the filename is not being used)
+        File exportFile = makeFile(filename + ".xml"); //creates a file with the specified filename (if the filename is not being used)
         User user = profileManager.getUser(username); //gets the specified user from the ProfileCSVFileDAO
 
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder(); //creates a new document builder using the javax.xml.parsers library
@@ -127,7 +127,7 @@ public class ExportProfile {
      * @throws IOException if there is an issue creating/opening the file
      */
     public void exportJSON(String filename, String username) throws IOException{
-        File exportFile = makeFile(filename); //creates a file with the specified filename (if the filename is not being used)
+        File exportFile = makeFile(filename + ".json"); //creates a file with the specified filename (if the filename is not being used)
         ObjectMapper objectMapper = new ObjectMapper();
         User user = profileManager.getUser(username); //gets the specified user from the ProfileCSVFileDAO
         objectMapper.writeValue(exportFile, user); //Uses Jackson's ObjectMapper to write the user instance as a json object to the json file

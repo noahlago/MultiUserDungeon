@@ -82,7 +82,7 @@ public class Interact implements Visitor{
             x++;
         }
 
-        int itemNum = PTUI.chooseItem();
+        int itemNum = MUD.chooseItem();
         if(itemNum < 0 || itemNum > items.size()){
             System.out.println("Invalid item #. Try again. ");
         }else{
@@ -209,7 +209,7 @@ public class Interact implements Visitor{
                     }
 
                     System.out.println("Select item number: ");
-                    itemNum = PTUI.chooseItem() -1;
+                    itemNum = MUD.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > items.size()){
                         System.out.println("Invalid item #. Try again.");
@@ -222,7 +222,7 @@ public class Interact implements Visitor{
                 case 'b':
                     // buy item from merchant
                     System.out.println("Select item number: ");
-                    itemNum = PTUI.chooseItem() -1;
+                    itemNum = MUD.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > goods.size()){
                         System.out.println("Invalid item #. Try again.");
