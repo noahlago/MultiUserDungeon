@@ -3,6 +3,8 @@ module unitXX {
     requires transitive javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.xml.bind;
+    requires java.xml;
     
     exports model to com.fasterxml.jackson.databind;
     exports model.Tiles to com.fasterxml.jackson.databind;

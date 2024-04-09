@@ -3,6 +3,7 @@ package model;
 import model.Tiles.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * This class represents a room, which is made up of a certain number of tiles (in width and height)
@@ -42,6 +43,7 @@ public class Room {
         this.npcs = npcs;
     }
 
+    @JsonIgnore
     public boolean isSafe(){
 
         System.out.println(npcs);
@@ -134,21 +136,40 @@ public class Room {
         return grid;
     }
 
+    public void setPlayer(Pc player){
+        tiles[player.currX][player.currY] = new CharacterTile(player, player.currX, player.currY);
+    }
+
     public void specializeTiles(){
         for(int i = 0; i < tiles.length; i++){
             for(int j = 0; j < tiles[i].length; j++){
                 ConcreteTile current = tiles[i][j];
                 String type = current.getType();
                 if(type.equals("CHARACTER")){
-                    tiles[i][j] = new CharacterTile(tiles[i][j].getCharacter(), i , j);
+                    Character character = tiles[i][j].getCharacter();
+                    if(character.getType().equals("NPC")){
+                        Npc npc = new Npc(character.getHealth(), character.getAttack(), character.getName(), character.getGold());
+                        tiles[i][j] = new CharacterTile(npc, i, j);
+                    }else{
+                        Pc pc = new Pc(character.getHealth(), character.getAttack(), character.getName(), character.getInventory(), character.getGold());
+                        tiles[i][j] = new CharacterTile(pc, i, j);
+                    }
                 }else if(type.equals("CHEST")){
                     tiles[i][j] = new ChestTile(tiles[i][j].getChest());
                 }else if(type.equals("EMPTY")){
-                    tiles[i][j] = new EmptyTile(tiles[i][j].getRow(), tiles[i][j].getCol());
+                    tiles[i][j] = new EmptyTile(i, j);
                 }else if(type.equals("EXIT")){
                     tiles[i][j] = new ExitTile();
+                }else if(type.equals("ENTRANCE")){
+                    tiles[i][j] = new EntranceTile();
                 }else if(type.equals("TRAP")){
                     tiles[i][j] = new TrapTile(tiles[i][j].getName(), tiles[i][j].getDescription());
+                }else if(type.equals("OBSTACLE")){
+                    tiles[i][j] = new ObstacleTile(tiles[i][j].getName());
+                }else if(type.equals("MERCHANT")){
+                    tiles[i][j] = new MerchantTile();
+                }else if(type.equals("SHRINE")){
+                    tiles[i][j] = new ShrineTile(tiles[i][j].getName(), tiles[i][j].getCanPray());
                 }else{
                     tiles[i][j] = new EmptyTile(i, j);
                 }

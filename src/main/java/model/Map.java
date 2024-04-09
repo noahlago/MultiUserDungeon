@@ -3,6 +3,7 @@ package model;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import model.Tiles.CharacterTile;
@@ -22,8 +23,7 @@ import model.Tiles.ConcreteTile;
 public class Map {
 
     @JsonProperty("rooms") private List<Room> rooms; // list of rooms in the map
-    @JsonProperty("player") private Character player;
-    public Dictionary<Room, Room> mapHistory= new Hashtable<>();
+    @JsonProperty("player") private Pc player;
 
     /**
      * Map of rooms the player will go through
@@ -34,10 +34,19 @@ public class Map {
         this.rooms = createRooms();
     }
 
-    public void setPlayer(Character player) {
+    public void setPlayer(Pc player) {
         this.player = player;
     }
 
+    @JsonIgnore
+    public int[] getStats(){
+        if(player == null){
+            return null;
+        }
+        return player.getStats();
+    }
+
+    @JsonIgnore
     public Dictionary<Room, Room> getMapDictionary() {
         Dictionary<Room, Room> mapHistory= new Hashtable<>();
 
@@ -195,7 +204,7 @@ public class Map {
         // Adds a randomly generated merchant
         randomlyGenerate(x_dimension, y_dimension, 1, "Merchant", occupied_spots, room);
         ConcreteTile exit1 = room[9][9];
-        room[0][0] = new CharacterTile(player, 0, 0);
+        //room[0][0] = new CharacterTile(player, 0, 0);
 
         while (true) {
             int coin_flip = rand.nextInt(2);

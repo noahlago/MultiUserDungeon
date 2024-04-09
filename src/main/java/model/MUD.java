@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import model.Tiles.CharacterTile;
@@ -39,13 +40,15 @@ public class MUD {
     public Cycle cycle;
     @JsonProperty("gameOver")
     public boolean gameOver;
+    @JsonIgnore
+    public mudObserver observer;
+
+    @JsonProperty("roomIndex")
+    private int roomIndex;
 
     public Room shrineRoom;
     public Pc shrineCharacter;
     public Cycle shrineCycle;
-  
-    @JsonProperty("roomIndex")
-    private int roomIndex;
 
     /**
      * Instance of a MUD game
@@ -67,6 +70,19 @@ public class MUD {
         this.gameOver = false;
         this.shrineRoom = null;
         this.shrineCharacter = null;
+    }
+    public void setOnUpdate(mudObserver observer) {
+        this.observer = observer;
+    }
+    private void mudUpdated() {
+        if(observer != null) {
+            observer.mudUpdated(this);
+        }
+    }
+    private void textUpdated(String string){
+        if(observer != null){
+            observer.textUpdated(string);
+        }
     }
 
     /**
@@ -153,6 +169,7 @@ public class MUD {
      */
     public void uptickTurns() {
         numTurns += 1;
+        checkCycle();
     }
 
     public Room getShrineRoom(){
@@ -202,7 +219,7 @@ public class MUD {
      * @param amount the amount of damage to take
      */
     public void takeDamage(double amount) {
-        player.takeDamage(amount);
+        textUpdated(player.takeDamage(amount));
     }
 
     /**
@@ -257,11 +274,12 @@ public class MUD {
      */
     public void checkCycle() {
         if (numTurns % 10 == 0) {
-            cycle.switchState(cycle);
+            cycle = cycle.switchState(cycle);
             cycle.modifyDiurnalEnemies(getNpcs());
             cycle.modifyNocturnalEnemies(getNpcs());
 
             System.out.println("It switched to " + cycle.toString());
+            textUpdated("It switched to " + cycle.toString());
         }
     }
 
@@ -295,6 +313,7 @@ public class MUD {
                 resetShrine();
                 System.out.println("You reset at the shrine");
             }
+            textUpdated("You Lost!");
         }
         return gameOver;
     }
@@ -302,6 +321,7 @@ public class MUD {
     public void winGame(){
         gameOver = true;
         System.out.println("You won!");
+        textUpdated("You Won!");
     }
 
     public boolean roomIsGoal(){
@@ -408,6 +428,7 @@ public class MUD {
                     if(chance == 1){
                         ((TrapTile) tile).discover();
                         System.out.println("You discovered a trap!");
+                        textUpdated("You Discovered A Trap!");
                     }
                 }
                 
@@ -504,19 +525,22 @@ public class MUD {
                 //updates the current room
                 currentRoom.updateTiles(tiles);
             }
-            uptickTurns();
             currentRoom.getTile(xCoord, yCoord).accept(action);
             uptickTurns();
         }
         // player tries to move outside of playable area
         else {
             System.out.println("Cannot move out of bounds");
+            textUpdated("You cannot move out of bounds!");
         }
+        mudUpdated();
     }
 
     public void renderRooms(){
         this.map.renderRooms();
         this.currentRoom.specializeTiles();
+        this.currentRoom.setPlayer(player);
+        this.action = new Interact(this, currentRoom, player);
     }
 
     public int getPlayerGold(){

@@ -13,6 +13,15 @@ public class Character {
     @JsonProperty("name") protected String name;
     @JsonProperty("currX") protected int currX = 0;
     @JsonProperty("currY") protected int currY = 0;
+    @JsonProperty("Type") protected String type = "NPC";
+
+    @JsonProperty("inventory") private Inventory inventory = null;
+    @JsonProperty("weaponSlot") protected Item weaponSlot = null;
+    @JsonProperty("armorSlot") protected Item armorSlot = null;
+
+    @JsonProperty("isNocturnal") protected boolean isNocturnal = false;
+    @JsonProperty("baseHealth") protected double baseHealth = 100;
+    @JsonProperty("baseAttack") protected double baseAttack = 100;
 
     @JsonCreator
     public Character( @JsonProperty("health")double health, @JsonProperty("attack") double attack,  @JsonProperty("name")String name, @JsonProperty("goldAmount")int goldAmount){
@@ -22,9 +31,9 @@ public class Character {
         this.goldAmount = goldAmount;
     }
 
-    public void takeDamage(double amount){
+    public String takeDamage(double amount){
         health = health - amount;
-        System.out.println(getName() + " took " + amount + " damage. " + getName() + "'s health is now " + getHealth());
+        return(getName() + " took " + amount + " damage. " + getName() + "'s health is now " + getHealth());
     }
 
     public double getAttack() {
@@ -38,6 +47,9 @@ public class Character {
     }
     public String getName() {
         return name;
+    }
+    public int getGold(){
+        return goldAmount;
     }
     public void editStats(double factor){
         //Only needs implementation if NPC
@@ -71,5 +83,21 @@ public class Character {
     
     public String toString(){
         return "[name = " + getName() + ", health = " + getHealth() + ", attack = " + getAttack() + "]";
+    }
+
+    public int[] getStats(){
+        return null;
+    }
+
+    public String getType(){
+        return type;
+    }
+
+    public Inventory getInventory(){
+        return this.inventory;
+    }
+
+    public void setType(String type){
+        this.type = type;
     }
 }

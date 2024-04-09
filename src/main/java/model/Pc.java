@@ -7,6 +7,11 @@ public class Pc extends Character {
     @JsonProperty("weaponSlot") protected Item weaponSlot;
     @JsonProperty("armorSlot") protected Item armorSlot;
 
+    private int livesLost;
+    private int monstersKilled;
+    private int totalGold;
+    private int itemsFound;
+
     @JsonCreator
     public Pc(@JsonProperty("health") double health, @JsonProperty("attack") double attack, @JsonProperty("name") String name,@JsonProperty("inventory") Inventory inventory, @JsonProperty("goldAmount") int goldAmount){
         super(health,attack,name,goldAmount);
@@ -14,20 +19,36 @@ public class Pc extends Character {
         if(inventory.getBags()[0] == null){
             inventory.addBag(new Bag(5));
         }
+
+        this.livesLost = 0;
+        this.monstersKilled = 0;
+        this.totalGold = 0;
+        this.itemsFound = 0;
+        super.setType("PLAYER");
     }
+
+    public int[] getStats(){
+        int[] stats = {livesLost, monstersKilled, totalGold, itemsFound};
+        return stats;
+    }
+
     /**
      * Calculates the amount of damage to take based on armor and defense
      * @param amount the amount of damage to take
      */
     @Override
-    public void takeDamage(double amount){
+    public String takeDamage(double amount){
         if(armorSlot == null || armorSlot.getDefensePercent() == 0){
             health -= amount;
             System.out.println("You took " + amount + " damage\n Your health is now " + getHealth());
+            if(health <= 0){this.livesLost++;}
+            return("You took " + amount + " damage\n Your health is now " + getHealth());
         }else{
             double damage = (amount * (1- armorSlot.getDefensePercent()));
             health = health - damage;
             System.out.println("You took " + damage + " damage\n Your health is now " + getHealth());
+            if(health <= 0){this.livesLost++;}
+            return("You took " + damage + " damage\n Your health is now " + getHealth());
         }
     }
 
@@ -148,6 +169,15 @@ public class Pc extends Character {
         System.out.println("Destroyed " + item.getName());
         inventory.remove(item);
     }
+
+    /**
+     * Adds gold to the player's inventory
+     * @param gold gold won
+     */
+    public void addGold(int gold){
+        this.goldAmount +=gold;
+        this.totalGold += gold;
+    }
     
     public Inventory getInventory(){
         return inventory;
@@ -182,6 +212,11 @@ public class Pc extends Character {
 
     public void addItem(Item item){
         this.inventory.add(item);
+        this.itemsFound++;
+    }
+
+    public void killedMonster(){
+        this.monstersKilled++;
     }
 
     public void increaseGold(int amount){

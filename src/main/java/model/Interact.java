@@ -43,8 +43,20 @@ public class Interact implements Visitor{
         //if the npc health is reduced to 0 or below they die
         if(npc.getHealth() <=0){
 
-            System.out.println("You killed " + npc.getName());
+            //increments the player's kill count
+            player.killedMonster();
 
+            //get gold from the npc
+            int gold = npc.getGold();
+
+            //add gold to user inventory 
+            player.addGold(gold);
+
+            
+            System.out.println("You killed " + npc.getName() +"\nYou won " + gold + " gold");
+
+
+            //coordinates of npc
             int row = cTile.getRow();
             int col = cTile.getCol();
 
@@ -128,6 +140,8 @@ public class Interact implements Visitor{
 
         //get the players location
         int[] loco = player.getLocation();
+        System.out.println(player);
+        System.out.println(loco[0] + " " + loco[1]);
 
         //copy of the current room
         ConcreteTile[][] tiles = currentRoom.getTiles();
@@ -169,26 +183,6 @@ public class Interact implements Visitor{
     }
 
     @Override
-    public void visitShrineTile(ShrineTile sTile) {
-        Npc[] npcs = currentRoom.getNpcs();
-        boolean canPray = true;
-
-        // checks to see if enemies in room are defeated
-        if(npcs.length == 0){
-            canPray = false;
-        }
-
-        if(canPray == true){
-            sTile.setCanPray();
-            game.setShrineRoom(currentRoom);
-            System.out.println("You prayed at a shrine! You will now respawn here if you die.");
-        }
-        else{
-            System.out.println("You cannot pray here yet, there are undefeated enemies.");
-        }
-    }
-  
-  
     public void visitMerchantTile(MerchantTile mTile) {
         List<Item> goods = mTile.getGoods();
 
@@ -269,5 +263,24 @@ public class Interact implements Visitor{
         }
     }
 
+    @Override
+    public void visitShrineTile(ShrineTile sTile) {
+        Npc[] npcs = currentRoom.getNpcs();
+        boolean canPray = true;
+
+        // checks to see if enemies in room are defeated
+        if(npcs.length == 0){
+            canPray = false;
+        }
+
+        if(canPray == true){
+            sTile.setCanPray();
+            game.setShrineRoom(currentRoom);
+            System.out.println("You prayed at a shrine! You will now respawn here if you die.");
+        }
+        else{
+            System.out.println("You cannot pray here yet, there are undefeated enemies.");
+        }
+    }
     
 }

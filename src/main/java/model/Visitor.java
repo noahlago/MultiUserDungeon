@@ -37,6 +37,5 @@ public interface Visitor {
 
     //interactions with an entrance (brings you to the previous exit)
     public void visitEntranceTile(EntranceTile eTile);
-
     
 }

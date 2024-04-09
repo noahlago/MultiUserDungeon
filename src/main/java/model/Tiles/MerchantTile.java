@@ -21,6 +21,7 @@ public class MerchantTile extends ConcreteTile{
         
         //item generator gives 3 random items
         this.goods = generator.getSpecificNumberItems(3);
+        super.setType("MERCHANT");
     }
 
     public void accept(Visitor visitor){

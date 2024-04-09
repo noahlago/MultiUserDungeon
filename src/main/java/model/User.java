@@ -1,6 +1,10 @@
 package model;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import model.persistence.GameFileDAO;
 
 public class User {
     @JsonProperty("username") private String username;
@@ -23,6 +27,18 @@ public class User {
         this.itemsFound = 0;
         this.gameInProgress = null;
         this.loggedIn = true;
+    }
+
+    public User(String username, String password, int gamesPlayed, int livesLost, int monstersKilled, int totalGold, int itemsFound){
+        this.username = username;
+        this.password = password;
+        this.gamesPlayed = gamesPlayed;
+        this.livesLost = livesLost;
+        this.monstersKilled = monstersKilled;
+        this.totalGold = totalGold;
+        this.itemsFound = itemsFound;
+        this.gameInProgress = null;
+        this.loggedIn = false;
     }
 
     public String getUsername(){
@@ -55,6 +71,14 @@ public class User {
 
     public MUD getGameInProgress(){
         return gameInProgress;
+    }
+
+    public void setGameInProgress(@SuppressWarnings("exports") GameFileDAO saveManager){
+        try {
+            this.gameInProgress = saveManager.getGames().get(username);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getLoggedIn(){
@@ -132,4 +156,16 @@ public class User {
 
         return false;
     }
+
+    public void updateStats(int livesLost, int monstersKilled, int totalGold, int itemsFound){
+        this.livesLost += livesLost;
+        this.monstersKilled += monstersKilled;
+        this.totalGold += totalGold;
+        this.itemsFound += itemsFound;
+    }
+
+    public void setHashedPassword(String newPassword){
+        this.password = newPassword;
+    }
+
 }
