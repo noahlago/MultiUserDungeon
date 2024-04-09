@@ -3,6 +3,8 @@ package model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Random;
@@ -17,6 +19,7 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+
 
 /**
  * Main implementation of MUD game
@@ -47,10 +50,11 @@ public class EndlessMUD {
     public boolean gameOver;
     @JsonProperty("index")
     public int index;
-    @JsonProperty("mapHistory") 
     public Room shrineRoom;
     public Pc shrineCharacter;
     public Cycle shrineCycle;
+    public Dictionary<Room, Room> roomStates;
+    public ArrayList<Integer> visitCount;
 
 
     /**
@@ -70,6 +74,8 @@ public class EndlessMUD {
         this.index = 0;
         this.cycle = new Day();
         this.gameOver = false;
+        this.roomStates = new Hashtable<>();
+        this.visitCount = new ArrayList<Integer>(); 
     }
 
     /**
@@ -98,20 +104,81 @@ public class EndlessMUD {
         if (index + 2 > endlessMap.getRooms().size()) {
             Room room = generateRandomRoom();
             endlessMap.addRoom(room);
+            roomStates.put(room, room);
+            visitCount.add(0);
         } 
+
+        Enumeration<Room> enu = roomStates.keys();
+        ArrayList<Room> originalRoomsList = Collections.list(enu);
+        Room originalRoom = originalRoomsList.get(index);
+        roomStates.put(originalRoom, this.currentRoom);
         index += 1;
-        this.currentRoom = this.endlessMap.getRooms().get(index);
-        this.action = new EndlessInteract(this, this.currentRoom, this.player);
+        Room original = originalRoomsList.get(index);
+
+
+        if (visitCount.get(index) > 5) {
+            this.currentRoom = original;
+            this.action = new EndlessInteract(this, this.currentRoom, this.player);
+
+            for (int i = 0; i <= visitCount.size(); i++) {
+                int num = visitCount.get(i);
+                num++;
+                visitCount.set(i, num);
+            }
+
+            visitCount.set(index, 0);
+        }
+
+        else {
+            this.currentRoom = this.endlessMap.getRooms().get(index);   
+            this.action = new EndlessInteract(this, this.currentRoom, this.player);
+            for (int i = 0; i <= visitCount.size(); i++) {
+                int num = visitCount.get(i);
+                num++;
+                visitCount.set(i, num);
+            }
+        }
+
+        
     }
 
     public void previousRoom() {
         if (index == 0) {
             return;
         }
+
+
+        Enumeration<Room> enu = roomStates.keys();
+        ArrayList<Room> originalRoomsList = Collections.list(enu);
+        Room originalRoom = originalRoomsList.get(index);
+        roomStates.put(originalRoom, this.currentRoom);
         index -= 1;
+        Room original = originalRoomsList.get(index);
+
+        if (visitCount.get(index) > 5) {
+            this.currentRoom = original;
+            this.action = new EndlessInteract(this, this.currentRoom, this.player);
+
+            for (int i = 0; i <= visitCount.size(); i++) {
+                int num = visitCount.get(i);
+                num++;
+                visitCount.set(i, num);
+            }
+
+            visitCount.set(index, 0);
+        }
+
+        else {
+            this.currentRoom = this.endlessMap.getRooms().get(index);
+            this.action = new EndlessInteract(this, this.currentRoom, this.player);
+            for (int i = 0; i <= visitCount.size(); i++) {
+                int num = visitCount.get(i);
+                num++;
+                visitCount.set(i, num);
+            }
+        }
         
-        this.currentRoom = this.endlessMap.getRooms().get(index);
-        this.action = new EndlessInteract(this, this.currentRoom, this.player);
+        
     }
 
     public Pc getPlayer() {
