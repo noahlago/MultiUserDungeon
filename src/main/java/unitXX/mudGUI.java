@@ -36,11 +36,7 @@ import model.Room;
 import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
-<<<<<<< HEAD
-import model.persistence.ExportProfile;
-=======
 import model.Tiles.TrapTile;
->>>>>>> 0faeafb7f180668573b5d1ef44c0cac3e4e2948d
 import model.persistence.GameFileDAO;
 import model.persistence.ImportProfile;
 import model.persistence.ProfileCSVFileDAO;
