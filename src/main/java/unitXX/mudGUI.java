@@ -416,12 +416,7 @@ public class mudGUI extends Application implements mudObserver {
         Stage newGameStage = new Stage();
         currentStage = newGameStage;
         viewCurrentGamesButton.setOnAction(e -> {
-            try {
-                startGame(currentProf.getUsername(), profileStage);
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+            startCurrentGame(currentProf.getUsername(), profileStage);
         });
 
         Button startNewGameButton = new Button("Start New Game");
@@ -535,7 +530,8 @@ public class mudGUI extends Application implements mudObserver {
     }
 
     private void startCurrentGame(String playerName, Stage gameStage) {
-        mud = new MUD(new Map(), playerName);
+        mud = currentProf.getGameInProgress();
+        mud.renderRooms();
         currentProf.startGame(mud);
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
@@ -556,7 +552,7 @@ public class mudGUI extends Application implements mudObserver {
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box); // Adjust the size according to your needs
         gameStage.setScene(gameScene);
-        gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
+        gameStage.setTitle("Game: " + playerName); // Set a title for the window
         gameStage.show();
     }
 
