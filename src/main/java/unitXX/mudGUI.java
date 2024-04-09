@@ -653,6 +653,10 @@ public class mudGUI extends Application implements mudObserver {
             case "OBSTACLE":
                 rect.setFill(Color.BLACK);
                 break;
+            case "MERCHANT":
+                rect.setFill(Color.DEEPPINK);
+            case "SHRINE":
+                rect.setFill(Color.CADETBLUE);
             default:
                 rect.setFill(Color.WHITE);
                 break;
