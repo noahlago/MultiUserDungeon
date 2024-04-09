@@ -553,16 +553,18 @@ public class MUD {
     }
 
     public static int chooseItem(){
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.next();
-        int itemNum;
-        try{
-            itemNum = Integer.parseInt(input);
-        }catch(NumberFormatException e){
-            System.out.println("Enter a valid #");
-            return chooseItem();
+        try (Scanner scanner = new Scanner(System.in)) {
+            
+            String input = scanner.next();
+            int itemNum;
+            try{
+                itemNum = Integer.parseInt(input);
+            }catch(NumberFormatException e){
+                System.out.println("Enter a valid #");
+                return chooseItem();
+            }
+            return itemNum;
         }
-        return itemNum;
     }
 
     public static void main(String[] args) {
