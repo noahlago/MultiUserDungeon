@@ -97,7 +97,7 @@ public class mudGUI extends Application implements mudObserver {
         Popup popup = new Popup();
         VBox popupContent = new VBox(10);
         popupContent.setStyle("-fx-background-color: #FFFFFF;");
-        popupContent.setPadding(new Insets(10)); // Set some padding around the elements
+        popupContent.setPadding(new Insets(10));
 
         // Add the username and password fields to the VBox
         Button confirmButton = new Button("Confirm");
@@ -421,7 +421,10 @@ public class mudGUI extends Application implements mudObserver {
 
         Button startNewGameButton = new Button("Start New Game");
         startNewGameButton.setOnAction(e -> {
-            startNewGame(profileStage);
+            stage.close();
+            Stage newStage = new Stage();
+            currentStage = newStage;
+            startNewGame(newStage);
         });
         Button logout = new Button("Logout");
         logout.setOnAction(e -> start(profileStage));
