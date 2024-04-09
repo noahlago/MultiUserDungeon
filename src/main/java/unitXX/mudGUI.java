@@ -502,6 +502,8 @@ public class mudGUI extends Application implements mudObserver {
         gameStage.show();
     }
 
+    
+
     private void startCurrentGame(String playerName, Stage gameStage) {
         mud = new MUD(new Map(), playerName);
         currentProf.startGame(mud);
