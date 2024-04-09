@@ -17,4 +17,5 @@ public interface ProfileDAO {
     public boolean deleteUser(String username)  throws IOException;
     public User logIn(String username, String password) throws IOException;
     public boolean updateStats(String username, int livesLost, int monstersKilled, int totalGold, int itemsFound);
+    public boolean updatePassword(String username, String currentPassword, String newPassword) throws IOException;
 }
