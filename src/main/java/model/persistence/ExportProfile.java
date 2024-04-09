@@ -143,7 +143,7 @@ public class ExportProfile {
     private File makeFile(String filename) throws IOException{
         File exportFile = new File(filename);
         if(exportFile.createNewFile()){ //creates a new file with the specified name
-            System.out.println("Fle: '" + filename + "' successfully created.");
+            System.out.println("File: '" + filename + "' successfully created.");
         }else{
             System.out.println("File: '" + filename + "' already exists. ");
             throw new IOException("Export file coult not be created. Filename already in use. "); //throws an exception if the filename is already in use
