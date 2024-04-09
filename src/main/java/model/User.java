@@ -73,8 +73,12 @@ public class User {
         return gameInProgress;
     }
 
-    public MUD getGameInProgress(@SuppressWarnings("exports") GameFileDAO saveManager) throws IOException{
-        return saveManager.getGames().get(username);
+    public void setGameInProgress(@SuppressWarnings("exports") GameFileDAO saveManager){
+        try {
+            this.gameInProgress = saveManager.getGames().get(username);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getLoggedIn(){

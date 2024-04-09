@@ -221,14 +221,11 @@ public class mudGUI extends Application implements mudObserver {
         Label itemsFound = new Label("Items Found: " + currentProf.getItemsFound());
 
         Button viewCurrentGamesButton = new Button("Continue Current Game");
-        System.out.println(currentProf.getGameInProgress());
+        
         if(saveManager != null){
-            try {
-                currentProf.getGameInProgress(saveManager);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            currentProf.setGameInProgress(saveManager);
         }
+        
         viewCurrentGamesButton.setDisable(currentProf.getGameInProgress() == null);
         viewCurrentGamesButton.setOnAction(e -> startCurrentGame(profileStage));
 
