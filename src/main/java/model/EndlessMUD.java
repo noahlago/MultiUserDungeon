@@ -48,8 +48,9 @@ public class EndlessMUD {
     @JsonProperty("index")
     public int index;
     @JsonProperty("mapHistory") 
-    public Dictionary<Room, Room>
-    mapHistory= new Hashtable<>();
+    public Room shrineRoom;
+    public Pc shrineCharacter;
+    public Cycle shrineCycle;
 
 
     /**
@@ -69,7 +70,6 @@ public class EndlessMUD {
         this.index = 0;
         this.cycle = new Day();
         this.gameOver = false;
-        this.mapHistory = this.endlessMap.getMapDictionary();
     }
 
     /**
@@ -88,8 +88,6 @@ public class EndlessMUD {
         ConcreteTile exit1A = endlessMap.populateRoom(10, 10, tiles1A);
         Npc[] npcs = {};
         Room newRoom = new Room(10, 10, "Endless room", tiles1A, true, false, exit1A, npcs);
-        mapHistory.put(newRoom, newRoom);
-        index = mapHistory.size();
         return newRoom;
     }
 
@@ -98,7 +96,6 @@ public class EndlessMUD {
      */
     public void nextRoom(){
         if (index + 2 > endlessMap.getRooms().size()) {
-            index += 1;
             Room room = generateRandomRoom();
             endlessMap.addRoom(room);
         } 
@@ -108,7 +105,7 @@ public class EndlessMUD {
     }
 
     public void previousRoom() {
-        if (mapHistory.size() == 1) {
+        if (index == 0) {
             return;
         }
         index -= 1;
@@ -117,7 +114,7 @@ public class EndlessMUD {
         this.action = new EndlessInteract(this, this.currentRoom, this.player);
     }
 
-    public Character getPlayer() {
+    public Pc getPlayer() {
         return this.player;
     }
 
@@ -483,8 +480,19 @@ public class EndlessMUD {
         player.destroyItem(item);
     }
 
-    public void prayToShrine() {
-        
+    public void setShrineRoom(Room room){
+        this.shrineRoom = room;
+        this.shrineCharacter = getPlayer();
+        this.shrineCycle = getCycle();
+    }
+
+    /**
+     * Resets game to last shrine
+     */
+    public void resetShrine(){
+        this.currentRoom = this.shrineRoom;
+        this.player = this.shrineCharacter;
+        this.cycle = this.shrineCycle;
     }
 
     public static void main(String[] args) {

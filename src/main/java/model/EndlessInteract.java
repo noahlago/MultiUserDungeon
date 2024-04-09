@@ -8,6 +8,7 @@ import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
 import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
+import model.Tiles.ShrineTile;
 import model.Tiles.TrapTile;
 import view.PTUI;
 
@@ -145,14 +146,11 @@ public class EndlessInteract implements Visitor{
     @Override
     public void visitExitTile(ExitTile eTile) {
         //moves map to the next room in sequence
-        if(currentRoom.getIsGoal()){
-            endlessMUD.winGame();
-        }
-        else{
-            endlessMUD.nextRoom();
-            player.updateLocation(0, 0);
-            System.out.println("You've entered the next room!");
-        }
+       
+        endlessMUD.nextRoom();
+        player.updateLocation(0, 0);
+        System.out.println("You've entered the next room!");
+
         
     }
 
@@ -245,14 +243,15 @@ public class EndlessInteract implements Visitor{
 
     }
 
-    @Override
-    public void visitShrineTile() {
+    public void visitShrineTile(ShrineTile sTile) {
         if (!currentRoom.isSafe()) {
             System.out.println("Destroy all monsters on the map to pray.");
         }
         else {
-            System.out.println("The gods bless you.");
-        }
+            sTile.setCanPray();
+            endlessMUD.setShrineRoom(currentRoom);
+            System.out.println("You prayed at a shrine! You will now respawn here if you die.");
+            }
     }
-    
 }
+
