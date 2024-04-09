@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import model.Tiles.CharacterTile;
+import model.Tiles.ChestTile;
 import model.Tiles.ConcreteTile;
 import model.Tiles.TrapTile;
 
@@ -486,6 +487,22 @@ public class MUD {
                     Npc npc = (Npc)tile.getCharacter();
                     player.takeDamage(npc.getAttack());
                 }
+            }
+            //If the player dies 
+            if(player.getHealth() <= 0){
+                //get player's location
+                int [] location = player.getLocation();
+                //get a copy of the current room
+                ConcreteTile[][] tiles = currentRoom.getTiles();
+
+                //creates an array of all the players items
+                Item[] items = new Item[(player.getInventory().getTotalItems())];
+                items = player.getInventory().items().toArray(items);
+                
+                //replaces the player's location with a new chest containing all their items
+                tiles[location[0]][location[1]] = new ChestTile(new Chest(items));
+                //updates the current room
+                currentRoom.updateTiles(tiles);
             }
             uptickTurns();
             currentRoom.getTile(xCoord, yCoord).accept(action);
