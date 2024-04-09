@@ -169,6 +169,7 @@ public class MUD {
      */
     public void uptickTurns() {
         numTurns += 1;
+        checkCycle();
     }
 
     public Room getShrineRoom(){
@@ -272,8 +273,8 @@ public class MUD {
      * Alerts user when cycle switches from day to night / vice versa
      */
     public void checkCycle() {
-        if (numTurns % 10 == 0) {
-            cycle.switchState(cycle);
+        if (numTurns % 20 == 0) {
+            cycle = cycle.switchState(cycle);
             cycle.modifyDiurnalEnemies(getNpcs());
             cycle.modifyNocturnalEnemies(getNpcs());
 

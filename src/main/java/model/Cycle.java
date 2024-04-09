@@ -12,7 +12,9 @@ public class Cycle {
      */
 
     // switches from day to night / vice versa
-    public void switchState(Cycle cycle){};
+    public Cycle switchState(Cycle cycle){
+        return null;
+    };
 
     // modifies diurnal enemy stats based on current state
     public void modifyDiurnalEnemies(Npc[] npcs){};
