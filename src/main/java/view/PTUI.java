@@ -56,17 +56,7 @@ public class PTUI {
         System.out.println("'T': trap");
     }
 
-    public static int chooseItem(){
-        String input = scanner.next();
-        int itemNum;
-        try{
-            itemNum = Integer.parseInt(input);
-        }catch(NumberFormatException e){
-            System.out.println("Enter a valid #");
-            return chooseItem();
-        }
-        return itemNum;
-    }
+    
     public void editInventory(){
         System.out.println("Enter 'd' to delete an item, or 'u' to equip/use an item: ");
         char command = scanner.next().charAt(0);

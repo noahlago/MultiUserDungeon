@@ -68,7 +68,7 @@ public class EndlessInteract implements Visitor{
             x++;
         }
 
-        int itemNum = PTUI.chooseItem();
+        int itemNum = MUD.chooseItem();
         if(itemNum < 0 || itemNum > items.size()){
             System.out.println("Invalid item #. Try again. ");
         }else{
@@ -199,7 +199,7 @@ public class EndlessInteract implements Visitor{
                     }
 
                     System.out.println("Select item number: ");
-                    itemNum = PTUI.chooseItem() -1;
+                    itemNum = MUD.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > items.size()){
                         System.out.println("Invalid item #. Try again.");
@@ -212,7 +212,7 @@ public class EndlessInteract implements Visitor{
                 case 'b':
                     // buy item from merchant
                     System.out.println("Select item number: ");
-                    itemNum = PTUI.chooseItem() -1;
+                    itemNum = MUD.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > goods.size()){
                         System.out.println("Invalid item #. Try again.");

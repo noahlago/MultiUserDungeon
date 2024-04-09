@@ -534,31 +534,32 @@ public class mudGUI extends Application implements mudObserver {
     private void joinEndlessGame(Stage stage) {
         stage.close();
     }
-    private void displayPremade(int mapNum) {
-        mud = new MUD(new Map(), playerName);
-        currentProf.startGame(mud);
-        GridPane grid = new GridPane();
-        displayTiles(grid, getCurrentRoom());
-        VBox box = new VBox();
-        VBox keyDisplay = createKeyDisplay();
+
+    // private void displayPremade(int mapNum) {
+    //     mud = new MUD(new Map(), playerName);
+    //     currentProf.startGame(mud);
+    //     GridPane grid = new GridPane();
+    //     displayTiles(grid, getCurrentRoom());
+    //     VBox box = new VBox();
+    //     VBox keyDisplay = createKeyDisplay();
         
-        Button backToProfileButton = new Button("Back to Profile");
-        backToProfileButton.setOnAction(e -> {
-            gameStage.close();
+    //     Button backToProfileButton = new Button("Back to Profile");
+    //     backToProfileButton.setOnAction(e -> {
+    //         gameStage.close();
 
-            showLoggedIn(new Stage());
-        });
+    //         showLoggedIn(new Stage());
+    //     });
 
-        // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton, grid);
-        addMovementControls(box, mud);
-        box.getChildren().add(keyDisplay);
-        // Adjust the scene and stage as before
-        Scene gameScene = new Scene(box); // Adjust the size according to your needs
-        gameStage.setScene(gameScene);
-        gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
-        gameStage.show();
-}
+    //     // Add the grid (game environment) and the button to the VBox
+    //     box.getChildren().addAll(backToProfileButton, grid);
+    //     addMovementControls(box, mud);
+    //     box.getChildren().add(keyDisplay);
+    //     // Adjust the scene and stage as before
+    //     Scene gameScene = new Scene(box); // Adjust the size according to your needs
+    //     gameStage.setScene(gameScene);
+    //     gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
+    //     gameStage.show();
+    // }
 
     private Node[] displayTiles(GridPane gridPane, Room room) {
         ConcreteTile[][] tiles = room.getTiles();
@@ -652,6 +653,7 @@ public class mudGUI extends Application implements mudObserver {
         mainLayout.getChildren().add(movementControls);
     }
 
+
     private Rectangle createTileRectangle(ConcreteTile tile) {
         Rectangle rect = new Rectangle(20, 20); // Size of the square
         rect.setStroke(Color.BLACK); // Border color
@@ -684,7 +686,7 @@ public class mudGUI extends Application implements mudObserver {
                 }
                     
                 break;
-                
+
             case "OBSTACLE":
                 rect.setFill(Color.BLACK);
                 break;
