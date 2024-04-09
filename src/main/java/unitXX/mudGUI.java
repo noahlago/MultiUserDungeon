@@ -1,6 +1,12 @@
 package unitXX;
 
+import java.io.File;
 import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -20,6 +26,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.MUD;
@@ -31,8 +39,10 @@ import model.Tiles.ConcreteTile;
 import model.Tiles.TrapTile;
 import model.persistence.ExportProfile;
 import model.persistence.GameFileDAO;
+import model.persistence.ImportProfile;
 import model.persistence.ProfileCSVFileDAO;
 import model.Npc;
+import model.PremadeMaps;
 
 public class mudGUI extends Application implements mudObserver {
     User currentProf = new User("a", "A");
@@ -77,6 +87,7 @@ public class mudGUI extends Application implements mudObserver {
 
         Button createAccountButton = new Button("Create Account");
         Button viewMaps = new Button("View Maps");
+        Button importAccount = new Button("Import Account");
         Label usernameLabel = new Label("Username:");
         TextField usernameTextField = new TextField();
 
@@ -154,7 +165,6 @@ public class mudGUI extends Application implements mudObserver {
 
         // Add the username and password fields to the VBox
         Button confirmAccountButton = new Button("Create");
-
 
         confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -292,13 +302,15 @@ public class mudGUI extends Application implements mudObserver {
         };
 
         createAccountButton.setOnAction(newEvent);
+        importAccount.setOnAction(iEvent);
         login.setOnAction(event);
         viewMaps.setOnAction(mapEvent);
         vbox.getChildren().add(t);
         vbox.getChildren().add(login);
-        vbox.getChildren().add(viewMaps);
         vbox.getChildren().add(createAccountButton);
-        stage.setScene(new Scene(vbox,500,300));
+        vbox.getChildren().add(importAccount);
+        vbox.getChildren().add(viewMaps);
+        stage.setScene(new Scene(vbox, 500, 300));
         stage.setTitle("MUD Game");
         stage.show();
     }
@@ -313,6 +325,7 @@ public class mudGUI extends Application implements mudObserver {
         Label livesLost = new Label("Lives Lost: " + currentProf.getLivesLost());
         Label monstersKilled = new Label("Monsters Killed: " + currentProf.getMonstersKilled());
         Label itemsFound = new Label("Items Found: " + currentProf.getItemsFound());
+        Button exportAccount = new Button("Export Account");
 
         Button viewCurrentGamesButton = new Button("Continue Current Game");
         Popup iPopup = new Popup();
@@ -415,7 +428,7 @@ public class mudGUI extends Application implements mudObserver {
         });
         Button logout = new Button("Logout");
         logout.setOnAction(e -> start(profileStage));
-
+        exportAccount.setOnAction(iEvent);
         vbox.getChildren().addAll(logout, new Label(currentProf.getUsername()), gamesPlayed, livesLost, monstersKilled,
                 goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton, exportAccount);
 
@@ -436,7 +449,7 @@ public class mudGUI extends Application implements mudObserver {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         Button startEndlessGameButton = new Button("Start New Endless Game");
-        startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
+        // startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
 
         Button startRegularGameButton = new Button("Start New Regular Game");
         startRegularGameButton.setOnAction(e -> {
@@ -497,9 +510,7 @@ public class mudGUI extends Application implements mudObserver {
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
         GridPane grid = new GridPane();
-        currentProf.setGameInProgress(saveManager);
-        currentProf.getGameInProgress().renderRooms();
-        displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
+        displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
         VBox keyDisplay = createKeyDisplay();
 
@@ -509,12 +520,10 @@ public class mudGUI extends Application implements mudObserver {
 
             showLoggedIn(new Stage());
         });
-        VBox keyDisplay = createKeyDisplay();
- 
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(grid, backToProfileButton);
-        addMovementControls(box, currentProf.getGameInProgress());
+        box.getChildren().addAll(backToProfileButton, grid);
+        addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box); // Adjust the size according to your needs
@@ -776,6 +785,10 @@ public class mudGUI extends Application implements mudObserver {
             case "OBSTACLE":
                 rect.setFill(Color.BLACK);
                 break;
+            case "MERCHANT":
+                rect.setFill(Color.DEEPPINK);
+            case "SHRINE":
+                rect.setFill(Color.CADETBLUE);
             default:
                 rect.setFill(Color.WHITE);
                 break;
