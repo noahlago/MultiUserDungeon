@@ -1,6 +1,10 @@
 package model;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import model.persistence.GameFileDAO;
 
 public class User {
     @JsonProperty("username") private String username;
@@ -67,6 +71,10 @@ public class User {
 
     public MUD getGameInProgress(){
         return gameInProgress;
+    }
+
+    public MUD getGameInProgress(@SuppressWarnings("exports") GameFileDAO saveManager) throws IOException{
+        return saveManager.getGames().get(username);
     }
 
     public boolean getLoggedIn(){

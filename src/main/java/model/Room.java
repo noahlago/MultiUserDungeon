@@ -3,6 +3,7 @@ package model;
 import model.Tiles.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * This class represents a room, which is made up of a certain number of tiles (in width and height)
@@ -42,6 +43,7 @@ public class Room {
         this.npcs = npcs;
     }
 
+    @JsonIgnore
     public boolean isSafe(){
 
         System.out.println(npcs);

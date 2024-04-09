@@ -3,6 +3,7 @@ package model;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import model.Tiles.CharacterTile;
@@ -23,7 +24,6 @@ public class Map {
 
     @JsonProperty("rooms") private List<Room> rooms; // list of rooms in the map
     @JsonProperty("player") private Pc player;
-    public Dictionary<Room, Room> mapHistory= new Hashtable<>();
 
     /**
      * Map of rooms the player will go through
@@ -38,6 +38,7 @@ public class Map {
         this.player = player;
     }
 
+    @JsonIgnore
     public int[] getStats(){
         if(player == null){
             return null;
@@ -45,6 +46,7 @@ public class Map {
         return player.getStats();
     }
 
+    @JsonIgnore
     public Dictionary<Room, Room> getMapDictionary() {
         Dictionary<Room, Room> mapHistory= new Hashtable<>();
 

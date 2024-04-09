@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import model.Tiles.CharacterTile;
@@ -38,7 +39,7 @@ public class MUD {
     public Cycle cycle;
     @JsonProperty("gameOver")
     public boolean gameOver;
-    @JsonProperty("observer")
+    @JsonIgnore
     public mudObserver observer;
 
     @JsonProperty("roomIndex")
