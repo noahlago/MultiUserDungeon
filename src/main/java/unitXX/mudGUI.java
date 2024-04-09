@@ -41,6 +41,7 @@ import model.persistence.GameFileDAO;
 import model.persistence.ImportProfile;
 import model.persistence.ProfileCSVFileDAO;
 import model.Npc;
+import model.PremadeMaps;
 
 public class mudGUI extends Application implements mudObserver {
     User currentProf = new User("a", "A");
@@ -62,6 +63,7 @@ public class mudGUI extends Application implements mudObserver {
     Stage currentStage;
     Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 85);
     TextField field = new TextField();
+    PremadeMaps maps = new PremadeMaps();
 
     @Override
     public void start(Stage stage) {
@@ -532,6 +534,31 @@ public class mudGUI extends Application implements mudObserver {
     private void joinEndlessGame(Stage stage) {
         stage.close();
     }
+    private void displayPremade(int mapNum) {
+        mud = new MUD(new Map(), playerName);
+        currentProf.startGame(mud);
+        GridPane grid = new GridPane();
+        displayTiles(grid, getCurrentRoom());
+        VBox box = new VBox();
+        VBox keyDisplay = createKeyDisplay();
+        
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            gameStage.close();
+
+            showLoggedIn(new Stage());
+        });
+
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(backToProfileButton, grid);
+        addMovementControls(box, mud);
+        box.getChildren().add(keyDisplay);
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
+        gameStage.show();
+}
 
     private Node[] displayTiles(GridPane gridPane, Room room) {
         ConcreteTile[][] tiles = room.getTiles();
