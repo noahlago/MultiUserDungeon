@@ -37,6 +37,7 @@ import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
 import model.Tiles.TrapTile;
+import model.persistence.ExportProfile;
 import model.persistence.GameFileDAO;
 import model.persistence.ImportProfile;
 import model.persistence.ProfileCSVFileDAO;
@@ -64,6 +65,7 @@ public class mudGUI extends Application implements mudObserver {
     Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 85);
     TextField field = new TextField();
     PremadeMaps maps = new PremadeMaps();
+    int mapNum = 0;
 
     @Override
     public void start(Stage stage) {
@@ -143,9 +145,7 @@ public class mudGUI extends Application implements mudObserver {
 
             public void handle(ActionEvent e) {
                 if (!popup.isShowing()) {
-                    popup.getContent().clear();
-                    popup.getContent().addAll(displayTiles(new GridPane(), mud.getCurrentRoom()));
-                    popup.show(stage);
+                    displayPremade(stage);
                 } else {
                     popup.hide();
                 }
@@ -221,8 +221,8 @@ public class mudGUI extends Application implements mudObserver {
                         if (i >= 0) {
                             extension = file.getName().substring(i + 1);
                         }
-                        if(extension == "csv"){
-                        importManager.importCSV(file.getAbsolutePath());
+                        if (extension == "csv") {
+                            importManager.importCSV(file.getAbsolutePath());
                         }
                     }
                 } catch (IOException t) {
@@ -243,8 +243,8 @@ public class mudGUI extends Application implements mudObserver {
                         if (i >= 0) {
                             extension = file.getName().substring(i + 1);
                         }
-                        if(extension == "xml"){
-                        importManager.importXML(file.getAbsolutePath());
+                        if (extension == "xml") {
+                            importManager.importXML(file.getAbsolutePath());
                         }
                     }
                 } catch (SAXException t) {
@@ -268,8 +268,8 @@ public class mudGUI extends Application implements mudObserver {
                         if (i >= 0) {
                             extension = file.getName().substring(i + 1);
                         }
-                        if(extension == "json"){
-                        importManager.importJSON(file.getAbsolutePath());
+                        if (extension == "json") {
+                            importManager.importJSON(file.getAbsolutePath());
                         }
                     }
                 } catch (IOException t) {
@@ -315,7 +315,6 @@ public class mudGUI extends Application implements mudObserver {
         stage.show();
     }
 
-
     private void showLoggedIn(Stage stage) {
         stage.close();
         Stage profileStage = new Stage();
@@ -331,7 +330,7 @@ public class mudGUI extends Application implements mudObserver {
         Button viewCurrentGamesButton = new Button("Continue Current Game");
         Popup iPopup = new Popup();
         VBox iPopupContent = new VBox(10);
- 
+
         EventHandler<ActionEvent> iEvent = new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent e) {
@@ -352,15 +351,16 @@ public class mudGUI extends Application implements mudObserver {
                 ExportProfile exportManager = new ExportProfile(profileDAO);
                 DirectoryChooser fileChooser = new DirectoryChooser();
                 fileChooser.setTitle("Export XML File");
-                File direct  = fileChooser.showDialog(stage);
+                File direct = fileChooser.showDialog(stage);
                 try {
-                        if(direct!= null){
-                            try{
-                        exportManager.exportXML(direct.getName(),currentProf.getUsername());
-                            }catch(SAXException a){}catch(TransformerException y){}
+                    if (direct != null) {
+                        try {
+                            exportManager.exportXML(direct.getName(), currentProf.getUsername());
+                        } catch (SAXException a) {
+                        } catch (TransformerException y) {
                         }
                     }
-                 catch (IOException t) {
+                } catch (IOException t) {
                 } catch (ParserConfigurationException p) {
                 }
                 ;
@@ -372,14 +372,13 @@ public class mudGUI extends Application implements mudObserver {
                 ExportProfile exportManager = new ExportProfile(profileDAO);
                 DirectoryChooser fileChooser = new DirectoryChooser();
                 fileChooser.setTitle("Export JSON File");
-                File direct  = fileChooser.showDialog(stage);
+                File direct = fileChooser.showDialog(stage);
                 try {
-                        if(direct!= null){
-                        exportManager.exportJSON(direct.getName(),currentProf.getUsername());
-                        }
+                    if (direct != null) {
+                        exportManager.exportJSON(direct.getName(), currentProf.getUsername());
                     }
-                 catch (IOException t) {
-                } 
+                } catch (IOException t) {
+                }
                 ;
 
             }
@@ -389,14 +388,13 @@ public class mudGUI extends Application implements mudObserver {
                 ExportProfile exportManager = new ExportProfile(profileDAO);
                 DirectoryChooser fileChooser = new DirectoryChooser();
                 fileChooser.setTitle("Export CSV File");
-                File direct  = fileChooser.showDialog(stage);
+                File direct = fileChooser.showDialog(stage);
                 try {
-                        if(direct!= null){
-                        exportManager.exportCSV(direct.getName(),currentProf.getUsername());
-                        }
+                    if (direct != null) {
+                        exportManager.exportCSV(direct.getName(), currentProf.getUsername());
                     }
-                 catch (IOException t) {
-                } 
+                } catch (IOException t) {
+                }
                 ;
 
             }
@@ -419,7 +417,7 @@ public class mudGUI extends Application implements mudObserver {
         currentStage = newGameStage;
         viewCurrentGamesButton.setOnAction(e -> {
             try {
-                startGame(currentProf.getUsername(),profileStage);
+                startGame(currentProf.getUsername(), profileStage);
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -427,14 +425,14 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         Button startNewGameButton = new Button("Start New Game");
-        startNewGameButton.setOnAction(e ->{
-        startNewGame(profileStage);
-    });
+        startNewGameButton.setOnAction(e -> {
+            startNewGame(profileStage);
+        });
         Button logout = new Button("Logout");
         logout.setOnAction(e -> start(profileStage));
         exportAccount.setOnAction(iEvent);
         vbox.getChildren().addAll(logout, new Label(currentProf.getUsername()), gamesPlayed, livesLost, monstersKilled,
-                goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton,exportAccount);
+                goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton, exportAccount);
 
         profileStage.setScene(new Scene(vbox));
         profileStage.show();
@@ -456,12 +454,13 @@ public class mudGUI extends Application implements mudObserver {
         // startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
 
         Button startRegularGameButton = new Button("Start New Regular Game");
-        startRegularGameButton.setOnAction(e ->{ 
-            try{
+        startRegularGameButton.setOnAction(e -> {
+            try {
                 startGame(currentProf.getUsername(), newGameStage);
+            } catch (IOException y) {
             }
-            catch(IOException y){};
-    });
+            ;
+        });
 
         Button joinEndlessGameButton = new Button("Join Current Endless Game");
         joinEndlessGameButton.setOnAction(e -> joinEndlessGame(newGameStage));
@@ -475,7 +474,6 @@ public class mudGUI extends Application implements mudObserver {
         newGameStage.show();
     }
 
-
     private void startGame(String playerName, Stage gameStage) throws IOException {
         // Prepare the game environment as before
         mud = new MUD(new Map(), playerName);
@@ -485,7 +483,7 @@ public class mudGUI extends Application implements mudObserver {
         displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
         VBox keyDisplay = createKeyDisplay();
-        
+
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             gameStage.close();
@@ -511,7 +509,7 @@ public class mudGUI extends Application implements mudObserver {
         displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
         VBox keyDisplay = createKeyDisplay();
-        
+
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             gameStage.close();
@@ -528,38 +526,44 @@ public class mudGUI extends Application implements mudObserver {
         gameStage.setScene(gameScene);
         gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
         gameStage.show();
-}
-
+    }
 
     private void joinEndlessGame(Stage stage) {
         stage.close();
     }
 
-    // private void displayPremade(int mapNum) {
-    //     mud = new MUD(new Map(), playerName);
-    //     currentProf.startGame(mud);
-    //     GridPane grid = new GridPane();
-    //     displayTiles(grid, getCurrentRoom());
-    //     VBox box = new VBox();
-    //     VBox keyDisplay = createKeyDisplay();
-        
-    //     Button backToProfileButton = new Button("Back to Profile");
-    //     backToProfileButton.setOnAction(e -> {
-    //         gameStage.close();
+    private void displayPremade(Stage gameStage) {
+        GridPane grid = new GridPane();
+        displayTiles(grid, maps.getMap(mapNum).getRooms().get(0));
+        displayTilesRight(grid, maps.getMap(mapNum).getRooms().get(1));
+        VBox box = new VBox();
+        VBox keyDisplay = createKeyDisplay();
 
-    //         showLoggedIn(new Stage());
-    //     });
+        Button backToProfileButton = new Button("Back to Start");
+        Button nextButton = new Button("View Next Map");
+        if(mapNum < 2){
+            mapNum+=1;
+        }else{
+            mapNum = 0;
+        }
+        nextButton.setOnAction(e ->{
+            displayPremade(gameStage);
+        });
+        backToProfileButton.setOnAction(e -> {
+            gameStage.close();
 
-    //     // Add the grid (game environment) and the button to the VBox
-    //     box.getChildren().addAll(backToProfileButton, grid);
-    //     addMovementControls(box, mud);
-    //     box.getChildren().add(keyDisplay);
-    //     // Adjust the scene and stage as before
-    //     Scene gameScene = new Scene(box); // Adjust the size according to your needs
-    //     gameStage.setScene(gameScene);
-    //     gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
-    //     gameStage.show();
-    // }
+            start(new Stage());
+        });
+
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(backToProfileButton, grid,nextButton);
+        box.getChildren().add(keyDisplay);
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
+        gameStage.show();
+    }
 
     private Node[] displayTiles(GridPane gridPane, Room room) {
         ConcreteTile[][] tiles = room.getTiles();
@@ -571,10 +575,28 @@ public class mudGUI extends Application implements mudObserver {
         }
         return null;
     }
+    private Node[] displayTilesRight(GridPane gridPane, Room room) {
+
+        
+        ConcreteTile[][] tiles = room.getTiles();
+        for (int j = 0; j < tiles[1].length+1; j++) {
+            Rectangle rect = new Rectangle(5,5);
+            rect.setFill(Color.WHITE);
+            gridPane.add(rect, 11, j+tiles.length+3); // Note: (columnIndex, rowIndex)
+        }
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                Rectangle rect = createTileRectangle(tiles[i][j]);
+                gridPane.add(rect, j+tiles.length+3, i); // Note: (columnIndex, rowIndex)
+            }
+        }
+        return null;
+    }
+
     private VBox createKeyDisplay() {
-        VBox keyDisplay = new VBox(5); 
+        VBox keyDisplay = new VBox(5);
         keyDisplay.setPadding(new Insets(10, 0, 10, 0));
-    
+
         Label title = new Label("Key:");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         Label characterLabel = new Label("Character");
@@ -589,17 +611,18 @@ public class mudGUI extends Application implements mudObserver {
         trapLabel.setGraphic(new Rectangle(10, 10, Color.ORANGE));
         Label obstacleLabel = new Label("Obstacle");
         obstacleLabel.setGraphic(new Rectangle(10, 10, Color.BLACK));
-        keyDisplay.getChildren().addAll(title, characterLabel, npcLabel, chestLabel,exitLabel, trapLabel, obstacleLabel);
-    
+        keyDisplay.getChildren().addAll(title, characterLabel, npcLabel, chestLabel, exitLabel, trapLabel,
+                obstacleLabel);
+
         return keyDisplay;
     }
+
     private VBox createTextBox() {
-        VBox keyDisplay = new VBox(5); 
+        VBox keyDisplay = new VBox(5);
         TextField field = new TextField();
 
-    
         keyDisplay.getChildren().addAll();
-    
+
         return keyDisplay;
     }
 
@@ -677,14 +700,13 @@ public class mudGUI extends Application implements mudObserver {
                 rect.setFill(Color.GREEN);
                 break;
             case "TRAP":
-                TrapTile t = (TrapTile)(tile);
-                if (t.getDiscovered()){
+                TrapTile t = (TrapTile) (tile);
+                if (t.getDiscovered()) {
                     rect.setFill(Color.ORANGE);
-                }
-                else{
+                } else {
                     rect.setFill(Color.WHITE);
                 }
-                    
+
                 break;
 
             case "OBSTACLE":
@@ -714,11 +736,13 @@ public class mudGUI extends Application implements mudObserver {
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             currentStage.close();
-            try{
-            profileDAO.save();
-            saveManager.updateSaveGame(board);
-            saveManager.save();
-            }catch(IOException a){};
+            try {
+                profileDAO.save();
+                saveManager.updateSaveGame(board);
+                saveManager.save();
+            } catch (IOException a) {
+            }
+            ;
             showLoggedIn(new Stage());
         });
         box.getChildren().addAll(backToProfileButton, grid);
@@ -726,17 +750,18 @@ public class mudGUI extends Application implements mudObserver {
         VBox keyDisplay = createKeyDisplay();
         box.getChildren().add(keyDisplay);
         box.getChildren().add(field);
-        Scene gameScene = new Scene(box); 
+        Scene gameScene = new Scene(box);
         currentStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
         currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
     }
+
     @Override
-    public void textUpdated(String newText){
+    public void textUpdated(String newText) {
         field.appendText(newText);
         System.out.println("adsfs");
         mudUpdated(mud);
-        
+
     }
 
     public static void main(String[] args) {
