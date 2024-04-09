@@ -13,6 +13,15 @@ public class Character {
     @JsonProperty("name") protected String name;
     @JsonProperty("currX") protected int currX = 0;
     @JsonProperty("currY") protected int currY = 0;
+    @JsonProperty("Type") protected String type = "NPC";
+
+    @JsonProperty("inventory") private Inventory inventory = null;
+    @JsonProperty("weaponSlot") protected Item weaponSlot = null;
+    @JsonProperty("armorSlot") protected Item armorSlot = null;
+
+    @JsonProperty("isNocturnal") protected boolean isNocturnal = false;
+    @JsonProperty("baseHealth") protected double baseHealth = 100;
+    @JsonProperty("baseAttack") protected double baseAttack = 100;
 
     @JsonCreator
     public Character( @JsonProperty("health")double health, @JsonProperty("attack") double attack,  @JsonProperty("name")String name, @JsonProperty("goldAmount")int goldAmount){
@@ -78,5 +87,17 @@ public class Character {
 
     public int[] getStats(){
         return null;
+    }
+
+    public String getType(){
+        return type;
+    }
+
+    public Inventory getInventory(){
+        return this.inventory;
+    }
+
+    public void setType(String type){
+        this.type = type;
     }
 }

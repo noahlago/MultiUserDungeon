@@ -24,6 +24,7 @@ public class Pc extends Character {
         this.monstersKilled = 0;
         this.totalGold = 0;
         this.itemsFound = 0;
+        super.setType("PLAYER");
     }
 
     public int[] getStats(){

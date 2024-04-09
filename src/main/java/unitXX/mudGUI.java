@@ -352,6 +352,7 @@ public class mudGUI extends Application implements mudObserver {
     private void startCurrentGame(Stage gameStage) {
 
         GridPane grid = new GridPane();
+        currentProf.setGameInProgress(saveManager);
         currentProf.getGameInProgress().renderRooms();
         displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
         VBox box = new VBox();

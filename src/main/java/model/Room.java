@@ -146,7 +146,14 @@ public class Room {
                 ConcreteTile current = tiles[i][j];
                 String type = current.getType();
                 if(type.equals("CHARACTER")){
-                    tiles[i][j] = new CharacterTile(tiles[i][j].getCharacter(), i , j);
+                    Character character = tiles[i][j].getCharacter();
+                    if(character.getType().equals("NPC")){
+                        Npc npc = new Npc(character.getHealth(), character.getAttack(), character.getName(), character.getGold());
+                        tiles[i][j] = new CharacterTile(npc, i, j);
+                    }else{
+                        Pc pc = new Pc(character.getHealth(), character.getAttack(), character.getName(), character.getInventory(), character.getGold());
+                        tiles[i][j] = new CharacterTile(pc, i, j);
+                    }
                 }else if(type.equals("CHEST")){
                     tiles[i][j] = new ChestTile(tiles[i][j].getChest());
                 }else if(type.equals("EMPTY")){
