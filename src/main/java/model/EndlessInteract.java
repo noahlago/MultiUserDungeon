@@ -146,14 +146,11 @@ public class EndlessInteract implements Visitor{
     @Override
     public void visitExitTile(ExitTile eTile) {
         //moves map to the next room in sequence
-        if(currentRoom.getIsGoal()){
-            endlessMUD.winGame();
-        }
-        else{
-            endlessMUD.nextRoom();
-            player.updateLocation(0, 0);
-            System.out.println("You've entered the next room!");
-        }
+       
+        endlessMUD.nextRoom();
+        player.updateLocation(0, 0);
+        System.out.println("You've entered the next room!");
+
         
     }
 

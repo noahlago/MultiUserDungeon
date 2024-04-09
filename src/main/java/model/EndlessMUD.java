@@ -96,7 +96,6 @@ public class EndlessMUD {
      */
     public void nextRoom(){
         if (index + 2 > endlessMap.getRooms().size()) {
-            index += 1;
             Room room = generateRandomRoom();
             endlessMap.addRoom(room);
         } 
