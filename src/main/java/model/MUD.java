@@ -273,7 +273,7 @@ public class MUD {
      * Alerts user when cycle switches from day to night / vice versa
      */
     public void checkCycle() {
-        if (numTurns % 20 == 0) {
+        if (numTurns % 10 == 0) {
             cycle = cycle.switchState(cycle);
             cycle.modifyDiurnalEnemies(getNpcs());
             cycle.modifyNocturnalEnemies(getNpcs());
@@ -525,7 +525,6 @@ public class MUD {
                 //updates the current room
                 currentRoom.updateTiles(tiles);
             }
-            uptickTurns();
             currentRoom.getTile(xCoord, yCoord).accept(action);
             uptickTurns();
         }
