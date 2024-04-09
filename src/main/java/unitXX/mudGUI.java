@@ -1,6 +1,12 @@
 package unitXX;
 
+import java.io.File;
 import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -20,6 +26,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.MUD;
@@ -28,9 +36,12 @@ import model.Room;
 import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
+import model.Tiles.TrapTile;
 import model.persistence.GameFileDAO;
+import model.persistence.ImportProfile;
 import model.persistence.ProfileCSVFileDAO;
 import model.Npc;
+import model.PremadeMaps;
 
 public class mudGUI extends Application implements mudObserver {
     User currentProf = new User("a", "A");
@@ -52,6 +63,7 @@ public class mudGUI extends Application implements mudObserver {
     Stage currentStage;
     Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 85);
     TextField field = new TextField();
+    PremadeMaps maps = new PremadeMaps();
 
     @Override
     public void start(Stage stage) {
@@ -73,6 +85,7 @@ public class mudGUI extends Application implements mudObserver {
 
         Button createAccountButton = new Button("Create Account");
         Button viewMaps = new Button("View Maps");
+        Button importAccount = new Button("Import Account");
         Label usernameLabel = new Label("Username:");
         TextField usernameTextField = new TextField();
 
@@ -153,7 +166,6 @@ public class mudGUI extends Application implements mudObserver {
         // Add the username and password fields to the VBox
         Button confirmAccountButton = new Button("Create");
 
-
         confirmAccountButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -195,15 +207,110 @@ public class mudGUI extends Application implements mudObserver {
                     accountPopup.hide();
             }
         };
+        EventHandler<ActionEvent> csvButton = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                ImportProfile importManager = new ImportProfile(profileDAO);
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open CSV File");
+
+                File file = fileChooser.showOpenDialog(stage);
+                try {
+                    if (file != null) {
+                        String extension = "";
+                        int i = file.getName().lastIndexOf('.');
+                        if (i >= 0) {
+                            extension = file.getName().substring(i + 1);
+                        }
+                        if(extension == "csv"){
+                        importManager.importCSV(file.getAbsolutePath());
+                        }
+                    }
+                } catch (IOException t) {
+                }
+                ;
+            }
+        };
+        EventHandler<ActionEvent> xmlButton = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                ImportProfile importManager = new ImportProfile(profileDAO);
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open XML File");
+                File file = fileChooser.showOpenDialog(stage);
+                try {
+                    if (file != null) {
+                        String extension = "";
+                        int i = file.getName().lastIndexOf('.');
+                        if (i >= 0) {
+                            extension = file.getName().substring(i + 1);
+                        }
+                        if(extension == "xml"){
+                        importManager.importXML(file.getAbsolutePath());
+                        }
+                    }
+                } catch (SAXException t) {
+                } catch (IOException t) {
+                } catch (ParserConfigurationException p) {
+                }
+                ;
+
+            }
+        };
+        EventHandler<ActionEvent> jsonButton = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                ImportProfile importManager = new ImportProfile(profileDAO);
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open JSON File");
+                File file = fileChooser.showOpenDialog(stage);
+                try {
+                    if (file != null) {
+                        String extension = "";
+                        int i = file.getName().lastIndexOf('.');
+                        if (i >= 0) {
+                            extension = file.getName().substring(i + 1);
+                        }
+                        if(extension == "json"){
+                        importManager.importJSON(file.getAbsolutePath());
+                        }
+                    }
+                } catch (IOException t) {
+                }
+                ;
+            }
+        };
+        Popup iPopup = new Popup();
+        VBox iPopupContent = new VBox(10);
+        iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
+        iPopupContent.setPadding(new Insets(10));
+        Button cButton = new Button("Import CSV");
+        cButton.setOnAction(csvButton);
+        Button xButton = new Button("Import XML");
+        xButton.setOnAction(xmlButton);
+        Button jButton = new Button("Import JSON");
+        jButton.setOnAction(jsonButton);
+        iPopupContent.getChildren().addAll(cButton, xButton, jButton);
+        iPopup.getContent().clear();
+        iPopup.getContent().add(iPopupContent);
+        EventHandler<ActionEvent> iEvent = new EventHandler<ActionEvent>() {
+
+            public void handle(ActionEvent e) {
+                if (!iPopup.isShowing()) {
+                    iPopup.show(stage);
+                } else {
+                    iPopup.hide();
+                }
+            }
+        };
 
         createAccountButton.setOnAction(newEvent);
+        importAccount.setOnAction(iEvent);
         login.setOnAction(event);
         viewMaps.setOnAction(mapEvent);
         vbox.getChildren().add(t);
         vbox.getChildren().add(login);
-        vbox.getChildren().add(viewMaps);
         vbox.getChildren().add(createAccountButton);
-        stage.setScene(new Scene(vbox,500,300));
+        vbox.getChildren().add(importAccount);
+        vbox.getChildren().add(viewMaps);
+        stage.setScene(new Scene(vbox, 500, 300));
         stage.setTitle("MUD Game");
         stage.show();
     }
@@ -219,23 +326,115 @@ public class mudGUI extends Application implements mudObserver {
         Label livesLost = new Label("Lives Lost: " + currentProf.getLivesLost());
         Label monstersKilled = new Label("Monsters Killed: " + currentProf.getMonstersKilled());
         Label itemsFound = new Label("Items Found: " + currentProf.getItemsFound());
+        Button exportAccount = new Button("Export Account");
 
         Button viewCurrentGamesButton = new Button("Continue Current Game");
-        
-        if(saveManager != null){
+        Popup iPopup = new Popup();
+        VBox iPopupContent = new VBox(10);
+ 
+        EventHandler<ActionEvent> iEvent = new EventHandler<ActionEvent>() {
+
+            public void handle(ActionEvent e) {
+                System.out.println("Adsfa");
+                if (!iPopup.isShowing()) {
+
+                    iPopup.show(profileStage);
+                } else {
+                    iPopup.hide();
+                }
+            }
+        };
+        iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
+        iPopupContent.setPadding(new Insets(10));
+
+        EventHandler<ActionEvent> xmlButton = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                ExportProfile exportManager = new ExportProfile(profileDAO);
+                DirectoryChooser fileChooser = new DirectoryChooser();
+                fileChooser.setTitle("Export XML File");
+                File direct  = fileChooser.showDialog(stage);
+                try {
+                        if(direct!= null){
+                            try{
+                        exportManager.exportXML(direct.getName(),currentProf.getUsername());
+                            }catch(SAXException a){}catch(TransformerException y){}
+                        }
+                    }
+                 catch (IOException t) {
+                } catch (ParserConfigurationException p) {
+                }
+                ;
+
+            }
+        };
+        EventHandler<ActionEvent> jsonButton = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                ExportProfile exportManager = new ExportProfile(profileDAO);
+                DirectoryChooser fileChooser = new DirectoryChooser();
+                fileChooser.setTitle("Export JSON File");
+                File direct  = fileChooser.showDialog(stage);
+                try {
+                        if(direct!= null){
+                        exportManager.exportJSON(direct.getName(),currentProf.getUsername());
+                        }
+                    }
+                 catch (IOException t) {
+                } 
+                ;
+
+            }
+        };
+        EventHandler<ActionEvent> csvButton = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                ExportProfile exportManager = new ExportProfile(profileDAO);
+                DirectoryChooser fileChooser = new DirectoryChooser();
+                fileChooser.setTitle("Export CSV File");
+                File direct  = fileChooser.showDialog(stage);
+                try {
+                        if(direct!= null){
+                        exportManager.exportCSV(direct.getName(),currentProf.getUsername());
+                        }
+                    }
+                 catch (IOException t) {
+                } 
+                ;
+
+            }
+        };
+        Button xButton = new Button("Export as XML");
+        xButton.setOnAction(xmlButton);
+        Button jButton = new Button("Export as JSON");
+        jButton.setOnAction(jsonButton);
+        Button cButton = new Button("Export as CSV");
+        xButton.setOnAction(xmlButton);
+        iPopupContent.getChildren().addAll(cButton, xButton, jButton);
+        iPopup.getContent().clear();
+        iPopup.getContent().add(iPopupContent);
+        if (saveManager != null) {
             currentProf.setGameInProgress(saveManager);
         }
 
         viewCurrentGamesButton.setDisable(currentProf.getGameInProgress() == null);
-        viewCurrentGamesButton.setOnAction(e -> startCurrentGame(profileStage));
+        Stage newGameStage = new Stage();
+        currentStage = newGameStage;
+        viewCurrentGamesButton.setOnAction(e -> {
+            try {
+                startGame(currentProf.getUsername(),profileStage);
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
 
         Button startNewGameButton = new Button("Start New Game");
-        startNewGameButton.setOnAction(e -> startNewGame(profileStage));
+        startNewGameButton.setOnAction(e ->{
+        startNewGame(profileStage);
+    });
         Button logout = new Button("Logout");
         logout.setOnAction(e -> start(profileStage));
-
+        exportAccount.setOnAction(iEvent);
         vbox.getChildren().addAll(logout, new Label(currentProf.getUsername()), gamesPlayed, livesLost, monstersKilled,
-                goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton);
+                goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton,exportAccount);
 
         profileStage.setScene(new Scene(vbox));
         profileStage.show();
@@ -254,10 +453,15 @@ public class mudGUI extends Application implements mudObserver {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         Button startEndlessGameButton = new Button("Start New Endless Game");
-        startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
+        // startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
 
         Button startRegularGameButton = new Button("Start New Regular Game");
-        startRegularGameButton.setOnAction(e -> startRegularGame(newGameStage));
+        startRegularGameButton.setOnAction(e ->{ 
+            try{
+                startGame(currentProf.getUsername(), newGameStage);
+            }
+            catch(IOException y){};
+    });
 
         Button joinEndlessGameButton = new Button("Join Current Endless Game");
         joinEndlessGameButton.setOnAction(e -> joinEndlessGame(newGameStage));
@@ -271,55 +475,6 @@ public class mudGUI extends Application implements mudObserver {
         newGameStage.show();
     }
 
-    private void startEndlessGame(Stage stage) {
-        stage.close();
-        Stage newGameStage = new Stage();
-        currentStage = newGameStage;
-        VBox layout = new VBox(10);
-
-        Scene scene = new Scene(layout);
-        newGameStage.setScene(scene);
-        newGameStage.setTitle("Start New Game");
-        newGameStage.show();
-    }
-
-    private void startRegularGame(Stage stage) {
-        stage.close();
-        Stage regularGameStage = new Stage();
-        currentStage = regularGameStage;
-        VBox layout = new VBox(10); // Vertical layout with spacing of 10
-
-        // Create a text field for the player to input a name
-
-        TextField playerNameField = new TextField();
-        playerNameField.setPromptText("Enter your name");
-
-        // Create a button to start the game, initially disabled
-        Button startGameButton = new Button("Start Game");
-        startGameButton.setDisable(true);
-
-        playerNameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            startGameButton.setDisable(newValue.trim().isEmpty());
-        });
-
-        startGameButton.setOnAction(e -> {
-            String playerName = playerNameField.getText().trim();
-            if (!playerName.isEmpty()) {
-                try {
-                    startGame(playerName, regularGameStage);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
-        layout.getChildren().addAll(new Label("Character Name"), playerNameField, startGameButton);
-
-        Scene scene = new Scene(layout); // Adjust size as needed
-        regularGameStage.setScene(scene);
-        regularGameStage.setTitle("Start Regular Game");
-        regularGameStage.show();
-    }
 
     private void startGame(String playerName, Stage gameStage) throws IOException {
         // Prepare the game environment as before
@@ -349,38 +504,61 @@ public class mudGUI extends Application implements mudObserver {
         gameStage.show();
     }
 
-    private void startCurrentGame(Stage gameStage) {
-
+    private void startCurrentGame(String playerName, Stage gameStage) {
+        mud = new MUD(new Map(), playerName);
+        currentProf.startGame(mud);
         GridPane grid = new GridPane();
-        currentProf.setGameInProgress(saveManager);
-        currentProf.getGameInProgress().renderRooms();
-        displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
+        displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
-
+        VBox keyDisplay = createKeyDisplay();
+        
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
             gameStage.close();
 
             showLoggedIn(new Stage());
         });
-        VBox keyDisplay = createKeyDisplay();
- 
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(grid, backToProfileButton);
-        addMovementControls(box, currentProf.getGameInProgress());
+        box.getChildren().addAll(backToProfileButton, grid);
+        addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box); // Adjust the size according to your needs
         gameStage.setScene(gameScene);
-        mud = currentProf.getGameInProgress();
-        gameStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
+        gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
         gameStage.show();
-    }
+}
+
 
     private void joinEndlessGame(Stage stage) {
         stage.close();
     }
+    private void displayPremade(int mapNum) {
+        mud = new MUD(new Map(), playerName);
+        currentProf.startGame(mud);
+        GridPane grid = new GridPane();
+        displayTiles(grid, getCurrentRoom());
+        VBox box = new VBox();
+        VBox keyDisplay = createKeyDisplay();
+        
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            gameStage.close();
+
+            showLoggedIn(new Stage());
+        });
+
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(backToProfileButton, grid);
+        addMovementControls(box, mud);
+        box.getChildren().add(keyDisplay);
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + mud.getName()); // Set a title for the window
+        gameStage.show();
+}
 
     private Node[] displayTiles(GridPane gridPane, Room room) {
         ConcreteTile[][] tiles = room.getTiles();
@@ -497,11 +675,23 @@ public class mudGUI extends Application implements mudObserver {
                 rect.setFill(Color.GREEN);
                 break;
             case "TRAP":
-                rect.setFill(Color.ORANGE);
+                TrapTile t = (TrapTile)(tile);
+                if (t.getDiscovered()){
+                    rect.setFill(Color.ORANGE);
+                }
+                else{
+                    rect.setFill(Color.WHITE);
+                }
+                    
                 break;
+                
             case "OBSTACLE":
                 rect.setFill(Color.BLACK);
                 break;
+            case "MERCHANT":
+                rect.setFill(Color.DEEPPINK);
+            case "SHRINE":
+                rect.setFill(Color.CADETBLUE);
             default:
                 rect.setFill(Color.WHITE);
                 break;
