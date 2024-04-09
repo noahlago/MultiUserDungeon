@@ -22,12 +22,13 @@ public class ConcreteTile implements Tile{
     @JsonProperty("col") private int col = -1;
     @JsonProperty("armed") private boolean armed = false;
     @JsonProperty("name") private String name = "";
+    @JsonProperty("canPray") private boolean canPray = false;
 
     @JsonCreator
     public ConcreteTile(){}
 
     @JsonCreator
-    public ConcreteTile(@JsonProperty("description") String description, @JsonProperty("type") String type, @JsonProperty("character") Character character, @JsonProperty("chest") Chest chest, @JsonProperty("row") int row, @JsonProperty("col") int col, @JsonProperty("armed") boolean armed, @JsonProperty("name") String name){
+    public ConcreteTile(@JsonProperty("description") String description, @JsonProperty("type") String type, @JsonProperty("character") Character character, @JsonProperty("chest") Chest chest, @JsonProperty("row") int row, @JsonProperty("col") int col, @JsonProperty("armed") boolean armed, @JsonProperty("name") String name, @JsonProperty("canPray") boolean canPray){
         this.description = description;
         this.type = type;
         this.character = character;
@@ -36,6 +37,7 @@ public class ConcreteTile implements Tile{
         this.col = col;
         this.armed = armed; 
         this.name = name;
+        this.canPray = canPray;
     };
 
 
@@ -80,6 +82,10 @@ public class ConcreteTile implements Tile{
 
     public String getName() {
         return name;
+    }
+
+    public boolean getCanPray() {
+        return canPray;
     }
 
     @Override

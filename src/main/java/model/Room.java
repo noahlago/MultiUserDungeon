@@ -153,10 +153,16 @@ public class Room {
                     tiles[i][j] = new EmptyTile(i, j);
                 }else if(type.equals("EXIT")){
                     tiles[i][j] = new ExitTile();
+                }else if(type.equals("ENTRANCE")){
+                    tiles[i][j] = new EntranceTile();
                 }else if(type.equals("TRAP")){
                     tiles[i][j] = new TrapTile(tiles[i][j].getName(), tiles[i][j].getDescription());
                 }else if(type.equals("OBSTACLE")){
                     tiles[i][j] = new ObstacleTile(tiles[i][j].getName());
+                }else if(type.equals("MERCHANT")){
+                    tiles[i][j] = new MerchantTile();
+                }else if(type.equals("SHRINE")){
+                    tiles[i][j] = new ShrineTile(tiles[i][j].getName(), tiles[i][j].getCanPray());
                 }else{
                     tiles[i][j] = new EmptyTile(i, j);
                 }

@@ -225,7 +225,7 @@ public class mudGUI extends Application implements mudObserver {
         if(saveManager != null){
             currentProf.setGameInProgress(saveManager);
         }
-        
+
         viewCurrentGamesButton.setDisable(currentProf.getGameInProgress() == null);
         viewCurrentGamesButton.setOnAction(e -> startCurrentGame(profileStage));
 
@@ -352,6 +352,7 @@ public class mudGUI extends Application implements mudObserver {
     private void startCurrentGame(Stage gameStage) {
 
         GridPane grid = new GridPane();
+        currentProf.getGameInProgress().renderRooms();
         displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
         VBox box = new VBox();
 
