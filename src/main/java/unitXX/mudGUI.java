@@ -28,6 +28,7 @@ import model.Room;
 import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
+import model.Tiles.TrapTile;
 import model.persistence.GameFileDAO;
 import model.persistence.ProfileCSVFileDAO;
 import model.Npc;
@@ -497,8 +498,16 @@ public class mudGUI extends Application implements mudObserver {
                 rect.setFill(Color.GREEN);
                 break;
             case "TRAP":
-                rect.setFill(Color.ORANGE);
+                TrapTile t = (TrapTile)(tile);
+                if (t.getDiscovered()){
+                    rect.setFill(Color.ORANGE);
+                }
+                else{
+                    rect.setFill(Color.WHITE);
+                }
+                    
                 break;
+                
             case "OBSTACLE":
                 rect.setFill(Color.BLACK);
                 break;
