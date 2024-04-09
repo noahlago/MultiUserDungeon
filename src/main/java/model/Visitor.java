@@ -30,6 +30,8 @@ public interface Visitor {
     //Interactions with an obstacle tile (can't move)
     public void visitObstacleTile(ObstacleTile oTile);
 
+    //Interactions with an shrine tile
+    public void visitShrineTile(ShrineTile sTile);
     //Interactions with a merchant
     public void visitMerchantTile(MerchantTile mTile);
 
@@ -38,8 +40,5 @@ public interface Visitor {
 
     //interactions with a shrine for respawning
     public void visitShrineTile();
-
-    //Interactions with an shrine tile
-    public void visitShrineTile(ShrineTile sTile);
     
 }

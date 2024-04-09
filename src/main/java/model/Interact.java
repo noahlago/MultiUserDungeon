@@ -264,12 +264,6 @@ public class Interact implements Visitor{
     }
 
     @Override
-    public void visitShrineTile() {
-        // TODO Save user position so they respawn at the shrine
-        throw new UnsupportedOperationException("Unimplemented method 'visitShrineTile'");
-    }
-
-    @Override
     public void visitShrineTile(ShrineTile sTile) {
         Npc[] npcs = currentRoom.getNpcs();
         boolean canPray = true;
