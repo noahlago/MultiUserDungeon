@@ -312,6 +312,7 @@ public class MUD {
             if(getShrineRoom() != null){
                 resetShrine();
                 System.out.println("You reset at the shrine");
+                textUpdated("You reset at the shrine");
             }
             textUpdated("You Lost!");
         }

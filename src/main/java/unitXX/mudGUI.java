@@ -64,6 +64,7 @@ public class mudGUI extends Application implements mudObserver {
     Stage currentStage;
     Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 85);
     TextField field = new TextField();
+    Label messages = new Label();
     PremadeMaps maps = new PremadeMaps();
     int mapNum = 0;
 
@@ -729,19 +730,43 @@ public class mudGUI extends Application implements mudObserver {
 
         // Optionally set click event handlers for the buttons
         upButton.setOnAction(e -> {
-            game.movePlayer(-1, 0);
+            boolean gameOver = game.getGameOver();
+            if(gameOver == true){
+                messages = new Label("Game over");
+            }
+            else{
+                game.movePlayer(-1, 0);
+            }
             mudUpdated(mud);
         });
         downButton.setOnAction(e -> {
-            game.movePlayer(1, 0);
+            boolean gameOver = game.getGameOver();
+            if(gameOver == true){
+                messages = new Label("Game over");
+            }
+            else{
+                game.movePlayer(1, 0);
+            }
             mudUpdated(mud);
         });
         leftButton.setOnAction(e -> {
-            game.movePlayer(0, -1);
+            boolean gameOver = game.getGameOver();
+            if(gameOver == true){
+                messages = new Label("Game over");
+            }
+            else{
+                game.movePlayer(0, -1);
+            }
             mudUpdated(mud);
         });
         rightButton.setOnAction(e -> {
-            game.movePlayer(0, 1);
+            boolean gameOver = game.getGameOver();
+            if(gameOver == true){
+                messages = new Label("Game over");
+            }
+            else{
+                game.movePlayer(0, 1);
+            }
             mudUpdated(mud);
         });
 
@@ -823,6 +848,7 @@ public class mudGUI extends Application implements mudObserver {
         VBox keyDisplay = createKeyDisplay();
         box.getChildren().add(keyDisplay);
         box.getChildren().add(field);
+        box.getChildren().add(messages);
         Scene gameScene = new Scene(box);
         currentStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
@@ -832,6 +858,7 @@ public class mudGUI extends Application implements mudObserver {
     @Override
     public void textUpdated(String newText) {
         field.appendText(newText);
+        messages = new Label(newText);
         System.out.println("adsfs");
         mudUpdated(mud);
 
