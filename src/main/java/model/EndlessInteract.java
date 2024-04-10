@@ -148,7 +148,7 @@ public class EndlessInteract implements Visitor{
         //moves map to the next room in sequence
        
         endlessMUD.nextRoom();
-        player.updateLocation(0, 0);
+        player.updateLocation(1, 1);
         System.out.println("You've entered the next room!");
 
         
