@@ -774,41 +774,49 @@ public class mudGUI extends Application implements mudObserver {
         // Optionally set click event handlers for the buttons
         upButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
             if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(-1, 0);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
         downButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
             if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(1, 0);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
         leftButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
             if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(0, -1);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
         rightButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
             if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(0, 1);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
