@@ -7,17 +7,11 @@ import java.util.HashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import model.MUD;
+import model.EndlessMUD;
 
-/**
- * This class allows for save files of attempts at the Multi-User Dungeon to be saved to a .json file. 
- * The games are stored in a HashMap, for easier access while the program is running, which is updated whenever a change is made. 
- * The file containing the saved games is also updated upon any changes. 
- * @author Noah Lago (ndl3389@rit.edu)
- */
-public class GameFileDAO implements GameDAO<MUD>{
+public class EndlessGameFileDAO implements GameDAO<EndlessMUD>{
     /**The file where game info is stored. */
-    private HashMap<String,MUD> savedGames;
+    private HashMap<String,EndlessMUD> savedGames;
     /**Dynamically updated HashMap of all saved games frome the file.  */
     private String filename; 
     /**Writes to and reads from the given filename. */
@@ -27,8 +21,8 @@ public class GameFileDAO implements GameDAO<MUD>{
      * Instantiates this class when the Multi-User Dungeon is run.
      * @param objectMapper used to read to and write from the saves.json file. 
      */
-    public GameFileDAO(){
-        this.filename = "data/saves.json";
+    public EndlessGameFileDAO(){
+        this.filename = "data/endless.json";
         this.savedGames = new HashMap<>();
         this.objectMapper = new ObjectMapper();
 
@@ -44,7 +38,7 @@ public class GameFileDAO implements GameDAO<MUD>{
      * @throws IOException if the file is not found
      */
     public void save() throws IOException{
-        MUD[] gameArray = getGameArray();
+        EndlessMUD[] gameArray = getGameArray();
         objectMapper.writeValue(new File(filename), gameArray);
     }
 
@@ -58,9 +52,9 @@ public class GameFileDAO implements GameDAO<MUD>{
             System.out.println("No previously saved game files.");
         }else{
             try{
-                MUD[] gameArray = objectMapper.readValue(new File(filename), MUD[].class);
+                EndlessMUD[] gameArray = objectMapper.readValue(new File(filename), EndlessMUD[].class);
                 savedGames = new HashMap<>();
-                for(MUD game : gameArray){
+                for(EndlessMUD game : gameArray){
                     savedGames.put(game.getName(), game);
                 }
             }catch(IOException e){
@@ -74,10 +68,10 @@ public class GameFileDAO implements GameDAO<MUD>{
      * For internal use only
      * @return an array containing all of the games saved to the file previously
      */
-    private MUD[] getGameArray(){
-        MUD[] gameArray = new MUD[this.savedGames.size()];
+    private EndlessMUD[] getGameArray(){
+        EndlessMUD[] gameArray = new EndlessMUD[this.savedGames.size()];
         int index = 0;
-        for(MUD save : this.savedGames.values()){
+        for(EndlessMUD save : this.savedGames.values()){
             gameArray[index] = save;
             index++;
         }
@@ -89,7 +83,7 @@ public class GameFileDAO implements GameDAO<MUD>{
      * @return the HashMap of all games related to their String names
      * @throws IOException if the file is not found
      */
-    public HashMap<String,MUD> getGames() throws IOException {
+    public HashMap<String,EndlessMUD> getGames() throws IOException {
         load();
         return this.savedGames;
     }
@@ -100,7 +94,7 @@ public class GameFileDAO implements GameDAO<MUD>{
      * @throws IOException if the file is not found
      */
     @Override
-    public boolean updateSaveGame(MUD saveGame) throws IOException {
+    public boolean updateSaveGame(EndlessMUD saveGame) throws IOException {
         if(this.savedGames.containsKey(saveGame.getName())){
             this.savedGames.put(saveGame.getName(),saveGame);
             save();
@@ -115,7 +109,7 @@ public class GameFileDAO implements GameDAO<MUD>{
      * @throws IOException if the file is not found. 
      */
     @Override
-    public boolean newSaveGame(MUD saveGame) throws IOException {
+    public boolean newSaveGame(EndlessMUD saveGame) throws IOException {
         if(savedGames.containsKey(saveGame.getName())){
             return false;
         }else{
@@ -146,9 +140,9 @@ public class GameFileDAO implements GameDAO<MUD>{
      * @throws IOException if the file is not found. 
      */
     @Override
-    public Collection<MUD> getAllGames() throws IOException {
+    public Collection<EndlessMUD> getAllGames() throws IOException {
         load();
-        Collection<MUD> allGames = this.savedGames.values();
+        Collection<EndlessMUD> allGames = this.savedGames.values();
         return allGames;
     }
 

@@ -5,8 +5,9 @@ public class Night extends Cycle{
     @JsonProperty("name")
     private String name = "night";
     @Override
-    public void switchState( @JsonProperty("cycle")Cycle cycle) {
+    public Cycle switchState( @JsonProperty("cycle")Cycle cycle) {
         cycle = new Day();
+        return cycle;
     }
 
     @Override

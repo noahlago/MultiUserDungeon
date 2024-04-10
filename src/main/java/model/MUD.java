@@ -170,6 +170,7 @@ public class MUD {
      */
     public void uptickTurns() {
         numTurns += 1;
+        checkCycle();
     }
 
     public Room getShrineRoom(){
@@ -274,7 +275,10 @@ public class MUD {
      */
     public void checkCycle() {
         if (numTurns % 10 == 0) {
-            cycle.switchState(cycle);
+            cycle = cycle.switchState(cycle);
+            if(cycle == null){
+                cycle = new Day();
+            }
             cycle.modifyDiurnalEnemies(getNpcs());
             cycle.modifyNocturnalEnemies(getNpcs());
 
@@ -526,7 +530,6 @@ public class MUD {
                 //updates the current room
                 currentRoom.updateTiles(tiles);
             }
-            uptickTurns();
             currentRoom.getTile(xCoord, yCoord).accept(action);
             uptickTurns();
         }

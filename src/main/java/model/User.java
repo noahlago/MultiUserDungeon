@@ -2,10 +2,16 @@ package model;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import model.persistence.GameFileDAO;
 
+/**
+ * Represents a user
+ * Provides methods to get information, change password, start/resume/end a game, log in, increment stats
+ * @author Zoe Rizzo (zjr1377@rit.edu)
+ */
 public class User {
     @JsonProperty("username") private String username;
     @JsonProperty("password") private String password;
@@ -17,7 +23,8 @@ public class User {
     @JsonProperty("gameInProgress") private MUD gameInProgress;
     @JsonProperty("loggedIn") private boolean loggedIn;
 
-    public User(String username, String password){
+    @JsonCreator
+    public User(@JsonProperty("username") String username, @JsonProperty("password") String password){
         this.username = username;
         this.password = password;
         this.gamesPlayed = 0;
@@ -168,4 +175,13 @@ public class User {
         this.password = newPassword;
     }
 
+
+    /**
+     * @return user stats
+     */
+    public String getHistory(){
+        String retVal = getUsername() + " stats: " + "\n\tGames played = " + getGamesPlayed() + "\n\tLives lost = " + getLivesLost() + "\n\tMonsters slain = " + getMonstersKilled() + "\n\tTotal gold collected = " + getTotalGold() + "\n\tItems found = " + getItemsFound();
+
+        return retVal;
+    }
 }

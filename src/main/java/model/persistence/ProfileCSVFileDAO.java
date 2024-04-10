@@ -171,5 +171,19 @@ public class ProfileCSVFileDAO implements ProfileDAO{
             return false;
         }
     }
+
+    /**
+     * This method allows for a user of the specified username to change their password. 
+     * @param username of the user whose password will be changed
+     * @param currentPassword used to check that the user has their old password
+     * @param newPassword the new password the user wishes to assign to their profile
+     */
+    @Override
+    public boolean updatePassword(String username, String currentPassword, String newPassword) throws IOException {
+        User user = logIn(username, newPassword);
+        user.changePassword(newPassword, currentPassword);
+        save();
+        return true;
+    }
     
 }
