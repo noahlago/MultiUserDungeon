@@ -607,7 +607,7 @@ public class mudGUI extends Application implements mudObserver {
         VBox keyDisplay = createKeyDisplay();
         int thisNum = mapNum;
 
-        Button backToProfileButton = new Button("Back to Start");
+        Button backToProfileButton = new Button("Back to Profile");
         Button nextButton = new Button("View Next Map");
         Button playButton = new Button("Play This Map");
         if(mapNum < 2){
@@ -616,12 +616,12 @@ public class mudGUI extends Application implements mudObserver {
             mapNum = 0;
         }
         nextButton.setOnAction(e ->{
-            displayPremade(gameStage);
+            displayPremadeLoggedin(gameStage);
         });
         backToProfileButton.setOnAction(e -> {
             gameStage.close();
 
-            start(new Stage());
+            showLoggedIn(new Stage());
         });
 
         playButton.setOnAction(e ->{
