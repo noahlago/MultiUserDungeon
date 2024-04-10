@@ -140,8 +140,8 @@ public class Interact implements Visitor{
 
         //get the players location
         int[] loco = player.getLocation();
-        System.out.println(player);
-        System.out.println(loco[0] + " " + loco[1]);
+        // System.out.println(player);
+        // System.out.println(loco[0] + " " + loco[1]);
 
         //copy of the current room
         ConcreteTile[][] tiles = currentRoom.getTiles();
@@ -166,6 +166,14 @@ public class Interact implements Visitor{
             game.winGame();
         }
         else{
+            //get the players location
+            int[] loco = player.getLocation();
+            //copy of the current room
+            ConcreteTile[][] tiles = currentRoom.getTiles();
+            //set the players old location to an empty tile
+            tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
+            currentRoom.updateTiles(tiles);
+            
             game.nextRoom();
             player.updateLocation(0, 0);
             System.out.println("You've entered the next room!");
@@ -259,6 +267,13 @@ public class Interact implements Visitor{
             System.out.println("You cannot exit the dungeon");
         }
         else{
+            //get the players location
+            int[] loco = player.getLocation();
+            //copy of the current room
+            ConcreteTile[][] tiles = currentRoom.getTiles();
+            //set the players old location to an empty tile
+            tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
+            currentRoom.updateTiles(tiles);
             game.prevRoom();
         }
     }
