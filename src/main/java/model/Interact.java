@@ -11,6 +11,7 @@ import model.Tiles.ObstacleTile;
 import model.Tiles.ShrineTile;
 import model.Tiles.Tile;
 import model.Tiles.TrapTile;
+import unitXX.mudGUI;
 import view.PTUI;
 
 import java.util.ArrayList;
@@ -74,22 +75,8 @@ public class Interact implements Visitor{
 
     @Override
     public void visitChestTile(ChestTile cTile) {
-        ArrayList<Item> items = cTile.getChest().getItems();
-        
-        int x = 0;
-        for(Item i : items){
-            System.out.println((x+1) + ": " + i.getName());
-            x++;
-        }
+    mudGUI.chestInteraction(cTile.getChest(), player);
 
-        int itemNum = MUD.chooseItem();
-        if(itemNum < 0 || itemNum > items.size()){
-            System.out.println("Invalid item #. Try again. ");
-        }else{
-            Item acquired = items.get(itemNum - 1);
-            cTile.getChest().remove(acquired);
-            player.addItem(acquired);
-        }
     }
 
     @Override
@@ -209,7 +196,7 @@ public class Interact implements Visitor{
                     }
 
                     System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    itemNum = PTUI.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > items.size()){
                         System.out.println("Invalid item #. Try again.");
@@ -222,7 +209,7 @@ public class Interact implements Visitor{
                 case 'b':
                     // buy item from merchant
                     System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    itemNum = PTUI.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > goods.size()){
                         System.out.println("Invalid item #. Try again.");

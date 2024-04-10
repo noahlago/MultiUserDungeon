@@ -2,6 +2,7 @@ package unitXX;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -30,6 +31,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import model.Chest;
+import model.Item;
 import model.MUD;
 import model.Map;
 import model.Room;
@@ -42,6 +45,7 @@ import model.persistence.GameFileDAO;
 import model.persistence.ImportProfile;
 import model.persistence.ProfileCSVFileDAO;
 import model.Npc;
+import model.Pc;
 import model.PremadeMaps;
 
 public class mudGUI extends Application implements mudObserver {
@@ -313,6 +317,41 @@ public class mudGUI extends Application implements mudObserver {
         vbox.getChildren().add(viewMaps);
         stage.setScene(new Scene(vbox, 500, 300));
         stage.setTitle("MUD Game");
+        stage.show();
+    }
+    private void takeItem(Chest chest, Item item, Pc player){
+        chest.remove(item);
+        player.addItem(item);
+    }
+
+    public static void chestInteraction(Chest chest, Pc player) {
+        ArrayList<Item> items = chest.getItems();
+        
+        // Create a new stage (or use an existing stage if part of a bigger application)
+        Stage stage = new Stage();
+        stage.setTitle("Chest Contents");
+    
+        // Create VBox to hold popup content
+        VBox iPopupContent = new VBox(10);
+        iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
+        iPopupContent.setPadding(new Insets(10));
+    
+        // Adding buttons for each item
+        for (Item item : items) {
+            System.out.println(item.getName());
+            Button itemButton = new Button(item.getName());
+            itemButton.setOnAction(event -> {
+                // Implement your takeItem logic here
+                System.out.println("Taking item: " + item.getName());
+            });
+            iPopupContent.getChildren().add(itemButton);
+        }
+    
+        // Creating a scene with the VBox
+        Scene scene = new Scene(iPopupContent);
+        stage.setScene(scene);
+    
+        // Show the stage
         stage.show();
     }
 
