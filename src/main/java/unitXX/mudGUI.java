@@ -465,6 +465,7 @@ public class mudGUI extends Application implements mudObserver {
             Stage newStage = new Stage();
             currentStage = newStage;
             startNewGame(newStage);
+            messages = new Label();
         });
         Button logout = new Button("Logout");
         logout.setOnAction(e -> start(profileStage));
@@ -514,6 +515,7 @@ public class mudGUI extends Application implements mudObserver {
         Scene scene = new Scene(layout);
         newGameStage.setScene(scene);
         newGameStage.setTitle("Start New Game");
+        messages = new Label();
         newGameStage.show();
     }
 
