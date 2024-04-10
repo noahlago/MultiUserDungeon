@@ -329,6 +329,10 @@ public class MUD {
         textUpdated("You Won!");
     }
 
+    public boolean gameWon(){
+        return gameOver && getHealth() > 0;
+    }
+
     public boolean roomIsGoal(){
         return getCurrentRoom().getIsGoal();
     }

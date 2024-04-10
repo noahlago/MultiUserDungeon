@@ -774,8 +774,12 @@ public class mudGUI extends Application implements mudObserver {
         // Optionally set click event handlers for the buttons
         upButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            if(gameOver == true){
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
@@ -786,8 +790,12 @@ public class mudGUI extends Application implements mudObserver {
         });
         downButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            if(gameOver == true){
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
@@ -798,8 +806,12 @@ public class mudGUI extends Application implements mudObserver {
         });
         leftButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            if(gameOver == true){
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
@@ -810,8 +822,12 @@ public class mudGUI extends Application implements mudObserver {
         });
         rightButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
+            boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            if(gameOver == true){
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
