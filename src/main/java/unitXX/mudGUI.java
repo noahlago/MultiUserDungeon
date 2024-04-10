@@ -416,7 +416,7 @@ public class mudGUI extends Application implements mudObserver {
         Stage newGameStage = new Stage();
         currentStage = newGameStage;
         viewCurrentGamesButton.setOnAction(e -> {
-            startCurrentGame(currentProf.getUsername(), profileStage);
+            startCurrentGame(currentProf.getUsername(), currentStage);
         });
 
         Button startNewGameButton = new Button("Start New Game");
@@ -535,6 +535,7 @@ public class mudGUI extends Application implements mudObserver {
     
 
     private void startCurrentGame(String playerName, Stage gameStage) {
+        //currentProf.setGameInProgress(saveManager);
         mud = currentProf.getGameInProgress();
         mud.renderRooms();
         currentProf.startGame(mud);
@@ -639,6 +640,7 @@ public class mudGUI extends Application implements mudObserver {
     }
 
     private Node[] displayTiles(GridPane gridPane, Room room) {
+        gridPane.getChildren().clear();
         ConcreteTile[][] tiles = room.getTiles();
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
@@ -730,19 +732,19 @@ public class mudGUI extends Application implements mudObserver {
         // Optionally set click event handlers for the buttons
         upButton.setOnAction(e -> {
             game.movePlayer(-1, 0);
-            mudUpdated(mud);
+            mudUpdated(game);
         });
         downButton.setOnAction(e -> {
             game.movePlayer(1, 0);
-            mudUpdated(mud);
+            mudUpdated(game);
         });
         leftButton.setOnAction(e -> {
             game.movePlayer(0, -1);
-            mudUpdated(mud);
+            mudUpdated(game);
         });
         rightButton.setOnAction(e -> {
             game.movePlayer(0, 1);
-            mudUpdated(mud);
+            mudUpdated(game);
         });
 
         // Add the movement controls GridPane to the bottom of the main layout
@@ -803,7 +805,8 @@ public class mudGUI extends Application implements mudObserver {
     @Override
     public void mudUpdated(MUD board) {
         GridPane grid = new GridPane();
-        displayTiles(grid, currentProf.getGameInProgress().getCurrentRoom());
+        //System.out.println(board.getCurrentRoom());
+        displayTiles(grid, board.getCurrentRoom());
         VBox box = new VBox();
 
         Button backToProfileButton = new Button("Back to Profile");
@@ -819,7 +822,7 @@ public class mudGUI extends Application implements mudObserver {
             showLoggedIn(new Stage());
         });
         box.getChildren().addAll(backToProfileButton, grid);
-        addMovementControls(box, currentProf.getGameInProgress());
+        addMovementControls(box, board);
         VBox keyDisplay = createKeyDisplay();
         box.getChildren().add(keyDisplay);
         box.getChildren().add(field);

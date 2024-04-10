@@ -274,11 +274,11 @@ public class MUD {
      * Alerts user when cycle switches from day to night / vice versa
      */
     public void checkCycle() {
-        if(cycle == null){
-            cycle = new Day();
-        }
         if (numTurns % 10 == 0) {
             cycle = cycle.switchState(cycle);
+            if(cycle == null){
+                cycle = new Day();
+            }
             cycle.modifyDiurnalEnemies(getNpcs());
             cycle.modifyNocturnalEnemies(getNpcs());
 
