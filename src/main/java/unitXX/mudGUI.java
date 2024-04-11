@@ -417,6 +417,69 @@ public class mudGUI extends Application implements mudObserver {
         });
         iPopupContent.getChildren().add(itemButton);
         }
+    
+        // Creating a scene with the VBox
+        Scene scene = new Scene(iPopupContent);
+        stage.setScene(scene);
+        stage.toFront();
+        stage.requestFocus();
+
+        // Show the stage
+        stage.show();
+    }
+    public void showInventory( Pc player) {
+        
+        // Create a new stage (or use an existing stage if part of a bigger application)
+        Stage stage = new Stage();
+        stage.setTitle("Inventory Contents");
+        Button close = new Button("Close");
+        Inventory inv = player.getInventory();
+
+        
+        // Create VBox to hold popup content
+        VBox iPopupContent = new VBox(10);
+        iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
+        iPopupContent.setPadding(new Insets(10));
+        iPopupContent.getChildren().addAll(close,new Label("Inventory"));
+        // Adding buttons for each item
+        for (Item item : inv.items()) {
+            Button itemButton = new Button(item.getName());
+            itemButton.setOnAction(event -> {
+                if(item instanceof CoolArmor || item instanceof LameRags){
+                    player.equipArmor(item);
+                    mudUpdated(mud);
+                }
+                else if(item instanceof LameKnife || item instanceof CoolSword){
+                    player.equipWeapon(item);
+                    mudUpdated(mud);
+                }else{
+                player.useItem(item);
+                mudUpdated(mud);
+                }
+                stage.close();
+            });
+            iPopupContent.getChildren().add(itemButton);
+            
+        }
+       
+        if(player.getArmorSlot() != null){
+            iPopupContent.getChildren().add(new Label("Armour Slot"));
+        Button itemButton = new Button(""+player.getArmorSlot().getName());
+        itemButton.setOnAction(e ->{
+            player.RemoveArmor();
+            stage.close();
+        });
+        iPopupContent.getChildren().add(itemButton);
+        }
+        if(player.getWeaponSlot() != null){
+            iPopupContent.getChildren().add(new Label("Weapon Slot"));
+        Button itemButton = new Button(""+player.getWeaponSlot().getName());
+        itemButton.setOnAction(e ->{
+            player.RemoveWeapon();
+            stage.close();
+        });
+        iPopupContent.getChildren().add(itemButton);
+        }
 
         Scene scene = new Scene(iPopupContent);
         stage.setScene(scene);
