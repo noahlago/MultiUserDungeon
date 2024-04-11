@@ -146,9 +146,17 @@ public class EndlessInteract implements Visitor{
     @Override
     public void visitExitTile(ExitTile eTile) {
         //moves map to the next room in sequence
+
+        //get the players location
+        int[] loco = player.getLocation();
+        //copy of the current room
+        ConcreteTile[][] tiles = currentRoom.getTiles();
+        //set the players old location to an empty tile
+        tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
+        currentRoom.updateTiles(tiles);
        
         endlessMUD.nextRoom();
-        player.updateLocation(0, 0);
+        player.updateLocation(1, 1);
         System.out.println("You've entered the next room!");
 
         
@@ -160,6 +168,13 @@ public class EndlessInteract implements Visitor{
             System.out.println("You cannot exit the dungeon!");
             return;
         }
+        //get the players location
+        int[] loco = player.getLocation();
+        //copy of the current room
+        ConcreteTile[][] tiles = currentRoom.getTiles();
+        //set the players old location to an empty tile
+        tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
+        currentRoom.updateTiles(tiles);
         endlessMUD.previousRoom();
         System.out.println("You've entered the previous room!");
     }

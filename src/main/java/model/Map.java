@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import model.Tiles.CharacterTile;
 import model.Tiles.ChestTile;
 import model.Tiles.EmptyTile;
+import model.Tiles.EntranceTile;
 import model.Tiles.ExitTile;
 import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
@@ -204,7 +205,9 @@ public class Map {
         // Adds a randomly generated merchant
         randomlyGenerate(x_dimension, y_dimension, 1, "Merchant", occupied_spots, room);
         ConcreteTile exit1 = room[9][9];
-        //room[0][0] = new CharacterTile(player, 0, 0);
+        room[0][0] = new EntranceTile();
+        
+        
 
         while (true) {
             int coin_flip = rand.nextInt(2);
