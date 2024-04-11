@@ -32,7 +32,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Chest;
+import model.CoolArmor;
+import model.CoolSword;
+import model.Inventory;
 import model.Item;
+import model.LameKnife;
+import model.LameRags;
 import model.MUD;
 import model.Map;
 import model.Room;
@@ -330,12 +335,17 @@ public class mudGUI extends Application implements mudObserver {
         // Create a new stage (or use an existing stage if part of a bigger application)
         Stage stage = new Stage();
         stage.setTitle("Chest Contents");
-    
+        Button close = new Button("Close");
+        close.setOnAction(e ->{
+            takeItem(chest, null, player);
+            stage.close();
+        });
+        
         // Create VBox to hold popup content
         VBox iPopupContent = new VBox(10);
         iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
         iPopupContent.setPadding(new Insets(10));
-    
+        iPopupContent.getChildren().add(close);
         // Adding buttons for each item
         for (Item item : items) {
             System.out.println(item.getName());
@@ -350,6 +360,70 @@ public class mudGUI extends Application implements mudObserver {
         // Creating a scene with the VBox
         Scene scene = new Scene(iPopupContent);
         stage.setScene(scene);
+        stage.toFront();
+        stage.requestFocus();
+    
+        // Show the stage
+        stage.show();
+    }
+    public void showInventory( Pc player) {
+        
+        // Create a new stage (or use an existing stage if part of a bigger application)
+        Stage stage = new Stage();
+        stage.setTitle("Inventory Contents");
+        Button close = new Button("Close");
+        Inventory inv = player.getInventory();
+
+        
+        // Create VBox to hold popup content
+        VBox iPopupContent = new VBox(10);
+        iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
+        iPopupContent.setPadding(new Insets(10));
+        iPopupContent.getChildren().addAll(close,new Label("Inventory"));
+        // Adding buttons for each item
+        for (Item item : inv.items()) {
+            Button itemButton = new Button(item.getName());
+            itemButton.setOnAction(event -> {
+                if(item instanceof CoolArmor || item instanceof LameRags){
+                    player.equipArmor(item);
+                    mudUpdated(mud);
+                }
+                else if(item instanceof LameKnife || item instanceof CoolSword){
+                    player.equipWeapon(item);
+                    mudUpdated(mud);
+                }else{
+                player.useItem(item);
+                mudUpdated(mud);
+                }
+                stage.close();
+            });
+            iPopupContent.getChildren().add(itemButton);
+            
+        }
+       
+        if(player.getArmorSlot() != null){
+            iPopupContent.getChildren().add(new Label("Armour Slot"));
+        Button itemButton = new Button(""+player.getArmorSlot().getName());
+        itemButton.setOnAction(e ->{
+            player.RemoveArmor();
+            stage.close();
+        });
+        iPopupContent.getChildren().add(itemButton);
+        }
+        if(player.getWeaponSlot() != null){
+            iPopupContent.getChildren().add(new Label("Weapon Slot"));
+        Button itemButton = new Button(""+player.getWeaponSlot().getName());
+        itemButton.setOnAction(e ->{
+            player.RemoveWeapon();
+            stage.close();
+        });
+        iPopupContent.getChildren().add(itemButton);
+        }
+    
+        // Creating a scene with the VBox
+        Scene scene = new Scene(iPopupContent);
+        stage.setScene(scene);
+        stage.toFront();
         stage.requestFocus();
     
         // Show the stage
@@ -523,6 +597,10 @@ public class mudGUI extends Application implements mudObserver {
     private void startGame(String playerName, Stage gameStage) throws IOException {
         // Prepare the game environment as before
         mud = new MUD(new Map(), playerName);
+        Button inventory = new Button("Inventory");
+        inventory.setOnAction(e ->{
+            showInventory(mud.getPlayer());
+        });
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
         Double health = mud.getHealth();
@@ -540,7 +618,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
+        box.getChildren().addAll(backToProfileButton,inventory,currentHealth, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -552,6 +630,10 @@ public class mudGUI extends Application implements mudObserver {
     private void startPremadeGame(String playerName, Stage gameStage,Map map) throws IOException {
         // Prepare the game environment as before
         mud = new MUD(map, playerName);
+        Button inventory = new Button("Inventory");
+        inventory.setOnAction(e ->{
+            showInventory(mud.getPlayer());
+        });
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
         Double health = mud.getHealth();
@@ -569,7 +651,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
+        box.getChildren().addAll(backToProfileButton,currentHealth,inventory, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -585,6 +667,10 @@ public class mudGUI extends Application implements mudObserver {
         //currentProf.setGameInProgress(saveManager);
         
         mud = currentProf.getGameInProgress();
+        Button inventory = new Button("Inventory");
+        inventory.setOnAction(e ->{
+            showInventory(mud.getPlayer());
+        });
         Double health = mud.getHealth();
         Label currentHealth = new Label(" " + health);
         mud.renderRooms();
@@ -602,7 +688,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
+        box.getChildren().addAll(backToProfileButton,currentHealth,inventory, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -927,6 +1013,10 @@ public class mudGUI extends Application implements mudObserver {
     @Override
     public void mudUpdated(MUD board) {
         GridPane grid = new GridPane();
+        Button inventory = new Button("Inventory");
+        inventory.setOnAction(e ->{
+            showInventory(board.getPlayer());
+        });
         //System.out.println(board.getCurrentRoom());
         displayTiles(grid, board.getCurrentRoom());
         VBox box = new VBox();
@@ -945,7 +1035,7 @@ public class mudGUI extends Application implements mudObserver {
             ;
             showLoggedIn(new Stage());
         });
-        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
+        box.getChildren().addAll(backToProfileButton,currentHealth, inventory,grid);
         addMovementControls(box, board);
         VBox keyDisplay = createKeyDisplay();
         box.getChildren().add(keyDisplay);
