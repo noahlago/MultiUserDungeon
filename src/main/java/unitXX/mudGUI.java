@@ -80,6 +80,12 @@ public class mudGUI extends Application implements mudObserver {
     @Override
     public void start(Stage stage) {
         try {
+            profileDAO = new ProfileCSVFileDAO();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
             saveManager.newSaveGame(mud);
             saveManager.updateSaveGame(mud);
             saveManager.save();
@@ -220,22 +226,24 @@ public class mudGUI extends Application implements mudObserver {
         EventHandler<ActionEvent> csvButton = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 ImportProfile importManager = new ImportProfile(profileDAO);
+
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open CSV File");
 
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                        String extension = "";
-                        int i = file.getName().lastIndexOf('.');
-                        if (i >= 0) {
-                            extension = file.getName().substring(i + 1);
-                        }
-                        if (extension == "csv") {
+                    
                             importManager.importCSV(file.getAbsolutePath());
-                        }
+                        
                     }
                 } catch (IOException t) {
+                } catch (SAXException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (ParserConfigurationException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
                 }
                 ;
             }
@@ -248,15 +256,10 @@ public class mudGUI extends Application implements mudObserver {
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                        String extension = "";
-                        int i = file.getName().lastIndexOf('.');
-                        if (i >= 0) {
-                            extension = file.getName().substring(i + 1);
-                        }
-                        if (extension == "xml") {
+                            System.out.println("importing xml");
                             importManager.importXML(file.getAbsolutePath());
                         }
-                    }
+                    
                 } catch (SAXException t) {
                 } catch (IOException t) {
                 } catch (ParserConfigurationException p) {
@@ -273,14 +276,9 @@ public class mudGUI extends Application implements mudObserver {
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                        String extension = "";
-                        int i = file.getName().lastIndexOf('.');
-                        if (i >= 0) {
-                            extension = file.getName().substring(i + 1);
-                        }
-                        if (extension == "json") {
+                            System.out.println("importing json");
                             importManager.importJSON(file.getAbsolutePath());
-                        }
+                        
                     }
                 } catch (IOException t) {
                 }
