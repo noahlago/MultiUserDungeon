@@ -80,6 +80,12 @@ public class mudGUI extends Application implements mudObserver {
     @Override
     public void start(Stage stage) {
         try {
+            profileDAO = new ProfileCSVFileDAO();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
             saveManager.newSaveGame(mud);
             saveManager.updateSaveGame(mud);
             saveManager.save();
@@ -220,22 +226,24 @@ public class mudGUI extends Application implements mudObserver {
         EventHandler<ActionEvent> csvButton = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 ImportProfile importManager = new ImportProfile(profileDAO);
+
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open CSV File");
 
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                        String extension = "";
-                        int i = file.getName().lastIndexOf('.');
-                        if (i >= 0) {
-                            extension = file.getName().substring(i + 1);
-                        }
-                        if (extension == "csv") {
+                    
                             importManager.importCSV(file.getAbsolutePath());
-                        }
+                        
                     }
                 } catch (IOException t) {
+                } catch (SAXException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (ParserConfigurationException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
                 }
                 ;
             }
@@ -248,15 +256,10 @@ public class mudGUI extends Application implements mudObserver {
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                        String extension = "";
-                        int i = file.getName().lastIndexOf('.');
-                        if (i >= 0) {
-                            extension = file.getName().substring(i + 1);
-                        }
-                        if (extension == "xml") {
+                            System.out.println("importing xml");
                             importManager.importXML(file.getAbsolutePath());
                         }
-                    }
+                    
                 } catch (SAXException t) {
                 } catch (IOException t) {
                 } catch (ParserConfigurationException p) {
@@ -273,14 +276,9 @@ public class mudGUI extends Application implements mudObserver {
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                        String extension = "";
-                        int i = file.getName().lastIndexOf('.');
-                        if (i >= 0) {
-                            extension = file.getName().substring(i + 1);
-                        }
-                        if (extension == "json") {
+                            System.out.println("importing json");
                             importManager.importJSON(file.getAbsolutePath());
-                        }
+                        
                     }
                 } catch (IOException t) {
                 }
@@ -425,6 +423,68 @@ public class mudGUI extends Application implements mudObserver {
         stage.setScene(scene);
         stage.toFront();
         stage.requestFocus();
+
+        // Show the stage
+        stage.show();
+    }
+    public void showInventory( Pc player) {
+        
+        // Create a new stage (or use an existing stage if part of a bigger application)
+        Stage stage = new Stage();
+        stage.setTitle("Inventory Contents");
+        Button close = new Button("Close");
+        Inventory inv = player.getInventory();
+
+        
+        // Create VBox to hold popup content
+        VBox iPopupContent = new VBox(10);
+        iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
+        iPopupContent.setPadding(new Insets(10));
+        iPopupContent.getChildren().addAll(close,new Label("Inventory"));
+        // Adding buttons for each item
+        for (Item item : inv.items()) {
+            Button itemButton = new Button(item.getName());
+            itemButton.setOnAction(event -> {
+                if(item instanceof CoolArmor || item instanceof LameRags){
+                    player.equipArmor(item);
+                    mudUpdated(mud);
+                }
+                else if(item instanceof LameKnife || item instanceof CoolSword){
+                    player.equipWeapon(item);
+                    mudUpdated(mud);
+                }else{
+                player.useItem(item);
+                mudUpdated(mud);
+                }
+                stage.close();
+            });
+            iPopupContent.getChildren().add(itemButton);
+            
+        }
+       
+        if(player.getArmorSlot() != null){
+            iPopupContent.getChildren().add(new Label("Armour Slot"));
+        Button itemButton = new Button(""+player.getArmorSlot().getName());
+        itemButton.setOnAction(e ->{
+            player.RemoveArmor();
+            stage.close();
+        });
+        iPopupContent.getChildren().add(itemButton);
+        }
+        if(player.getWeaponSlot() != null){
+            iPopupContent.getChildren().add(new Label("Weapon Slot"));
+        Button itemButton = new Button(""+player.getWeaponSlot().getName());
+        itemButton.setOnAction(e ->{
+            player.RemoveWeapon();
+            stage.close();
+        });
+        iPopupContent.getChildren().add(itemButton);
+        }
+
+        Scene scene = new Scene(iPopupContent);
+        stage.setScene(scene);
+        stage.toFront();
+        stage.requestFocus();
     
         // Show the stage
         stage.show();
@@ -565,7 +625,6 @@ public class mudGUI extends Application implements mudObserver {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         Button startEndlessGameButton = new Button("Start New Endless Game");
-        // startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
 
         Button startRegularGameButton = new Button("Start New Regular Game");
         startRegularGameButton.setOnAction(e -> {
@@ -953,13 +1012,12 @@ public class mudGUI extends Application implements mudObserver {
             mudUpdated(mud);
         });
 
-        // Add the movement controls GridPane to the bottom of the main layout
         mainLayout.getChildren().add(movementControls);
     }
 
 
     private Rectangle createTileRectangle(ConcreteTile tile) {
-        Rectangle rect = new Rectangle(20, 20); // Size of the square
+        Rectangle rect = new Rectangle(20, 20); 
         rect.setStroke(Color.BLACK); // Border color
         // Customize the fill color based on the tile type
         switch (tile.getType()) {
@@ -1049,7 +1107,6 @@ public class mudGUI extends Application implements mudObserver {
     public void textUpdated(String newText) {
         field.appendText(newText);
         messages = new Label(newText);
-        System.out.println("adsfs");
         mudUpdated(mud);
 
     }
