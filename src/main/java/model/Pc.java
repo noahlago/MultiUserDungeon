@@ -28,6 +28,7 @@ public class Pc extends Character {
     }
 
     public int[] getStats(){
+        if(livesLost > 1){livesLost = 1;};
         int[] stats = {livesLost, monstersKilled, totalGold, itemsFound};
         return stats;
     }
@@ -221,6 +222,7 @@ public class Pc extends Character {
 
     public void increaseGold(int amount){
         this.goldAmount += amount;
+        this.totalGold += amount;
     }
 
     public void decreaseGold(int amount){

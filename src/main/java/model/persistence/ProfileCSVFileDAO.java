@@ -165,6 +165,11 @@ public class ProfileCSVFileDAO implements ProfileDAO{
             User user = profiles.get(username); //gets the user with the specified username 
             user.incrementGamesPlayed(); //increments gamesPlayed count
             user.updateStats(livesLost, monstersKilled, totalGold, itemsFound); //updates remaining stats
+            try {
+                save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return true;
         }else{
             System.out.println("Username not found. ");

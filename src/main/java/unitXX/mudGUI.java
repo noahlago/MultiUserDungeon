@@ -784,11 +784,21 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
+                for(int stat : stats){
+                    System.out.println(stat);
+                }
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else if(gameOver == true){
                 messages = new Label("Game over");
+                for(int stat : stats){
+                    System.out.println(stat);
+                }
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else{
                 game.movePlayer(-1, 0);
@@ -800,11 +810,15 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else if(gameOver == true){
                 messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else{
                 game.movePlayer(1, 0);
@@ -816,11 +830,15 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else if(gameOver == true){
                 messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else{
                 game.movePlayer(0, -1);
@@ -832,11 +850,15 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else if(gameOver == true){
                 messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
             }
             else{
                 game.movePlayer(0, 1);
