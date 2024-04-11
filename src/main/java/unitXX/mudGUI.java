@@ -944,7 +944,7 @@ public class mudGUI extends Application implements mudObserver {
             }
             game.movePlayer(-1, 0);
             messages = new Label(cycle);
-            endlessMudUpdated(game);(mud);
+            endlessMudUpdated(endlessMUD);
         });
         downButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
