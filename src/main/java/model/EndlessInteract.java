@@ -102,7 +102,6 @@ public class EndlessInteract implements Visitor{
 
                 player.takeDamage(tTile.getDamage());
             }
-
         }
 
         //if the trap is armed and not found the user takes damage

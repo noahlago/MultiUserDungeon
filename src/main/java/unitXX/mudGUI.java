@@ -32,12 +32,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Chest;
-import model.CoolArmor;
-import model.CoolSword;
-import model.Inventory;
+import model.EndlessMUD;
 import model.Item;
-import model.LameKnife;
-import model.LameRags;
 import model.MUD;
 import model.Map;
 import model.Room;
@@ -45,6 +41,7 @@ import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
 import model.Tiles.TrapTile;
+import model.persistence.EndlessGameFileDAO;
 import model.persistence.ExportProfile;
 import model.persistence.GameFileDAO;
 import model.persistence.ImportProfile;
@@ -56,9 +53,13 @@ import model.PremadeMaps;
 public class mudGUI extends Application implements mudObserver {
     User currentProf = new User("a", "A");
     GameFileDAO saveManager = new GameFileDAO();
+    EndlessGameFileDAO endlessSaveManager = new EndlessGameFileDAO();
     ProfileCSVFileDAO profileDAO;
 
     MUD mud = new MUD(new Map(), "New Game");
+    EndlessMUD endlessMUD = new EndlessMUD(new Map(), "New Game");
+    Boolean endless = false;
+
 
     VBox accountContent = new VBox(10);
 
@@ -78,12 +79,6 @@ public class mudGUI extends Application implements mudObserver {
 
     @Override
     public void start(Stage stage) {
-        try {
-            profileDAO = new ProfileCSVFileDAO();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         try {
             saveManager.newSaveGame(mud);
             saveManager.updateSaveGame(mud);
@@ -226,24 +221,22 @@ public class mudGUI extends Application implements mudObserver {
         EventHandler<ActionEvent> csvButton = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 ImportProfile importManager = new ImportProfile(profileDAO);
-
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open CSV File");
 
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                    
+                        String extension = "";
+                        int i = file.getName().lastIndexOf('.');
+                        if (i >= 0) {
+                            extension = file.getName().substring(i + 1);
+                        }
+                        if (extension == "csv") {
                             importManager.importCSV(file.getAbsolutePath());
-                        
+                        }
                     }
                 } catch (IOException t) {
-                } catch (SAXException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (ParserConfigurationException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
                 }
                 ;
             }
@@ -256,10 +249,15 @@ public class mudGUI extends Application implements mudObserver {
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                            System.out.println("importing xml");
+                        String extension = "";
+                        int i = file.getName().lastIndexOf('.');
+                        if (i >= 0) {
+                            extension = file.getName().substring(i + 1);
+                        }
+                        if (extension == "xml") {
                             importManager.importXML(file.getAbsolutePath());
                         }
-                    
+                    }
                 } catch (SAXException t) {
                 } catch (IOException t) {
                 } catch (ParserConfigurationException p) {
@@ -276,9 +274,14 @@ public class mudGUI extends Application implements mudObserver {
                 File file = fileChooser.showOpenDialog(stage);
                 try {
                     if (file != null) {
-                            System.out.println("importing json");
+                        String extension = "";
+                        int i = file.getName().lastIndexOf('.');
+                        if (i >= 0) {
+                            extension = file.getName().substring(i + 1);
+                        }
+                        if (extension == "json") {
                             importManager.importJSON(file.getAbsolutePath());
-                        
+                        }
                     }
                 } catch (IOException t) {
                 }
@@ -322,7 +325,7 @@ public class mudGUI extends Application implements mudObserver {
         stage.setTitle("MUD Game");
         stage.show();
     }
-    private static void takeItem(Chest chest, Item item, Pc player){
+    private void takeItem(Chest chest, Item item, Pc player){
         chest.remove(item);
         player.addItem(item);
     }
@@ -333,24 +336,19 @@ public class mudGUI extends Application implements mudObserver {
         // Create a new stage (or use an existing stage if part of a bigger application)
         Stage stage = new Stage();
         stage.setTitle("Chest Contents");
-        Button close = new Button("Close");
-        close.setOnAction(e ->{
-            takeItem(chest, null, player);
-            stage.close();
-        });
-        
+    
         // Create VBox to hold popup content
         VBox iPopupContent = new VBox(10);
         iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
         iPopupContent.setPadding(new Insets(10));
-        iPopupContent.getChildren().add(close);
+    
         // Adding buttons for each item
         for (Item item : items) {
             System.out.println(item.getName());
             Button itemButton = new Button(item.getName());
             itemButton.setOnAction(event -> {
-                takeItem(chest,item,player);
-                stage.close();
+                // Implement your takeItem logic here
+                System.out.println("Taking item: " + item.getName());
             });
             iPopupContent.getChildren().add(itemButton);
         }
@@ -358,70 +356,6 @@ public class mudGUI extends Application implements mudObserver {
         // Creating a scene with the VBox
         Scene scene = new Scene(iPopupContent);
         stage.setScene(scene);
-        stage.toFront();
-        stage.requestFocus();
-    
-        // Show the stage
-        stage.show();
-    }
-    public void showInventory( Pc player) {
-        
-        // Create a new stage (or use an existing stage if part of a bigger application)
-        Stage stage = new Stage();
-        stage.setTitle("Inventory Contents");
-        Button close = new Button("Close");
-        Inventory inv = player.getInventory();
-
-        
-        // Create VBox to hold popup content
-        VBox iPopupContent = new VBox(10);
-        iPopupContent.setStyle("-fx-background-color: #FFFFFF;");
-        iPopupContent.setPadding(new Insets(10));
-        iPopupContent.getChildren().addAll(close,new Label("Inventory"));
-        // Adding buttons for each item
-        for (Item item : inv.items()) {
-            Button itemButton = new Button(item.getName());
-            itemButton.setOnAction(event -> {
-                if(item instanceof CoolArmor || item instanceof LameRags){
-                    player.equipArmor(item);
-                    mudUpdated(mud);
-                }
-                else if(item instanceof LameKnife || item instanceof CoolSword){
-                    player.equipWeapon(item);
-                    mudUpdated(mud);
-                }else{
-                player.useItem(item);
-                mudUpdated(mud);
-                }
-                stage.close();
-            });
-            iPopupContent.getChildren().add(itemButton);
-            
-        }
-       
-        if(player.getArmorSlot() != null){
-            iPopupContent.getChildren().add(new Label("Armour Slot"));
-        Button itemButton = new Button(""+player.getArmorSlot().getName());
-        itemButton.setOnAction(e ->{
-            player.RemoveArmor();
-            stage.close();
-        });
-        iPopupContent.getChildren().add(itemButton);
-        }
-        if(player.getWeaponSlot() != null){
-            iPopupContent.getChildren().add(new Label("Weapon Slot"));
-        Button itemButton = new Button(""+player.getWeaponSlot().getName());
-        itemButton.setOnAction(e ->{
-            player.RemoveWeapon();
-            stage.close();
-        });
-        iPopupContent.getChildren().add(itemButton);
-        }
-
-        Scene scene = new Scene(iPopupContent);
-        stage.setScene(scene);
-        stage.toFront();
-        stage.requestFocus();
     
         // Show the stage
         stage.show();
@@ -552,6 +486,13 @@ public class mudGUI extends Application implements mudObserver {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         Button startEndlessGameButton = new Button("Start New Endless Game");
+        startEndlessGameButton.setOnAction(e -> {
+            try {
+                startEndlessGame(currentProf.getUsername(), newGameStage);
+            } catch (IOException y) {
+            }
+            ;
+        });
 
         Button startRegularGameButton = new Button("Start New Regular Game");
         startRegularGameButton.setOnAction(e -> {
@@ -583,14 +524,8 @@ public class mudGUI extends Application implements mudObserver {
     private void startGame(String playerName, Stage gameStage) throws IOException {
         // Prepare the game environment as before
         mud = new MUD(new Map(), playerName);
-        Button inventory = new Button("Inventory");
-        inventory.setOnAction(e ->{
-            showInventory(mud.getPlayer());
-        });
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
-        Double health = mud.getHealth();
-        Label currentHealth = new Label(" " + health);
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
@@ -604,7 +539,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,inventory,currentHealth, grid);
+        box.getChildren().addAll(backToProfileButton, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -616,14 +551,8 @@ public class mudGUI extends Application implements mudObserver {
     private void startPremadeGame(String playerName, Stage gameStage,Map map) throws IOException {
         // Prepare the game environment as before
         mud = new MUD(map, playerName);
-        Button inventory = new Button("Inventory");
-        inventory.setOnAction(e ->{
-            showInventory(mud.getPlayer());
-        });
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
-        Double health = mud.getHealth();
-        Label currentHealth = new Label(" " + health);
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
@@ -637,7 +566,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,currentHealth,inventory, grid);
+        box.getChildren().addAll(backToProfileButton, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -651,14 +580,7 @@ public class mudGUI extends Application implements mudObserver {
 
     private void startCurrentGame(String playerName, Stage gameStage) {
         //currentProf.setGameInProgress(saveManager);
-        
         mud = currentProf.getGameInProgress();
-        Button inventory = new Button("Inventory");
-        inventory.setOnAction(e ->{
-            showInventory(mud.getPlayer());
-        });
-        Double health = mud.getHealth();
-        Label currentHealth = new Label(" " + health);
         mud.renderRooms();
         currentProf.startGame(mud);
         GridPane grid = new GridPane();
@@ -674,7 +596,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton,currentHealth,inventory, grid);
+        box.getChildren().addAll(backToProfileButton, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -687,6 +609,36 @@ public class mudGUI extends Application implements mudObserver {
     private void joinEndlessGame(Stage stage) {
         stage.close();
     }
+
+    private void startEndlessGame(String playerName, Stage gameStage) throws IOException {
+        endless = true;
+        endlessMUD = new EndlessMUD(new Map(), playerName);
+        endlessSaveManager.newSaveGame(endlessMUD);
+        currentProf.startEndlessGame(endlessMUD);
+        GridPane grid = new GridPane();
+        displayTiles(grid, endlessMUD.getCurrentRoom());
+        VBox box = new VBox();
+        VBox keyDisplay = createKeyDisplay();
+
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            gameStage.close();
+
+            showLoggedIn(new Stage());
+        });
+
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(backToProfileButton, grid);
+        addEndlessControls(box, endlessMUD);
+        box.getChildren().add(keyDisplay);
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + playerName); // Set a title for the window
+        gameStage.show();
+        
+    }
+
 
     private void displayPremade(Stage gameStage) {
         GridPane grid = new GridPane();
@@ -860,8 +812,7 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            Pc pc = game.getPlayer();
-            int[] stats = pc.getStats();
+            int[] stats = game.getPlayer().getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 for(int stat : stats){
@@ -886,8 +837,7 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            Pc pc = game.getPlayer();
-            int[] stats = pc.getStats();
+            int[] stats = game.getPlayer().getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
@@ -906,8 +856,7 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            Pc pc = game.getPlayer();
-            int[] stats = pc.getStats();
+            int[] stats = game.getPlayer().getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
@@ -926,8 +875,7 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            Pc pc = game.getPlayer();
-            int[] stats = pc.getStats();
+            int[] stats = game.getPlayer().getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
@@ -943,12 +891,103 @@ public class mudGUI extends Application implements mudObserver {
             mudUpdated(mud);
         });
 
+        // Add the movement controls GridPane to the bottom of the main layout
+        mainLayout.getChildren().add(movementControls);
+    }
+
+    private void addEndlessControls(VBox mainLayout, EndlessMUD game) {
+        // Create a new GridPane for the movement controls
+        GridPane movementControls = new GridPane();
+        movementControls.setPadding(new Insets(10)); // Add some padding for aesthetics
+        movementControls.setVgap(5); // Vertical gap between buttons
+        movementControls.setHgap(5); // Horizontal gap between buttons
+
+        // Create the movement buttons
+        Button upButton = new Button("Up");
+        Button downButton = new Button("Down");
+        Button leftButton = new Button("Left");
+        Button rightButton = new Button("Right");
+
+        // Add the buttons to the GridPane
+        movementControls.add(leftButton, 0, 1); // Column 0, Row 1
+        movementControls.add(upButton, 1, 0); // Column 1, Row 0
+        movementControls.add(downButton, 1, 2); // Column 1, Row 2
+        movementControls.add(rightButton, 2, 1); // Column 2, Row 1
+
+        // Align the GridPane to the center
+        movementControls.setAlignment(Pos.CENTER);
+
+        // Optionally set the maximum width of the buttons for a uniform look
+        upButton.setMaxWidth(Double.MAX_VALUE);
+        downButton.setMaxWidth(Double.MAX_VALUE);
+        leftButton.setMaxWidth(Double.MAX_VALUE);
+        rightButton.setMaxWidth(Double.MAX_VALUE);
+
+        // Optionally set click event handlers for the buttons
+        upButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if(gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(1, 0);
+                messages = new Label(cycle);
+            }
+            endlessMudUpdated(endlessMUD);
+        });
+        downButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if(gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(1, 0);
+                messages = new Label(cycle);
+            }
+            endlessMudUpdated(endlessMUD);
+        });
+        leftButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if(gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(0, -1);
+                messages = new Label(cycle);
+            }
+            endlessMudUpdated(endlessMUD);
+        });
+        rightButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if (gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(0, 1);
+                messages = new Label(cycle);
+            }
+            endlessMudUpdated(endlessMUD);
+        });
+
+        // Add the movement controls GridPane to the bottom of the main layout
         mainLayout.getChildren().add(movementControls);
     }
 
 
     private Rectangle createTileRectangle(ConcreteTile tile) {
-        Rectangle rect = new Rectangle(20, 20); 
+        Rectangle rect = new Rectangle(20, 20); // Size of the square
         rect.setStroke(Color.BLACK); // Border color
         // Customize the fill color based on the tile type
         switch (tile.getType()) {
@@ -1002,15 +1041,9 @@ public class mudGUI extends Application implements mudObserver {
     @Override
     public void mudUpdated(MUD board) {
         GridPane grid = new GridPane();
-        Button inventory = new Button("Inventory");
-        inventory.setOnAction(e ->{
-            showInventory(board.getPlayer());
-        });
         //System.out.println(board.getCurrentRoom());
         displayTiles(grid, board.getCurrentRoom());
         VBox box = new VBox();
-        Double health = mud.getHealth();
-        Label currentHealth = new Label(" " + health);
 
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
@@ -1024,20 +1057,53 @@ public class mudGUI extends Application implements mudObserver {
             ;
             showLoggedIn(new Stage());
         });
-        box.getChildren().addAll(backToProfileButton,currentHealth, inventory,grid);
+        box.getChildren().addAll(backToProfileButton, grid);
         addMovementControls(box, board);
         VBox keyDisplay = createKeyDisplay();
         box.getChildren().add(keyDisplay);
+        box.getChildren().add(field);
+        box.getChildren().add(messages);
         Scene gameScene = new Scene(box);
         currentStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
         currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
     }
 
+    public void endlessMudUpdated(EndlessMUD board) {
+        GridPane grid = new GridPane();
+        //System.out.println(board.getCurrentRoom());
+        displayTiles(grid, board.getCurrentRoom());
+        VBox box = new VBox();
+
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            currentStage.close();
+            try {
+                profileDAO.save();
+                endlessSaveManager.updateSaveGame(board);
+                endlessSaveManager.save();
+            } catch (IOException a) {
+            }
+            ;
+            showLoggedIn(new Stage());
+        });
+        box.getChildren().addAll(backToProfileButton, grid);
+        addEndlessControls(box, board);
+        VBox keyDisplay = createKeyDisplay();
+        box.getChildren().add(keyDisplay);
+        box.getChildren().add(field);
+        box.getChildren().add(messages);
+        Scene gameScene = new Scene(box);
+        currentStage.setScene(gameScene);
+        endlessMUD = currentProf.getEndlessInProgress();
+        currentStage.setTitle("Game: " + currentProf.getEndlessInProgress().getName()); // Set a title for the window
+    }
+
     @Override
     public void textUpdated(String newText) {
         field.appendText(newText);
         messages = new Label(newText);
+        System.out.println("adsfs");
         mudUpdated(mud);
 
     }
