@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import model.EndlessMUD;
 import model.Inventory;
 import model.Item;
 import model.ItemType;
-import model.MUD;
 import model.Map;
 import model.PremadeMaps;
-import model.persistence.GameFileDAO;
+import model.persistence.EndlessGameFileDAO;
 
-public class PTUI {
-    private MUD game;
+public class EndlessPTUI {
+    private EndlessMUD game;
     public static Scanner scanner = new Scanner(System.in);
 
 
-    public PTUI(MUD game){
+    public EndlessPTUI(EndlessMUD game){
         this.game = game;
     }
 
@@ -56,7 +56,17 @@ public class PTUI {
         System.out.println("'T': trap");
     }
 
-    
+    public static int chooseItem(){
+        String input = scanner.next();
+        int itemNum;
+        try{
+            itemNum = Integer.parseInt(input);
+        }catch(NumberFormatException e){
+            System.out.println("Enter a valid #");
+            return chooseItem();
+        }
+        return itemNum;
+    }
     public void editInventory(){
         System.out.println("Enter 'd' to delete an item, or 'u' to equip/use an item: ");
         char command = scanner.next().charAt(0);
@@ -110,18 +120,6 @@ public class PTUI {
         }catch(IndexOutOfBoundsException e){
             System.out.println("Invalid item number. Try again. ");
         }
-    }
-
-    public static int chooseItem(){
-        String input = scanner.next();
-        int itemNum;
-        try{
-            itemNum = Integer.parseInt(input);
-        }catch(NumberFormatException e){
-            System.out.println("Enter a valid #");
-            return chooseItem();
-        }
-        return itemNum;
     }
 
     public static char visitMerchant(){
@@ -186,12 +184,12 @@ public class PTUI {
     }
 
     public static void main(String[] args) throws IOException {
-        GameFileDAO saveManager = new GameFileDAO();
+        EndlessGameFileDAO saveManager = new EndlessGameFileDAO();
         boolean exit = false;
         while(!exit){
             System.out.println("Welcome to the ultimate Multi-User Dungeon!");
             System.out.println("Enter 's' to load a previous game file, 'd' to delete a saved game, or 'n' for a new game. Or enter 'x' to exit the main menu.");
-            PTUI currentGame = new PTUI(null);
+            EndlessPTUI currentGame = new EndlessPTUI(null);
 
             String input = scanner.nextLine();
             char command = 'a';
@@ -208,9 +206,9 @@ public class PTUI {
                     gameName = scanner.nextLine();
                     PremadeMaps maps = new PremadeMaps();
                     Map map = maps.getMap(1);
-                    MUD game = new MUD(map,gameName);
+                    EndlessMUD game = new EndlessMUD(map,gameName);
                     map.setPlayer(game.getPlayer());
-                    currentGame = new PTUI(game);
+                    currentGame = new EndlessPTUI(game);
                     saveManager.newSaveGame(game);
                     exit = currentGame.playGame();
                     saveManager.updateSaveGame(game);
@@ -228,14 +226,14 @@ public class PTUI {
                     break;
                 case 's':
                     try {
-                        HashMap<String,MUD> allGames = saveManager.getGames();
+                        HashMap<String,EndlessMUD> allGames = saveManager.getGames();
                         for(String name : allGames.keySet()){
                             System.out.println(name);
                         }
                         System.out.println("Enter the name of the save file you want to load:");
                         gameName = scanner.nextLine();
                         if(allGames.containsKey(gameName)){
-                            currentGame = new PTUI(allGames.get(gameName));
+                            currentGame = new EndlessPTUI(allGames.get(gameName));
                             currentGame.renderRooms();
                             exit = currentGame.playGame();
                             saveManager.updateSaveGame(currentGame.game);

@@ -48,8 +48,11 @@ public class Room {
 
         System.out.println(npcs);
 
+        System.out.println(npcs==null);
+        System.out.println(npcs.length == 0);
+
         //if there are no npcs around, room is safe
-        if(npcs == null || npcs.length == 0){
+        if(npcs == null){
             return true;
         }
         else{
