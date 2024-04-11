@@ -221,6 +221,7 @@ public class Pc extends Character {
 
     public void increaseGold(int amount){
         this.goldAmount += amount;
+        this.totalGold += amount;
     }
 
     public void decreaseGold(int amount){
