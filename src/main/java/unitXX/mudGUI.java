@@ -71,7 +71,6 @@ public class mudGUI extends Application implements mudObserver {
     Button confirmAccountButton = new Button("Confirm Account");
     Popup accountPopup = new Popup();
     Stage currentStage;
-    Font dungeon = Font.loadFont("file:resources/fonts/Magical World.ttf", 85);
     TextField field = new TextField();
     Label messages = new Label();
     PremadeMaps maps = new PremadeMaps();
@@ -95,9 +94,10 @@ public class mudGUI extends Application implements mudObserver {
         mud.setOnUpdate(this);
         VBox vbox = new VBox();
         vbox.setSpacing(5);
+        vbox.setAlignment(Pos.CENTER);
         Text t = new Text();
         t.setText("Multi User Dungeon");
-        t.setFont(dungeon);
+        
 
         Button login = new Button("Log In");
 
@@ -318,7 +318,7 @@ public class mudGUI extends Application implements mudObserver {
         vbox.getChildren().add(createAccountButton);
         vbox.getChildren().add(importAccount);
         vbox.getChildren().add(viewMaps);
-        stage.setScene(new Scene(vbox, 500, 300));
+        stage.setScene(new Scene(vbox));
         stage.setTitle("MUD Game");
         stage.show();
     }
@@ -461,17 +461,13 @@ public class mudGUI extends Application implements mudObserver {
         EventHandler<ActionEvent> xmlButton = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 ExportProfile exportManager = new ExportProfile(profileDAO);
-                DirectoryChooser fileChooser = new DirectoryChooser();
-                fileChooser.setTitle("Export XML File");
-                File direct = fileChooser.showDialog(stage);
                 try {
-                    if (direct != null) {
                         try {
-                            exportManager.exportXML(direct.getName(), currentProf.getUsername());
+                            exportManager.exportXML(currentProf.getUsername(), currentProf.getUsername());
                         } catch (SAXException a) {
                         } catch (TransformerException y) {
                         }
-                    }
+                    
                 } catch (IOException t) {
                 } catch (ParserConfigurationException p) {
                 }
@@ -482,13 +478,9 @@ public class mudGUI extends Application implements mudObserver {
         EventHandler<ActionEvent> jsonButton = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 ExportProfile exportManager = new ExportProfile(profileDAO);
-                DirectoryChooser fileChooser = new DirectoryChooser();
-                fileChooser.setTitle("Export JSON File");
-                File direct = fileChooser.showDialog(stage);
                 try {
-                    if (direct != null) {
-                        exportManager.exportJSON(direct.getName(), currentProf.getUsername());
-                    }
+                        exportManager.exportJSON(currentProf.getUsername(), currentProf.getUsername());
+                    
                 } catch (IOException t) {
                 }
                 ;
@@ -498,13 +490,10 @@ public class mudGUI extends Application implements mudObserver {
         EventHandler<ActionEvent> csvButton = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 ExportProfile exportManager = new ExportProfile(profileDAO);
-                DirectoryChooser fileChooser = new DirectoryChooser();
-                fileChooser.setTitle("Export CSV File");
-                File direct = fileChooser.showDialog(stage);
+
                 try {
-                    if (direct != null) {
-                        exportManager.exportCSV(direct.getName(), currentProf.getUsername());
-                    }
+                        exportManager.exportCSV(currentProf.getUsername(), currentProf.getUsername());
+                    
                 } catch (IOException t) {
                 }
                 ;
@@ -545,7 +534,8 @@ public class mudGUI extends Application implements mudObserver {
         vbox.getChildren().addAll(logout, new Label(currentProf.getUsername()), gamesPlayed, livesLost, monstersKilled,
                 goldLabel, itemsFound, viewCurrentGamesButton, startNewGameButton, exportAccount);
 
-        profileStage.setScene(new Scene(vbox));
+        vbox.setAlignment(Pos.CENTER);
+                profileStage.setScene(new Scene(vbox));
         profileStage.show();
     }
 
@@ -818,8 +808,12 @@ public class mudGUI extends Application implements mudObserver {
         trapLabel.setGraphic(new Rectangle(10, 10, Color.ORANGE));
         Label obstacleLabel = new Label("Obstacle");
         obstacleLabel.setGraphic(new Rectangle(10, 10, Color.BLACK));
+        Label merchantLabel = new Label("Merchant");
+        merchantLabel.setGraphic(new Rectangle(10, 10, Color.DEEPPINK));
+        Label shrineLabel = new Label("Shrine");
+        shrineLabel.setGraphic(new Rectangle(10, 10, Color.CADETBLUE));
         keyDisplay.getChildren().addAll(title, characterLabel, npcLabel, chestLabel, exitLabel, trapLabel,
-                obstacleLabel);
+                obstacleLabel,merchantLabel,shrineLabel);
 
         return keyDisplay;
     }
