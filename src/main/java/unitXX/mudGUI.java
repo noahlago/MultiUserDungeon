@@ -417,8 +417,7 @@ public class mudGUI extends Application implements mudObserver {
         });
         iPopupContent.getChildren().add(itemButton);
         }
-    
-        // Creating a scene with the VBox
+
         Scene scene = new Scene(iPopupContent);
         stage.setScene(scene);
         stage.toFront();
