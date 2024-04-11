@@ -1047,7 +1047,6 @@ public class mudGUI extends Application implements mudObserver {
     public void textUpdated(String newText) {
         field.appendText(newText);
         messages = new Label(newText);
-        System.out.println("adsfs");
         mudUpdated(mud);
 
     }
