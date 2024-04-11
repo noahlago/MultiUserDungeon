@@ -319,7 +319,7 @@ public class mudGUI extends Application implements mudObserver {
         stage.setTitle("MUD Game");
         stage.show();
     }
-    private void takeItem(Chest chest, Item item, Pc player){
+    private static void takeItem(Chest chest, Item item, Pc player){
         chest.remove(item);
         player.addItem(item);
     }
@@ -341,8 +341,8 @@ public class mudGUI extends Application implements mudObserver {
             System.out.println(item.getName());
             Button itemButton = new Button(item.getName());
             itemButton.setOnAction(event -> {
-                // Implement your takeItem logic here
-                System.out.println("Taking item: " + item.getName());
+                takeItem(chest,item,player);
+                stage.close();
             });
             iPopupContent.getChildren().add(itemButton);
         }
@@ -350,6 +350,7 @@ public class mudGUI extends Application implements mudObserver {
         // Creating a scene with the VBox
         Scene scene = new Scene(iPopupContent);
         stage.setScene(scene);
+        stage.requestFocus();
     
         // Show the stage
         stage.show();
@@ -524,6 +525,8 @@ public class mudGUI extends Application implements mudObserver {
         mud = new MUD(new Map(), playerName);
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
+        Double health = mud.getHealth();
+        Label currentHealth = new Label(" " + health);
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
@@ -537,7 +540,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton, grid);
+        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -551,6 +554,8 @@ public class mudGUI extends Application implements mudObserver {
         mud = new MUD(map, playerName);
         saveManager.newSaveGame(mud);
         currentProf.startGame(mud);
+        Double health = mud.getHealth();
+        Label currentHealth = new Label(" " + health);
         GridPane grid = new GridPane();
         displayTiles(grid, mud.getCurrentRoom());
         VBox box = new VBox();
@@ -564,7 +569,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton, grid);
+        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -578,7 +583,10 @@ public class mudGUI extends Application implements mudObserver {
 
     private void startCurrentGame(String playerName, Stage gameStage) {
         //currentProf.setGameInProgress(saveManager);
+        
         mud = currentProf.getGameInProgress();
+        Double health = mud.getHealth();
+        Label currentHealth = new Label(" " + health);
         mud.renderRooms();
         currentProf.startGame(mud);
         GridPane grid = new GridPane();
@@ -594,7 +602,7 @@ public class mudGUI extends Application implements mudObserver {
         });
 
         // Add the grid (game environment) and the button to the VBox
-        box.getChildren().addAll(backToProfileButton, grid);
+        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
         addMovementControls(box, mud);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
@@ -879,8 +887,10 @@ public class mudGUI extends Application implements mudObserver {
                 break;
             case "MERCHANT":
                 rect.setFill(Color.DEEPPINK);
+                break;
             case "SHRINE":
                 rect.setFill(Color.CADETBLUE);
+                break;
             default:
                 rect.setFill(Color.WHITE);
                 break;
@@ -898,6 +908,8 @@ public class mudGUI extends Application implements mudObserver {
         //System.out.println(board.getCurrentRoom());
         displayTiles(grid, board.getCurrentRoom());
         VBox box = new VBox();
+        Double health = mud.getHealth();
+        Label currentHealth = new Label(" " + health);
 
         Button backToProfileButton = new Button("Back to Profile");
         backToProfileButton.setOnAction(e -> {
@@ -911,12 +923,10 @@ public class mudGUI extends Application implements mudObserver {
             ;
             showLoggedIn(new Stage());
         });
-        box.getChildren().addAll(backToProfileButton, grid);
+        box.getChildren().addAll(backToProfileButton,currentHealth, grid);
         addMovementControls(box, board);
         VBox keyDisplay = createKeyDisplay();
         box.getChildren().add(keyDisplay);
-        box.getChildren().add(field);
-        box.getChildren().add(messages);
         Scene gameScene = new Scene(box);
         currentStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
