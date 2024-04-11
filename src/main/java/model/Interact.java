@@ -75,8 +75,22 @@ public class Interact implements Visitor{
 
     @Override
     public void visitChestTile(ChestTile cTile) {
-    mudGUI.chestInteraction(cTile.getChest(), player);
+        ArrayList<Item> items = cTile.getChest().getItems();
+        
+        int x = 0;
+        for(Item i : items){
+            System.out.println((x+1) + ": " + i.getName());
+            x++;
+        }
 
+        int itemNum = PTUI.chooseItem();
+        if(itemNum < 0 || itemNum > items.size()){
+            System.out.println("Invalid item #. Try again. ");
+        }else{
+            Item acquired = items.get(itemNum - 1);
+            cTile.getChest().remove(acquired);
+            player.addItem(acquired);
+        }
     }
 
     @Override
@@ -127,8 +141,8 @@ public class Interact implements Visitor{
 
         //get the players location
         int[] loco = player.getLocation();
-        System.out.println(player);
-        System.out.println(loco[0] + " " + loco[1]);
+        // System.out.println(player);
+        // System.out.println(loco[0] + " " + loco[1]);
 
         //copy of the current room
         ConcreteTile[][] tiles = currentRoom.getTiles();
@@ -153,6 +167,14 @@ public class Interact implements Visitor{
             game.winGame();
         }
         else{
+            //get the players location
+            int[] loco = player.getLocation();
+            //copy of the current room
+            ConcreteTile[][] tiles = currentRoom.getTiles();
+            //set the players old location to an empty tile
+            tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
+            currentRoom.updateTiles(tiles);
+            
             game.nextRoom();
             player.updateLocation(0, 0);
             System.out.println("You've entered the next room!");
@@ -195,11 +217,15 @@ public class Interact implements Visitor{
                         itemNum++;
                     }
 
-                    System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    System.out.println("Select item number or 0 to quit: ");
+                    itemNum = PTUI.chooseItem() -1;
 
-                    if(itemNum < 0 || itemNum > items.size()){
+                    if(itemNum < -1 || itemNum > items.size()){
                         System.out.println("Invalid item #. Try again.");
+                    }
+                    else if (itemNum == -1){
+                        break;
+
                     }else{
                         Item item = items.get(itemNum);
                         game.sellItemToMerchant(item);
@@ -209,7 +235,7 @@ public class Interact implements Visitor{
                 case 'b':
                     // buy item from merchant
                     System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    itemNum = PTUI.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > goods.size()){
                         System.out.println("Invalid item #. Try again.");
@@ -246,6 +272,13 @@ public class Interact implements Visitor{
             System.out.println("You cannot exit the dungeon");
         }
         else{
+            //get the players location
+            int[] loco = player.getLocation();
+            //copy of the current room
+            ConcreteTile[][] tiles = currentRoom.getTiles();
+            //set the players old location to an empty tile
+            tiles[loco[0]][loco[1]] = new EmptyTile(loco[0],loco[1]);
+            currentRoom.updateTiles(tiles);
             game.prevRoom();
         }
     }
