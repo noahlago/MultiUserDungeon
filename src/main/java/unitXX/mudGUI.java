@@ -626,7 +626,7 @@ public class mudGUI extends Application implements mudObserver {
         endlessSaveManager.newSaveGame(endlessMUD);
         currentProf.startEndlessGame(endlessMUD);
         GridPane grid = new GridPane();
-        displayTiles(grid, mud.getCurrentRoom());
+        displayTiles(grid, endlessMUD.getCurrentRoom());
         VBox box = new VBox();
         VBox keyDisplay = createKeyDisplay();
 
@@ -639,7 +639,7 @@ public class mudGUI extends Application implements mudObserver {
 
         // Add the grid (game environment) and the button to the VBox
         box.getChildren().addAll(backToProfileButton, grid);
-        addMovementControls(box, mud);
+        addEndlessControls(box, endlessMUD);
         box.getChildren().add(keyDisplay);
         // Adjust the scene and stage as before
         Scene gameScene = new Scene(box); // Adjust the size according to your needs

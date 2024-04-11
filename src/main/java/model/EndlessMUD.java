@@ -74,8 +74,6 @@ public class EndlessMUD {
         this.index = 0;
         this.cycle = new Day();
         this.gameOver = false;
-        this.roomStates = new Hashtable<>();
-        this.visitCount = new ArrayList<Integer>(); 
     }
 
     /**
@@ -102,10 +100,7 @@ public class EndlessMUD {
      */
 
     public void nextRoom(){
-        Enumeration<Room> enu = roomStates.keys();
-        ArrayList<Room> originalRoomsList = Collections.list(enu);
         Room room = generateRandomRoom();
-        endlessMap.addRoom(room);
         this.index++;
         this.currentRoom = this.endlessMap.getRooms().get(index);
         this.action = new EndlessInteract(this, this.currentRoom, this.player);
@@ -113,11 +108,8 @@ public class EndlessMUD {
     
 
     public void previousRoom() {
-        Enumeration<Room> enu = roomStates.keys();
-        ArrayList<Room> originalRoomsList = Collections.list(enu);
         Room room = generateRandomRoom();
         endlessMap.addRoom(room);
-        roomStates.put(room, room);
         this.index--;
         this.currentRoom = this.endlessMap.getRooms().get(index);
         this.action = new EndlessInteract(this, this.currentRoom, this.player);
