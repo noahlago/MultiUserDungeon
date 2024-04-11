@@ -465,6 +465,7 @@ public class mudGUI extends Application implements mudObserver {
             Stage newStage = new Stage();
             currentStage = newStage;
             startNewGame(newStage);
+            messages = new Label();
         });
         Button logout = new Button("Logout");
         logout.setOnAction(e -> start(profileStage));
@@ -514,6 +515,7 @@ public class mudGUI extends Application implements mudObserver {
         Scene scene = new Scene(layout);
         newGameStage.setScene(scene);
         newGameStage.setTitle("Start New Game");
+        messages = new Label();
         newGameStage.show();
     }
 
@@ -772,41 +774,65 @@ public class mudGUI extends Application implements mudObserver {
         // Optionally set click event handlers for the buttons
         upButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
-            if(gameOver == true){
+            boolean gameWon = game.gameWon();
+            String cycle = "It is currently " + game.getCycle();
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(-1, 0);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
         downButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
-            if(gameOver == true){
+            boolean gameWon = game.gameWon();
+            String cycle = "It is currently " + game.getCycle();
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(1, 0);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
         leftButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
-            if(gameOver == true){
+            boolean gameWon = game.gameWon();
+            String cycle = "It is currently " + game.getCycle();
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(0, -1);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
         rightButton.setOnAction(e -> {
             boolean gameOver = game.getGameOver();
-            if(gameOver == true){
+            boolean gameWon = game.gameWon();
+            String cycle = "It is currently " + game.getCycle();
+            if(gameWon == true){
+                messages = new Label("You won!");
+            }
+            else if(gameOver == true){
                 messages = new Label("Game over");
             }
             else{
                 game.movePlayer(0, 1);
+                messages = new Label(cycle);
             }
             mudUpdated(mud);
         });
