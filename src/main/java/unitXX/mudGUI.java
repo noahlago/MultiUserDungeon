@@ -776,7 +776,8 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            int[] stats = game.getPlayer().getStats();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 for(int stat : stats){
@@ -801,7 +802,8 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            int[] stats = game.getPlayer().getStats();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
@@ -820,7 +822,8 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            int[] stats = game.getPlayer().getStats();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
@@ -839,7 +842,8 @@ public class mudGUI extends Application implements mudObserver {
             boolean gameOver = game.getGameOver();
             boolean gameWon = game.gameWon();
             String cycle = "It is currently " + game.getCycle();
-            int[] stats = game.getPlayer().getStats();
+            Pc pc = game.getPlayer();
+            int[] stats = pc.getStats();
             if(gameWon == true){
                 messages = new Label("You won!");
                 profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
