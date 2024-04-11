@@ -58,6 +58,7 @@ public class mudGUI extends Application implements mudObserver {
 
     MUD mud = new MUD(new Map(), "New Game");
     EndlessMUD endlessMUD = new EndlessMUD(new Map(), "New Game");
+    Boolean endless = false;
 
 
     VBox accountContent = new VBox(10);
@@ -620,6 +621,7 @@ public class mudGUI extends Application implements mudObserver {
     }
 
     private void startEndlessGame(String playerName, Stage gameStage) throws IOException {
+        endless = true;
         endlessMUD = new EndlessMUD(new Map(), playerName);
         endlessSaveManager.newSaveGame(endlessMUD);
         currentProf.startEndlessGame(endlessMUD);
@@ -899,6 +901,98 @@ public class mudGUI extends Application implements mudObserver {
         mainLayout.getChildren().add(movementControls);
     }
 
+    private void addEndlessControls(VBox mainLayout, EndlessMUD game) {
+        // Create a new GridPane for the movement controls
+        GridPane movementControls = new GridPane();
+        movementControls.setPadding(new Insets(10)); // Add some padding for aesthetics
+        movementControls.setVgap(5); // Vertical gap between buttons
+        movementControls.setHgap(5); // Horizontal gap between buttons
+
+        // Create the movement buttons
+        Button upButton = new Button("Up");
+        Button downButton = new Button("Down");
+        Button leftButton = new Button("Left");
+        Button rightButton = new Button("Right");
+
+        // Add the buttons to the GridPane
+        movementControls.add(leftButton, 0, 1); // Column 0, Row 1
+        movementControls.add(upButton, 1, 0); // Column 1, Row 0
+        movementControls.add(downButton, 1, 2); // Column 1, Row 2
+        movementControls.add(rightButton, 2, 1); // Column 2, Row 1
+
+        // Align the GridPane to the center
+        movementControls.setAlignment(Pos.CENTER);
+
+        // Optionally set the maximum width of the buttons for a uniform look
+        upButton.setMaxWidth(Double.MAX_VALUE);
+        downButton.setMaxWidth(Double.MAX_VALUE);
+        leftButton.setMaxWidth(Double.MAX_VALUE);
+        rightButton.setMaxWidth(Double.MAX_VALUE);
+
+        // Optionally set click event handlers for the buttons
+        upButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if(gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(1, 0);
+                messages = new Label(cycle);
+            }
+            game.movePlayer(-1, 0);
+            messages = new Label(cycle);
+            endlessMudUpdated(game);(mud);
+        });
+        downButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if(gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(1, 0);
+                messages = new Label(cycle);
+            }
+            endlessMudUpdated(endlessMUD);
+        });
+        leftButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if(gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(0, -1);
+                messages = new Label(cycle);
+            }
+            endlessMudUpdated(endlessMUD);
+        });
+        rightButton.setOnAction(e -> {
+            boolean gameOver = game.getGameOver();
+            String cycle = "It is currently " + game.getCycle();
+            int[] stats = game.getPlayer().getStats();
+            if (gameOver == true){
+                messages = new Label("Game over");
+                profileDAO.updateStats(game.getName(), stats[0], stats[1], stats[2], stats[3]);
+            }
+            else{
+                game.movePlayer(0, 1);
+                messages = new Label(cycle);
+            }
+            endlessMudUpdated(endlessMUD);
+        });
+
+        // Add the movement controls GridPane to the bottom of the main layout
+        mainLayout.getChildren().add(movementControls);
+    }
+
 
     private Rectangle createTileRectangle(ConcreteTile tile) {
         Rectangle rect = new Rectangle(20, 20); // Size of the square
@@ -978,6 +1072,36 @@ public class mudGUI extends Application implements mudObserver {
         Scene gameScene = new Scene(box);
         currentStage.setScene(gameScene);
         mud = currentProf.getGameInProgress();
+        currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
+    }
+
+    public void endlessMudUpdated(EndlessMUD board) {
+        GridPane grid = new GridPane();
+        //System.out.println(board.getCurrentRoom());
+        displayTiles(grid, board.getCurrentRoom());
+        VBox box = new VBox();
+
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            currentStage.close();
+            try {
+                profileDAO.save();
+                endlessSaveManager.updateSaveGame(board);
+                endlessSaveManager.save();
+            } catch (IOException a) {
+            }
+            ;
+            showLoggedIn(new Stage());
+        });
+        box.getChildren().addAll(backToProfileButton, grid);
+        addEndlessControls(box, board);
+        VBox keyDisplay = createKeyDisplay();
+        box.getChildren().add(keyDisplay);
+        box.getChildren().add(field);
+        box.getChildren().add(messages);
+        Scene gameScene = new Scene(box);
+        currentStage.setScene(gameScene);
+        endlessMUD = currentProf.getEndlessInProgress();
         currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
     }
 

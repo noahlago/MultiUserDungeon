@@ -83,6 +83,9 @@ public class User {
         return gameInProgress;
     }
 
+    public EndlessMUD getEndlessInProgress(){
+        return endlessGameInProgress;
+    } 
     public void setGameInProgress(@SuppressWarnings("exports") GameFileDAO saveManager){
         try {
             this.gameInProgress = saveManager.getGames().get(username);
