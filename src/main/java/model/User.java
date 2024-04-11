@@ -22,6 +22,7 @@ public class User {
     @JsonProperty("itemsFound") private int itemsFound;
     @JsonProperty("gameInProgress") private MUD gameInProgress;
     @JsonProperty("loggedIn") private boolean loggedIn;
+    @JsonProperty("endlessGameInProgress") private EndlessMUD endlessGameInProgress;
 
     @JsonCreator
     public User(@JsonProperty("username") String username, @JsonProperty("password") String password){
@@ -33,6 +34,7 @@ public class User {
         this.totalGold = 0;
         this.itemsFound = 0;
         this.gameInProgress = null;
+        this.endlessGameInProgress = null;
         this.loggedIn = true;
     }
 
@@ -46,6 +48,7 @@ public class User {
         this.itemsFound = itemsFound;
         this.gameInProgress = null;
         this.loggedIn = false;
+        this.endlessGameInProgress = null;
     }
 
     public String getUsername(){
@@ -119,6 +122,10 @@ public class User {
      */
     public void startGame(MUD game){
         this.gameInProgress = game;
+    }
+
+    public void startEndlessGame(EndlessMUD game){
+        this.endlessGameInProgress = game;
     }
 
     /**

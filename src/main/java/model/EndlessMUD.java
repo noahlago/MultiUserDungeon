@@ -50,10 +50,15 @@ public class EndlessMUD {
     public boolean gameOver;
     @JsonProperty("index")
     public int index;
+    @JsonProperty("shrineRoom")
     public Room shrineRoom;
+    @JsonProperty("shrineCharacter")
     public Pc shrineCharacter;
+    @JsonProperty("shrineCycle")
     public Cycle shrineCycle;
+    @JsonProperty("roomStates")
     public Dictionary<Room, Room> roomStates;
+    @JsonProperty("visitCount")
     public ArrayList<Integer> visitCount;
 
 

@@ -32,6 +32,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Chest;
+import model.EndlessMUD;
 import model.Item;
 import model.MUD;
 import model.Map;
@@ -40,6 +41,7 @@ import model.User;
 import model.mudObserver;
 import model.Tiles.ConcreteTile;
 import model.Tiles.TrapTile;
+import model.persistence.EndlessGameFileDAO;
 import model.persistence.ExportProfile;
 import model.persistence.GameFileDAO;
 import model.persistence.ImportProfile;
@@ -51,9 +53,12 @@ import model.PremadeMaps;
 public class mudGUI extends Application implements mudObserver {
     User currentProf = new User("a", "A");
     GameFileDAO saveManager = new GameFileDAO();
+    EndlessGameFileDAO endlessSaveManager = new EndlessGameFileDAO();
     ProfileCSVFileDAO profileDAO;
 
     MUD mud = new MUD(new Map(), "New Game");
+    EndlessMUD endlessMUD = new EndlessMUD(new Map(), "New Game");
+
 
     VBox accountContent = new VBox(10);
 
@@ -490,7 +495,13 @@ public class mudGUI extends Application implements mudObserver {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         Button startEndlessGameButton = new Button("Start New Endless Game");
-        // startEndlessGameButton.setOnAction(e -> startEndlessGame(newGameStage));
+        startEndlessGameButton.setOnAction(e -> {
+            try {
+                startEndlessGame(currentProf.getUsername(), newGameStage);
+            } catch (IOException y) {
+            }
+            ;
+        });
 
         Button startRegularGameButton = new Button("Start New Regular Game");
         startRegularGameButton.setOnAction(e -> {
@@ -607,6 +618,35 @@ public class mudGUI extends Application implements mudObserver {
     private void joinEndlessGame(Stage stage) {
         stage.close();
     }
+
+    private void startEndlessGame(String playerName, Stage gameStage) throws IOException {
+        endlessMUD = new EndlessMUD(new Map(), playerName);
+        endlessSaveManager.newSaveGame(endlessMUD);
+        currentProf.startEndlessGame(endlessMUD);
+        GridPane grid = new GridPane();
+        displayTiles(grid, mud.getCurrentRoom());
+        VBox box = new VBox();
+        VBox keyDisplay = createKeyDisplay();
+
+        Button backToProfileButton = new Button("Back to Profile");
+        backToProfileButton.setOnAction(e -> {
+            gameStage.close();
+
+            showLoggedIn(new Stage());
+        });
+
+        // Add the grid (game environment) and the button to the VBox
+        box.getChildren().addAll(backToProfileButton, grid);
+        addMovementControls(box, mud);
+        box.getChildren().add(keyDisplay);
+        // Adjust the scene and stage as before
+        Scene gameScene = new Scene(box); // Adjust the size according to your needs
+        gameStage.setScene(gameScene);
+        gameStage.setTitle("Game: " + playerName); // Set a title for the window
+        gameStage.show();
+        
+    }
+
 
     private void displayPremade(Stage gameStage) {
         GridPane grid = new GridPane();
