@@ -28,6 +28,7 @@ public class Pc extends Character {
     }
 
     public int[] getStats(){
+        if(livesLost > 1){livesLost = 1;};
         int[] stats = {livesLost, monstersKilled, totalGold, itemsFound};
         return stats;
     }
