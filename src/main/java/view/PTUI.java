@@ -112,6 +112,18 @@ public class PTUI {
         }
     }
 
+    public static int chooseItem(){
+        String input = scanner.next();
+        int itemNum;
+        try{
+            itemNum = Integer.parseInt(input);
+        }catch(NumberFormatException e){
+            System.out.println("Enter a valid #");
+            return chooseItem();
+        }
+        return itemNum;
+    }
+
     public static char visitMerchant(){
         System.out.println("What would you like to do?\n\'s\': sell item\n\'b\': buy item\n\'e\': exit");
         char selection = scanner.next().charAt(0);

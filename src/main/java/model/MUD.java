@@ -555,20 +555,20 @@ public class MUD {
         return this.player.getInventory();
     }
 
-    public static int chooseItem(){
-        try (Scanner scanner = new Scanner(System.in)) {
+    // public static int chooseItem(){
+    //     try (Scanner scanner = new Scanner(System.in)) {
             
-            String input = scanner.next();
-            int itemNum;
-            try{
-                itemNum = Integer.parseInt(input);
-            }catch(NumberFormatException e){
-                System.out.println("Enter a valid #");
-                return chooseItem();
-            }
-            return itemNum;
-        }
-    }
+    //         String input = scanner.next();
+    //         int itemNum;
+    //         try{
+    //             itemNum = Integer.parseInt(input);
+    //         }catch(NumberFormatException e){
+    //             System.out.println("Enter a valid #");
+    //             return chooseItem();
+    //         }
+    //         return itemNum;
+    //     }
+    // }
 
     public static void main(String[] args) {
         Pc play = new Pc(1, 10, "mars", new Inventory(), 100);

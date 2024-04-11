@@ -82,7 +82,7 @@ public class Interact implements Visitor{
             x++;
         }
 
-        int itemNum = MUD.chooseItem();
+        int itemNum = PTUI.chooseItem();
         if(itemNum < 0 || itemNum > items.size()){
             System.out.println("Invalid item #. Try again. ");
         }else{
@@ -216,11 +216,15 @@ public class Interact implements Visitor{
                         itemNum++;
                     }
 
-                    System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    System.out.println("Select item number or 0 to quit: ");
+                    itemNum = PTUI.chooseItem() -1;
 
-                    if(itemNum < 0 || itemNum > items.size()){
+                    if(itemNum < -1 || itemNum > items.size()){
                         System.out.println("Invalid item #. Try again.");
+                    }
+                    else if (itemNum == -1){
+                        break;
+
                     }else{
                         Item item = items.get(itemNum);
                         game.sellItemToMerchant(item);
@@ -230,7 +234,7 @@ public class Interact implements Visitor{
                 case 'b':
                     // buy item from merchant
                     System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    itemNum = PTUI.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > goods.size()){
                         System.out.println("Invalid item #. Try again.");

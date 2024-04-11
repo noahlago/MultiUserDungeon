@@ -10,6 +10,7 @@ import model.Tiles.MerchantTile;
 import model.Tiles.ObstacleTile;
 import model.Tiles.ShrineTile;
 import model.Tiles.TrapTile;
+import view.EndlessPTUI;
 import view.PTUI;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class EndlessInteract implements Visitor{
             x++;
         }
 
-        int itemNum = MUD.chooseItem();
+        int itemNum = EndlessPTUI.chooseItem();
         if(itemNum < 0 || itemNum > items.size()){
             System.out.println("Invalid item #. Try again. ");
         }else{
@@ -213,11 +214,14 @@ public class EndlessInteract implements Visitor{
                         itemNum++;
                     }
 
-                    System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    System.out.println("Select item number or 0 to quit: ");
+                    itemNum = EndlessPTUI.chooseItem() -1;
 
-                    if(itemNum < 0 || itemNum > items.size()){
+                    if(itemNum < -1 || itemNum > items.size()){
                         System.out.println("Invalid item #. Try again.");
+                    }
+                    else if (itemNum == -1){
+                        break;
                     }else{
                         Item item = items.get(itemNum);
                         endlessMUD.sellItemToMerchant(item);
@@ -227,7 +231,7 @@ public class EndlessInteract implements Visitor{
                 case 'b':
                     // buy item from merchant
                     System.out.println("Select item number: ");
-                    itemNum = MUD.chooseItem() -1;
+                    itemNum = EndlessPTUI.chooseItem() -1;
 
                     if(itemNum < 0 || itemNum > goods.size()){
                         System.out.println("Invalid item #. Try again.");
