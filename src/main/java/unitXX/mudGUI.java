@@ -956,7 +956,7 @@ public class mudGUI extends Application implements mudObserver {
 
 
     private Rectangle createTileRectangle(ConcreteTile tile) {
-        Rectangle rect = new Rectangle(20, 20); // Size of the square
+        Rectangle rect = new Rectangle(20, 20); 
         rect.setStroke(Color.BLACK); // Border color
         // Customize the fill color based on the tile type
         switch (tile.getType()) {
