@@ -951,7 +951,6 @@ public class mudGUI extends Application implements mudObserver {
             mudUpdated(mud);
         });
 
-        // Add the movement controls GridPane to the bottom of the main layout
         mainLayout.getChildren().add(movementControls);
     }
 
