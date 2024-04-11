@@ -102,6 +102,7 @@ public class EndlessMUD {
     public void nextRoom(){
         Room room = generateRandomRoom();
         this.index++;
+        endlessMap.addRoom(room);
         this.currentRoom = this.endlessMap.getRooms().get(index);
         this.action = new EndlessInteract(this, this.currentRoom, this.player);
     }

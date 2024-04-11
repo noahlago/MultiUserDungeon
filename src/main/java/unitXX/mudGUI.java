@@ -1102,7 +1102,7 @@ public class mudGUI extends Application implements mudObserver {
         Scene gameScene = new Scene(box);
         currentStage.setScene(gameScene);
         endlessMUD = currentProf.getEndlessInProgress();
-        currentStage.setTitle("Game: " + currentProf.getGameInProgress().getName()); // Set a title for the window
+        currentStage.setTitle("Game: " + currentProf.getEndlessInProgress().getName()); // Set a title for the window
     }
 
     @Override
